@@ -597,6 +597,307 @@ button:not(:disabled):hover{transform:translateY(-1px);filter:saturate(1.2) cont
 button:not(:disabled):active{transform:translateY(2px) scale(.98);box-shadow:0 1px 0 #222}
 button:disabled{opacity:.42!important;filter:grayscale(.35)!important;cursor:not-allowed!important;box-shadow:1px 1px 0 #777!important}
 </style>
+
+<style id="fsel-inspired-theme">
+/* ===== FSEL-INSPIRED VISUAL THEME — STYLE ONLY ===== */
+:root{
+  --paper:#f7f8fc;
+  --paper-line:#e7e9f2;
+  --margin-red:#dfe3f0;
+  --ink:#25233a;
+  --ink-soft:#74758a;
+  --card:#ffffff;
+  --admin:#6c63ff;
+  --admin-bg:#f0efff;
+  --admin-dark:#4d46c7;
+  --accent:#6c63ff;
+  --accent-2:#8f7cff;
+  --accent-soft:#f1efff;
+  --success:#38b979;
+  --success-soft:#eaf9f1;
+  --warning:#f4ad3d;
+  --warning-soft:#fff6e5;
+  --danger:#ee6b78;
+  --danger-soft:#fff0f2;
+  --shadow:0 10px 28px rgba(53,54,92,.10);
+  --shadow-hover:0 14px 34px rgba(53,54,92,.16);
+}
+html,body{background:#f7f8fc!important;color:var(--ink)!important}
+body{
+  font-family:Inter,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif!important;
+  background-image:radial-gradient(circle at 8% 5%,rgba(108,99,255,.07),transparent 24%),radial-gradient(circle at 95% 12%,rgba(143,124,255,.07),transparent 22%)!important;
+}
+/* cards / panels */
+.card,.panel,.box,.section,.modal-content,.popup,.settings-panel,.student-card,.stat-card,
+[class*="card"],[class*="panel"]{
+  border-color:#e5e6f0!important;
+  border-radius:20px!important;
+  box-shadow:var(--shadow)!important;
+  background:#fff!important;
+}
+/* headings */
+h1,h2,h3,h4{color:#27253b!important;letter-spacing:-.02em}
+small,.muted,.secondary{color:var(--ink-soft)!important}
+/* buttons: soft, rounded, lively */
+button,.btn,input[type="button"],input[type="submit"],.button{
+  border:2px solid #27253b!important;
+  border-radius:14px!important;
+  font-weight:750!important;
+  letter-spacing:.01em;
+  box-shadow:0 4px 0 #27253b,0 8px 16px rgba(39,37,59,.10)!important;
+  transition:transform .16s ease,box-shadow .16s ease,filter .16s ease,background .16s ease!important;
+}
+button:hover,.btn:hover,.button:hover{transform:translateY(-2px);box-shadow:0 6px 0 #27253b,0 12px 22px rgba(39,37,59,.13)!important;filter:saturate(1.04)}
+button:active,.btn:active,.button:active{transform:translateY(3px) scale(.985)!important;box-shadow:0 1px 0 #27253b,0 4px 9px rgba(39,37,59,.10)!important}
+button:disabled,.btn:disabled,.button:disabled,[disabled]{filter:grayscale(.15);opacity:.48!important;cursor:not-allowed!important;transform:none!important;box-shadow:0 2px 0 #9da0ae!important}
+/* primary actions */
+.btn-primary,.primary,.save-btn,.confirm-btn{background:linear-gradient(135deg,#6c63ff,#8f7cff)!important;color:#fff!important}
+.btn-success,.success{background:#38b979!important;color:#fff!important}
+.btn-danger,.danger,.delete-btn{background:#ee6b78!important;color:#fff!important}
+.btn-warning,.warning{background:#f4ad3d!important;color:#fff!important}
+/* inputs */
+input,select,textarea{
+  border:2px solid #dfe1ec!important;
+  border-radius:13px!important;
+  background:#fbfbfe!important;
+  color:#29273e!important;
+  transition:border-color .18s,box-shadow .18s,transform .18s!important;
+}
+input:focus,select:focus,textarea:focus{outline:none!important;border-color:#6c63ff!important;box-shadow:0 0 0 4px rgba(108,99,255,.12)!important;background:#fff!important}
+/* top/header */
+header,.header,.topbar,.app-header,.navbar{
+  background:linear-gradient(135deg,#655cf2,#8c79ff)!important;
+  color:#fff!important;
+  border-radius:0 0 24px 24px!important;
+  box-shadow:0 8px 26px rgba(84,75,190,.20)!important;
+}
+/* tabs / role selectors */
+.tab,.nav-btn,.role-btn,.filter-btn{
+  background:#fff!important;color:#514f68!important;border:2px solid #dfe1ec!important;
+  box-shadow:0 3px 0 #dfe1ec!important;
+}
+.tab.active,.nav-btn.active,.role-btn.active,.filter-btn.active{
+  background:#6c63ff!important;color:#fff!important;border-color:#27253b!important;
+  box-shadow:0 4px 0 #27253b!important;
+}
+/* four groups keep their identity but use cleaner FSEL-like cards */
+[style*="to1"],.to1{border-radius:18px!important}
+/* tables / student rows */
+table{border-collapse:separate!important;border-spacing:0 7px!important}
+thead th{color:#74758a!important;font-size:.88rem!important;border:0!important}
+tbody tr{background:#fff!important;box-shadow:0 4px 14px rgba(50,52,80,.06)!important}
+tbody td{border-top:1px solid #ececf4!important;border-bottom:1px solid #ececf4!important}
+tbody td:first-child{border-left:1px solid #ececf4!important;border-radius:13px 0 0 13px!important}
+tbody td:last-child{border-right:1px solid #ececf4!important;border-radius:0 13px 13px 0!important}
+/* popups / dialogs */
+.modal,.modal-overlay,.popup-overlay{backdrop-filter:blur(7px)!important;background:rgba(37,35,59,.30)!important}
+.modal-content,.popup,.settings-panel{animation:fselPop .22s ease-out!important}
+@keyframes fselPop{from{opacity:0;transform:translateY(10px) scale(.97)}to{opacity:1;transform:translateY(0) scale(1)}}
+/* badges */
+.badge,.pill,.tag{border-radius:999px!important;border:1px solid rgba(39,37,59,.10)!important;font-weight:750!important}
+/* star/reward cards */
+.reward-card,.star-card,.reward-panel{border-radius:20px!important;background:linear-gradient(145deg,#fff,#f7f5ff)!important}
+/* scrollbars */
+*{scrollbar-width:thin;scrollbar-color:#b8b3f5 transparent}
+*::-webkit-scrollbar{width:9px;height:9px}
+*::-webkit-scrollbar-thumb{background:#b8b3f5;border-radius:999px}
+/* mobile */
+@media(max-width:700px){
+  .card,.panel,.box,.section,.modal-content,.popup{border-radius:17px!important}
+  button,.btn,.button{min-height:44px;padding:.65rem .9rem!important}
+  body{font-size:15px!important}
+}
+</style>
+
+
+<style id="cosmic-fsel-theme">
+/* ===== COSMIC / SPACE UI ===== */
+:root{
+  --cosmic-bg:#080d2b; --cosmic-card:rgba(20,28,72,.88); --cosmic-card2:rgba(29,39,92,.9);
+  --cosmic-blue:#62d8ff; --cosmic-purple:#a98cff; --cosmic-pink:#ff72c8; --cosmic-text:#f5f7ff;
+  --cosmic-muted:#b9c2e8; --cosmic-border:rgba(255,255,255,.28);
+  --cosmic-shadow:0 8px 24px rgba(0,0,0,.28), inset 0 1px 0 rgba(255,255,255,.12);
+}
+body{
+  background:
+    radial-gradient(circle at 15% 15%,rgba(98,216,255,.16),transparent 22%),
+    radial-gradient(circle at 85% 20%,rgba(169,140,255,.18),transparent 25%),
+    radial-gradient(circle at 50% 90%,rgba(255,114,200,.12),transparent 28%),
+    linear-gradient(135deg,#070b25,#101642 55%,#080b24) !important;
+  color:var(--cosmic-text) !important;
+}
+body::before{content:"✦   ·  ✧   ·     ✦   ·  ·   ✧      ✦   ·   ✧";position:fixed;inset:0;pointer-events:none;z-index:-1;color:rgba(255,255,255,.18);font-size:26px;letter-spacing:22px;line-height:100px;transform:rotate(-8deg);opacity:.45}
+button,.btn,.btn-primary,.btn-green,.btn-red,.btn-gray,.btn-blue,.btn-orange,.btn-yellow,.btn-purple,
+input[type=button],input[type=submit]{
+  border:2px solid #050711 !important;border-radius:18px !important;
+  box-shadow:var(--cosmic-shadow) !important;
+  font-weight:800 !important;transition:transform .12s ease,filter .15s ease,box-shadow .15s ease !important;
+}
+button:not(:disabled):hover,.btn:not(:disabled):hover{filter:brightness(1.12);transform:translateY(-2px)}
+button:not(:disabled):active,.btn:not(:disabled):active{transform:translateY(2px) scale(.97) !important;box-shadow:0 3px 8px rgba(0,0,0,.35) !important}
+button:disabled,.btn:disabled{opacity:.42 !important;filter:saturate(.35) !important;cursor:not-allowed !important}
+.card,.panel,.modal-content,.box,.section,.student-card,.dashboard-card{background:linear-gradient(145deg,rgba(27,36,91,.94),rgba(12,18,52,.94)) !important;border:2px solid var(--cosmic-border) !important;border-radius:24px !important;box-shadow:0 12px 35px rgba(0,0,0,.28) !important;color:var(--cosmic-text) !important}
+input,select,textarea{background:rgba(4,8,29,.78) !important;color:var(--cosmic-text) !important;border:2px solid rgba(130,154,255,.4) !important;border-radius:14px !important}
+input::placeholder,textarea::placeholder{color:#8791bc !important}
+label,.muted,small{color:var(--cosmic-muted)}
+.excel-preview-list{max-height:320px;overflow:auto;text-align:left;padding:12px;border-radius:16px;background:rgba(3,7,25,.55);border:1px solid rgba(255,255,255,.15)}
+.excel-preview-list div{padding:5px 8px;border-bottom:1px solid rgba(255,255,255,.07)}
+.excel-preview-list div:last-child{border-bottom:0}
+</style>
+
+<style id="cosmic-profile-fix">
+:root{--space1:#07132f;--space2:#101b48;--glow:#62d8ff;--violet:#9b7cff;--hot:#d86bff;--ink:#071126}
+body{background:radial-gradient(circle at 15% 10%,#243b83 0,#101b48 28%,#07132f 68%,#030817 100%)!important;color:#f4f7ff!important}
+button,.btn,.action-btn,.tab-btn,input[type=button],input[type=submit]{border:2px solid #020817!important;border-radius:16px!important;background:linear-gradient(135deg,#7c5cff,#32bde9)!important;color:white!important;font-weight:800!important;box-shadow:0 7px 0 #020817,0 0 18px rgba(98,216,255,.28)!important;transition:transform .16s ease,filter .16s ease,box-shadow .16s ease!important}
+button:hover,.btn:hover,.action-btn:hover,.tab-btn:hover{filter:brightness(1.18)!important;transform:translateY(-2px)!important;box-shadow:0 9px 0 #020817,0 0 25px rgba(155,124,255,.5)!important}
+button:active,.btn:active,.action-btn:active,.tab-btn:active{transform:translateY(4px) scale(.98)!important;box-shadow:0 3px 0 #020817,0 0 12px rgba(98,216,255,.25)!important}
+button:disabled,.btn:disabled,.action-btn:disabled{opacity:.42!important;filter:saturate(.45)!important;box-shadow:0 4px 0 #020817!important}
+.student-card,.student-item,.card,.panel{border:2px solid rgba(98,216,255,.45)!important;border-radius:22px!important;background:linear-gradient(145deg,rgba(23,39,88,.94),rgba(9,18,48,.96))!important;box-shadow:0 12px 30px rgba(0,0,0,.3),0 0 20px rgba(98,216,255,.1)!important}
+.student-card,.student-item{cursor:pointer}
+.student-card:hover,.student-item:hover{transform:translateY(-3px);border-color:#9b7cff!important;box-shadow:0 15px 34px rgba(0,0,0,.35),0 0 28px rgba(155,124,255,.3)!important}
+#studentProfileModal,.student-profile-modal,.profile-modal{backdrop-filter:blur(10px)!important}
+#studentProfileModal .modal-content,.student-profile-modal .modal-content,.profile-modal .modal-content{border:2px solid #62d8ff!important;border-radius:26px!important;background:linear-gradient(145deg,#18275b,#080f2c)!important;box-shadow:0 0 45px rgba(98,216,255,.3)!important;animation:profileIn .22s ease-out}
+.profile-avatar{border:3px solid #62d8ff!important;box-shadow:0 0 25px rgba(98,216,255,.5)!important}
+@keyframes profileIn{from{opacity:0;transform:translateY(18px) scale(.96)}to{opacity:1;transform:none}}
+</style>
+
+
+<style id="student-profile-enhanced">
+#studentModal .modal-box{
+  background:linear-gradient(145deg,#111a46 0%,#18285f 55%,#24144d 100%) !important;
+  color:#f7f8ff !important;
+  border:2px solid #62d8ff !important;
+  box-shadow:0 0 35px rgba(98,216,255,.28),0 20px 60px rgba(0,0,0,.45)!important;
+}
+#studentModal .profile-hero{
+  display:flex;align-items:center;gap:16px;padding:14px 0 18px;
+}
+#studentModal .profile-avatar-big{
+  width:88px;height:88px;border-radius:50%;object-fit:cover;
+  border:3px solid #62d8ff;box-shadow:0 0 24px rgba(98,216,255,.5);
+  background:#0a1230;
+}
+#studentModal .profile-name{margin:0;color:#fff;font-size:1.45rem}
+#studentModal .profile-role{margin:5px 0 0;color:#bfefff;font-weight:800}
+#studentModal .profile-grid{
+  display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin:8px 0 18px;
+}
+#studentModal .profile-stat{
+  padding:13px;border-radius:16px;background:rgba(255,255,255,.08);
+  border:1px solid rgba(98,216,255,.35);text-align:center;
+}
+#studentModal .profile-stat small{display:block;color:#c6d2ff;margin-bottom:5px}
+#studentModal .profile-stat strong{font-size:1.25rem;color:#fff}
+#studentModal #studentDream{
+  width:100%;min-height:72px;resize:vertical;border-radius:14px;padding:11px;
+  background:#0b1435;color:#fff;border:1px solid #62d8ff;
+}
+#studentModal .profile-section-title{color:#9b7cff}
+@media(max-width:600px){#studentModal .profile-grid{grid-template-columns:1fr 1fr}}
+</style>
+
+<style id="cosmic-no-white-fix">
+:root{color-scheme:dark;}
+html,body{background:#070b2b!important;color:#f4f7ff!important;}
+body{background-image:radial-gradient(circle at 15% 10%,rgba(95,120,255,.22),transparent 30%),radial-gradient(circle at 85% 20%,rgba(190,70,255,.18),transparent 28%),linear-gradient(135deg,#050722,#0c1550 55%,#160b35)!important;}
+body *, .app, .container, .main, main, section, header, footer, nav, aside, .card, .panel, .box, .table-wrap, .student-list, .student-card, .student-row, .modal, .modal-content, .popup, .login, .login-card, .auth, .form-card, .select, select, option, input, textarea{border-color:rgba(160,190,255,.28)!important;}
+.card,.panel,.box,.table-wrap,.student-list,.student-card,.student-row,.modal-content,.popup,.login-card,.auth,.form-card{background:rgba(10,18,62,.82)!important;color:#f4f7ff!important;backdrop-filter:blur(12px);}
+.student-card:hover,.student-row:hover{background:rgba(42,58,130,.72)!important;}
+input,textarea,select{background:rgba(5,10,40,.9)!important;color:#fff!important;}
+option{background:#10194f!important;color:#fff!important;}
+input::placeholder,textarea::placeholder{color:#aebcff!important;}
+label,p,span,div,td,th,li,h1,h2,h3,h4,h5,h6{color:inherit;}
+.table-wrap table,.table-wrap tbody,.table-wrap tr,.table-wrap td,.table-wrap th{background:transparent!important;color:#f4f7ff!important;}
+button{color:#fff!important;background:linear-gradient(135deg,#4b55e8,#8b4dff)!important;border:2px solid rgba(210,220,255,.55)!important;box-shadow:0 5px 18px rgba(65,75,220,.35)!important;}
+button:hover{background:linear-gradient(135deg,#6670ff,#a76bff)!important;box-shadow:0 8px 25px rgba(105,95,255,.5)!important;}
+button:disabled{background:rgba(100,110,150,.28)!important;color:#9aa5c8!important;box-shadow:none!important;}
+.modal,.popup{background:rgba(5,9,35,.82)!important;}
+</style>
+
+<style id="cosmic-starfield">
+html, body { background:#05071f !important; }
+body::before, body::after { content:""; position:fixed; inset:0; pointer-events:none; z-index:0; }
+body::before { background-image: radial-gradient(circle, rgba(255,255,255,.9) 0 1px, transparent 1.5px), radial-gradient(circle, rgba(130,210,255,.75) 0 1px, transparent 1.6px), radial-gradient(circle, rgba(190,150,255,.65) 0 1px, transparent 1.7px); background-size: 97px 113px, 151px 137px, 211px 193px; background-position: 10px 20px, 50px 70px, 120px 10px; animation: cosmicDrift 45s linear infinite; opacity:.7; }
+body::after { background-image: radial-gradient(circle, #fff 0 1.2px, transparent 1.8px), radial-gradient(circle, rgba(120,220,255,.9) 0 1px, transparent 1.7px); background-size: 173px 157px, 257px 223px; background-position: 35px 90px, 170px 40px; animation: cosmicTwinkle 3.8s ease-in-out infinite alternate; opacity:.55; }
+body > * { position:relative; z-index:1; }
+@keyframes cosmicDrift { from { transform:translate3d(0,0,0); } to { transform:translate3d(-70px,-45px,0); } }
+@keyframes cosmicTwinkle { from { opacity:.25; } to { opacity:.8; } }
+/* Đồng bộ các vùng nội dung với nền vũ trụ, không để trắng */
+input, select, textarea { color:#111 !important; }
+option { color:#111 !important; background:#fff !important; }
+.modal, .popup, .profile-modal, .card, .student-card, table, th, td, .panel, .section, .violation, .good-deed { background-color:rgba(11,15,55,.88) !important; color:#f7fbff !important; }
+</style>
+
+<style id="popup-fix-final">
+/* Profile/record popups: record popup must appear above profile */
+#studentModal{z-index:200!important;}
+#recordModal{z-index:500!important;}
+#studentModal .modal-box,#recordModal .modal-box{position:relative;z-index:1;}
+#recordModal .modal-box{background:linear-gradient(145deg,rgba(27,36,91,.98),rgba(8,15,45,.99))!important;color:#f7fbff!important;border:2px solid #62d8ff!important;box-shadow:0 0 45px rgba(98,216,255,.32)!important;}
+#recordModal label{color:#eaf7ff!important;}
+#recordModal select,#recordModal input,#recordModal textarea{background:rgba(245,249,255,.96)!important;color:#111827!important;border:2px solid rgba(98,216,255,.65)!important;}
+#recordModal select option{background:#f5f9ff!important;color:#111827!important;}
+#studentModal .item.violation,#studentModal .item.deed,#studentModal .item.pending{background:rgba(17,28,76,.82)!important;color:#f7fbff!important;border:1px solid rgba(98,216,255,.3)!important;border-radius:14px!important;}
+#studentModal #violationButtons,#studentModal #goodButtons{display:flex!important;gap:10px!important;flex-wrap:wrap!important;margin-top:10px!important;}
+#studentModal #violationButtons button,#studentModal #goodButtons button{opacity:1!important;visibility:visible!important;}
+</style>
+
+
+<style id="popup-real-fix">
+/* ===== REAL POPUP FIX ===== */
+#studentModal, #recordModal {
+  position: fixed !important;
+  inset: 0 !important;
+  display: none !important;
+  align-items: center !important;
+  justify-content: center !important;
+  padding: 18px !important;
+  background: rgba(3, 7, 30, .82) !important;
+  backdrop-filter: blur(10px) !important;
+}
+#studentModal { z-index: 10000 !important; }
+#recordModal { z-index: 20000 !important; }
+#studentModal[style*="display: flex"], #recordModal[style*="display: flex"] { display: flex !important; }
+#studentModal .modal-box, #recordModal .modal-box {
+  position: relative !important;
+  z-index: 1 !important;
+  width: min(760px, 94vw) !important;
+  max-height: 90vh !important;
+  overflow-y: auto !important;
+  background: linear-gradient(145deg,#17245c,#080d2d) !important;
+  color: #f7fbff !important;
+  border: 2px solid #67dcff !important;
+  border-radius: 26px !important;
+  box-shadow: 0 0 60px rgba(76,210,255,.35), 0 20px 60px rgba(0,0,0,.5) !important;
+}
+#studentModal .student-name, #studentModal h2, #studentModal h3,
+#studentModal p, #studentModal label, #studentModal small,
+#recordModal h2, #recordModal p, #recordModal label { color:#f7fbff !important; }
+.student-name { cursor:pointer !important; }
+.student-name:hover { filter:brightness(1.25); text-shadow:0 0 10px rgba(103,220,255,.55); }
+#studentModal #violationButtons button, #studentModal #goodButtons button {
+  display:inline-flex !important; visibility:visible !important; opacity:1 !important;
+  pointer-events:auto !important;
+}
+</style>
+<script>
+(function(){
+  // Make every student-name click reliably open the profile.
+  document.addEventListener('click', function(e){
+    const el = e.target.closest('.student-name');
+    if(!el) return;
+    const attr = el.getAttribute('onclick') || '';
+    const m = attr.match(/openStudent\((\d+)\)/);
+    if(m){ e.preventDefault(); e.stopPropagation(); if(typeof openStudent==='function') openStudent(Number(m[1])); }
+  }, true);
+
+  // Hard-open the record popup after openRecordForStudent/openRecord has set its fields.
+  window.forceRecordPopup = function(){
+    const m=document.getElementById('recordModal');
+    if(m){ m.style.setProperty('display','flex','important'); m.style.zIndex='20000'; }
+  };
+})();
+</script>
 </head>
 
 <body>
@@ -981,9 +1282,30 @@ Thao tác
 
 <div class="modal-box">
 
-<h2 id="studentModalTitle"></h2>
+<div class="profile-hero">
+  <img id="studentProfileAvatar" class="profile-avatar-big" src="" alt="Ảnh đại diện">
+  <div>
+    <h2 id="studentModalTitle" class="profile-name"></h2>
+    <div id="studentProfileRole" class="profile-role"></div>
+  </div>
+</div>
 
-<div class="summary-grid">
+<div class="profile-grid">
+  <div class="profile-stat"><small>⭐ Sao hiện tại</small><strong id="studentStarsProfile">0</strong></div>
+  <div class="profile-stat"><small>📊 Điểm hiện tại</small><strong id="studentCurrent">100</strong></div>
+  <div class="profile-stat"><small>🏫 Tổ</small><strong id="studentGroupProfile">-</strong></div>
+  <div class="profile-stat"><small>📕 Vi phạm</small><strong id="studentViolationCount">0</strong></div>
+  <div class="profile-stat"><small>🌟 Việc tốt</small><strong id="studentGoodCount">0</strong></div>
+  <div class="profile-stat"><small>📅 Điểm đầu tuần</small><strong id="studentInitial">100</strong></div>
+</div>
+
+<h3 class="profile-section-title">🚀 Ước mơ</h3>
+<textarea id="studentDream" placeholder="Giáo viên nhập ước mơ của học sinh..."></textarea>
+<div class="modal-actions" style="margin-top:8px">
+  <button id="saveStudentDream" class="btn-purple" type="button">💾 Lưu ước mơ</button>
+</div>
+
+<div class="summary-grid" style="display:none">
 
 <div class="summary">
 <small>Điểm đầu tuần</small>
@@ -2359,68 +2681,71 @@ function renderTable(list){
    HỌC SINH
 ========================================================= */
 
+function getStudentRoleLabel(student){
+    if(student.classLeader === true || student.role === "classLeader" || student.role === "leader")
+        return "👑 Lớp trưởng";
+    if(student.groupLeader === true || student.role === "groupLeader" || student.role === "team_leader" || student.role === "tổ trưởng")
+        return `👥 Tổ trưởng tổ ${student.group || "?"}`;
+    return "🎓 Học sinh";
+}
+
 function openStudent(id){
 
-    const student =
-        getStudent(id);
+    const student = getStudent(id);
+    if(!student) return;
 
-    if(!student)
-        return;
+    selectedStudentId = student.id;
 
-    // Tổ trưởng được mở/xem hồ sơ của mọi tổ. Các nút chỉnh sửa bên trong
-    // hồ sơ sẽ tự khóa nếu học sinh không thuộc tổ của mình.
-    selectedStudentId =
-        student.id;
+    const score = getStudentScore(student);
+    const approved = getApprovedRecords(student.id);
+    const violations = approved.filter(r => r.kind === "violation");
+    const goods = approved.filter(r => r.kind === "good");
 
-    const score =
-        getStudentScore(student);
+    const title = document.getElementById("studentModalTitle");
+    if(title) title.innerText = student.name;
 
-    document.getElementById(
-        "studentModalTitle"
-    ).innerText =
-        `${student.name} - Tổ ${student.group}`;
+    const role = document.getElementById("studentProfileRole");
+    if(role) role.innerText = `${getStudentRoleLabel(student)} · Tổ ${student.group || "Chưa xếp tổ"}`;
 
-    document.getElementById(
-        "studentInitial"
-    ).innerText =
-        getInitialWeekScore(student);
+    const group = document.getElementById("studentGroupProfile");
+    if(group) group.innerText = student.group ? `Tổ ${student.group}` : "Chưa xếp";
 
-    document.getElementById(
-        "studentCurrent"
-    ).innerText =
-        score;
+    const avatar = document.getElementById("studentProfileAvatar");
+    if(avatar){
+        avatar.src = student.avatar ||
+          "https://ui-avatars.com/api/?name="+encodeURIComponent(student.name)+"&background=18275b&color=fff&bold=true";
+    }
 
-    const approved =
-        getApprovedRecords(student.id);
+    const stars = document.getElementById("studentStarsProfile");
+    if(stars) stars.innerText = getStudentStars(student);
 
-    const violations =
-        approved.filter(
-            r => r.kind === "violation"
-        );
+    document.getElementById("studentInitial").innerText = getInitialWeekScore(student);
+    document.getElementById("studentCurrent").innerText = score;
+    document.getElementById("studentViolationCount").innerText = violations.length;
+    document.getElementById("studentGoodCount").innerText = goods.length;
 
-    const goods =
-        approved.filter(
-            r => r.kind === "good"
-        );
+    const dream = document.getElementById("studentDream");
+    const saveDream = document.getElementById("saveStudentDream");
+    if(dream) dream.value = student.dream || student.uocMo || "";
 
-    document.getElementById(
-        "studentViolationCount"
-    ).innerText =
-        violations.length;
-
-    document.getElementById(
-        "studentGoodCount"
-    ).innerText =
-        goods.length;
+    const canEditDream = currentUser?.role === "teacher";
+    if(dream) dream.disabled = !canEditDream;
+    if(saveDream){
+        saveDream.disabled = !canEditDream;
+        saveDream.style.display = canEditDream ? "" : "none";
+        saveDream.onclick = async function(){
+            if(currentUser?.role !== "teacher") return;
+            student.dream = dream.value.trim();
+            student.uocMo = student.dream;
+            await saveDB();
+            alert("✅ Đã lưu ước mơ của học sinh.");
+        };
+    }
 
     renderStudentRecords(student);
 
-    document.getElementById(
-        "studentModal"
-    ).style.display = "flex";
-
+    document.getElementById("studentModal").style.display = "flex";
 }
-
 
 /* =========================================================
    RECORDS TRONG HỒ SƠ
@@ -2844,9 +3169,11 @@ function openRecordModal(kind){
 
     }
 
-    document.getElementById(
-        "recordModal"
-    ).style.display = "flex";
+    const recordModal = document.getElementById("recordModal");
+    if(recordModal){
+        recordModal.style.display = "flex";
+        recordModal.style.zIndex = "500";
+    }
 
 }
 
@@ -5001,74 +5328,65 @@ function previewBulkExcel(event){
     reader.onload=e=>{
       try{
         const wb=XLSX.read(new Uint8Array(e.target.result),{type:"array",cellDates:true});
-        let names=[];
+        let best={rows:[],sheetName:"",sttCol:-1,nameCol:-1};
+        const nameAliases=["họ và tên","ho va ten","họ tên","ho ten","tên học sinh","ten hoc sinh","tên","ten","phụ huynh em","phu huynh em","học sinh","hoc sinh","name"];
+        const norm=v=>String(v??"").replace(/\s+/g," ").trim().toLocaleLowerCase();
 
-        // Ưu tiên sheet "SỔ GVCN" của file sổ theo dõi bạn đang dùng.
-        // Tìm cột có tiêu đề "Họ và tên" thay vì mặc định lấy cột A.
-        const preferredSheet = wb.Sheets["SỔ GVCN"] || wb.Sheets[wb.SheetNames[0]];
-        const sheetName = wb.SheetNames.includes("SỔ GVCN") ? "SỔ GVCN" : wb.SheetNames[0];
-        const rows = XLSX.utils.sheet_to_json(preferredSheet,{header:1,defval:"",raw:false});
-
-        let nameCol = -1;
-        for(let r=0;r<Math.min(rows.length,20);r++){
-            for(let c=0;c<(rows[r]||[]).length;c++){
-                const v=String(rows[r][c]??"").trim().toLocaleLowerCase();
-                if(["họ và tên","ho va ten","họ tên","ho ten","tên","ten","name"].includes(v)){
-                    nameCol=c;
-                    break;
+        // Tự tìm sheet + dòng tiêu đề có STT và cột tên. Điều này hỗ trợ
+        // cả file .xls cũ lẫn .xlsx như "1. DANH SÁCH HỌC SINH 12C11.xlsx".
+        for(const sheetName of wb.SheetNames){
+            const sh=wb.Sheets[sheetName];
+            const rows=XLSX.utils.sheet_to_json(sh,{header:1,defval:"",raw:false});
+            for(let r=0;r<Math.min(rows.length,30);r++){
+                const row=rows[r]||[];
+                let sttCol=-1,nameCol=-1;
+                for(let c=0;c<row.length;c++){
+                    const v=norm(row[c]);
+                    if(sttCol<0 && /^(stt|số tt|so tt|số thứ tự|so thu tu)$/.test(v)) sttCol=c;
+                    if(nameCol<0 && nameAliases.includes(v)) nameCol=c;
                 }
-            }
-            if(nameCol>=0) break;
-        }
-
-        // Nếu không tìm thấy tiêu đề, thử các cột có dữ liệu dạng tên.
-        if(nameCol<0){
-            for(let c=0;c<Math.min(12,(rows[0]||[]).length);c++){
-                let count=0;
-                for(let r=0;r<rows.length;r++){
-                    const v=String(rows[r]?.[c]??"").trim();
-                    if(v && /[A-Za-zÀ-ỹĐđ]/.test(v) && !/^\d+$/.test(v)) count++;
+                if(sttCol<0 || nameCol<0) continue;
+                const found=[];
+                for(let rr=r+1;rr<rows.length;rr++){
+                    const rrw=rows[rr]||[];
+                    const sttRaw=String(rrw[sttCol]??"").trim();
+                    const name=String(rrw[nameCol]??"").replace(/\s+/g," ").trim();
+                    // Chỉ nhận dòng có STT là số nguyên và có tên.
+                    if(!/^\d+$/.test(sttRaw) || !name) continue;
+                    if(/^(gvcn|giáo viên chủ nhiệm)$/i.test(name)) continue;
+                    found.push({stt:Number(sttRaw),name});
                 }
-                if(count>=2){nameCol=c;break;}
+                if(found.length>best.rows.length) best={rows:found,sheetName,sttCol,nameCol};
             }
         }
+        if(!best.rows.length) throw new Error("Không tìm thấy bảng có cột STT và cột tên học sinh.");
 
-        if(nameCol<0) throw new Error("Không tìm thấy cột Họ và tên");
-
-        // Đọc các tên, bỏ STT/dòng tiêu đề và ô trống.
-        for(const row of rows){
-            const value=String(row?.[nameCol]??"").replace(/\s+/g," ").trim();
-            if(!value) continue;
-            if(/^(họ\s*và\s*tên|ho\s*va\s*ten|họ\s*tên|ho\s*ten|tên|ten|name)$/i.test(value)) continue;
-            if(/^(stt|số\s*tt|so\s*tt)$/i.test(value)) continue;
-            if(/^\d+$/.test(value)) continue;
-            names.push(value);
-        }
-
-        // Loại các tên trùng ngay trong file theo quy tắc a/b/c...
         const used=new Set(db.students.map(s=>String(s.name||"").trim().toLocaleLowerCase()));
-        bulkPendingNames=names.map(n=>makeUniqueStudentName(n,used)).filter(Boolean);
+        bulkPendingNames=best.rows.map(item=>({
+            stt:item.stt,
+            name:makeUniqueStudentName(item.name,used)
+        })).filter(x=>x.name);
 
         document.getElementById("bulkPreview").innerHTML=
-          `<b>Đã đọc ${bulkPendingNames.length} tên từ sheet "${esc(sheetName)}".</b><br>`+
-          `<span>📌 Cột được đọc: <b>Họ và tên</b></span><br><br>`+
-          `${bulkPendingNames.slice(0,80).map((n,i)=>`${i+1}. ${esc(n)}`).join("<br>")}`+
-          `${bulkPendingNames.length>80?"<br>…":""}`;
+          `<b>✅ Đã đọc ${bulkPendingNames.length} học sinh từ sheet "${esc(best.sheetName)}".</b><br>`+
+          `<span>📌 Đã nhận đúng cột <b>STT</b> và cột tên.</span><br><br>`+
+          `<div class="excel-preview-list">${bulkPendingNames.map(x=>`<div><b>${x.stt}.</b> ${esc(x.name)}</div>`).join("")}</div>`;
         document.getElementById("bulkImportConfirm").disabled=bulkPendingNames.length===0;
       }catch(err){
         console.error(err);
         bulkPendingNames=[];
         document.getElementById("bulkPreview").innerHTML=
-          "❌ Không đọc được danh sách tên.<br><small>Hãy kiểm tra file có sheet <b>SỔ GVCN</b> và cột <b>Họ và tên</b>.</small>";
+          "❌ Không đọc được danh sách.<br><small>File cần có một cột <b>STT</b> và một cột tên học sinh.</small>";
         document.getElementById("bulkImportConfirm").disabled=true;
       }
     };
     reader.readAsArrayBuffer(file);
 }
+
 async function confirmBulkImport(){
     if(!canTeacher()||!bulkPendingNames.length) return;
     const startId=db.students.length?Math.max(...db.students.map(s=>Number(s.id)||0))+1:1;
-    bulkPendingNames.forEach((name,i)=>db.students.push({id:startId+i,name,group:0,present:true,initialScore:100,stars:0,avatar:""}));
+    bulkPendingNames.forEach((item,i)=>db.students.push({id:startId+i,name:item.name,stt:item.stt,group:0,present:true,initialScore:100,stars:0,avatar:""}));
     await saveDB(); closeModal("bulkImportModal"); bulkPendingNames=[]; render();
     alert("✅ Đã thêm danh sách. Các học sinh đang ở trạng thái Chưa xếp tổ. Hãy dùng Chọn nhiều thành viên để xếp tổ.");
 }
@@ -5085,6 +5403,15 @@ function closeModal(id){
 
 }
 
+
+document.addEventListener("keydown", function(e){
+    if(e.key === "Escape"){
+        const record = document.getElementById("recordModal");
+        const student = document.getElementById("studentModal");
+        if(record && getComputedStyle(record).display !== "none"){ record.style.display="none"; return; }
+        if(student && getComputedStyle(student).display !== "none"){ student.style.display="none"; }
+    }
+});
 
 /* =========================================================
    KHỞI ĐỘNG
@@ -5130,3 +5457,215 @@ startApp();
 
 </body>
 </html>
+<style id="cohesive-cosmic-theme">
+/* ===== COHESIVE COSMIC THEME — VISUAL ONLY ===== */
+:root{
+  --space-bg:#070b24;
+  --space-deep:#0b1033;
+  --space-card:#111a46;
+  --space-card2:#17245b;
+  --space-blue:#62d8ff;
+  --space-violet:#a98cff;
+  --space-pink:#ff72c8;
+  --space-gold:#ffd76a;
+  --space-text:#ffffff;
+  --space-text2:#dfe7ff;
+  --space-muted:#b9c5ee;
+  --space-line:rgba(135,177,255,.34);
+  --space-shadow:0 14px 35px rgba(0,0,0,.38),0 0 18px rgba(98,216,255,.08);
+}
+/* One visual language across the whole page */
+html,body{
+  background:
+    radial-gradient(circle at 12% 8%,rgba(98,216,255,.20),transparent 24%),
+    radial-gradient(circle at 88% 12%,rgba(169,140,255,.22),transparent 26%),
+    radial-gradient(circle at 55% 90%,rgba(255,114,200,.15),transparent 30%),
+    linear-gradient(135deg,#050820 0%,#0b1033 48%,#080b27 100%) !important;
+  color:var(--space-text) !important;
+}
+body{
+  min-height:100vh;
+}
+body::before{
+  content:"✦   ·   ✧       ·   ✦   ·     ✧   ·   ·   ✦       ✧   ·";
+  color:rgba(255,255,255,.16)!important;
+  text-shadow:0 0 10px rgba(98,216,255,.22);
+  z-index:0!important;
+}
+/* Keep app content above the decorative stars */
+header,.container,main,.app,.main,.content,.dashboard,.modal,.modal-backdrop{
+  position:relative;
+  z-index:1;
+}
+/* Header and navigation */
+header,.mainHeader,.topbar,.navbar{
+  background:linear-gradient(100deg,#10184b,#1b2865 55%,#241550) !important;
+  color:#fff !important;
+  border-bottom:2px solid rgba(98,216,255,.42) !important;
+  box-shadow:0 8px 28px rgba(0,0,0,.34),0 0 20px rgba(98,216,255,.08) !important;
+}
+header h1,header h2,header h3,.mainHeader h1,.mainHeader h2,.mainHeader h3{
+  color:#fff !important;
+  text-shadow:0 0 12px rgba(98,216,255,.25);
+}
+/* All panels/cards/sections use the same cosmic surface */
+section,.group,.card,.panel,.box,.section,.student-card,.stat-card,.dashboard-card,
+.settings-panel,.popup,.modal-content,.modal-box,[class*="card"],[class*="panel"]{
+  background:linear-gradient(145deg,rgba(23,36,91,.97),rgba(10,17,53,.97)) !important;
+  color:var(--space-text) !important;
+  border:2px solid var(--space-line) !important;
+  border-radius:22px !important;
+  box-shadow:var(--space-shadow) !important;
+}
+section h1,section h2,section h3,section h4,
+.group h1,.group h2,.group h3,.group h4,
+.card h1,.card h2,.card h3,.card h4,
+.panel h1,.panel h2,.panel h3,.panel h4{
+  color:#fff !important;
+  text-shadow:0 1px 8px rgba(98,216,255,.16);
+}
+p,span,div,td,th,li{
+  color:inherit;
+}
+.muted,small,.muted-text,.secondary,label{
+  color:var(--space-muted) !important;
+}
+/* Tables and the student list belong to the same surface */
+.table-wrap{
+  background:rgba(8,14,43,.55)!important;
+  border:2px solid var(--space-line)!important;
+  border-radius:18px!important;
+  overflow:auto;
+}
+table{
+  background:transparent!important;
+  color:var(--space-text)!important;
+}
+thead,th{
+  background:linear-gradient(100deg,#1a2865,#24205d)!important;
+  color:#fff!important;
+  border-bottom:2px solid rgba(98,216,255,.38)!important;
+}
+tbody tr{
+  background:rgba(17,27,70,.82)!important;
+  color:#fff!important;
+  transition:background .15s ease,transform .15s ease,box-shadow .15s ease;
+}
+tbody tr:nth-child(even){
+  background:rgba(21,32,82,.82)!important;
+}
+tbody tr:hover{
+  background:linear-gradient(90deg,rgba(46,71,139,.95),rgba(52,40,112,.95))!important;
+  transform:translateY(-1px);
+  box-shadow:inset 0 0 0 1px rgba(98,216,255,.25),0 5px 18px rgba(0,0,0,.18);
+}
+td,th{
+  border-bottom:1px solid rgba(151,174,255,.18)!important;
+}
+.student-name{
+  color:#7de5ff !important;
+  font-weight:900!important;
+  cursor:pointer!important;
+  text-shadow:0 0 8px rgba(98,216,255,.18);
+}
+.student-name:hover{
+  color:#fff!important;
+  text-decoration:none!important;
+  text-shadow:0 0 12px rgba(98,216,255,.48);
+}
+/* Buttons: brighter than the background, consistent palette */
+button,.btn,.btn-primary,.btn-green,.btn-red,.btn-gray,.btn-blue,.btn-orange,.btn-yellow,.btn-purple,
+input[type=button],input[type=submit]{
+  color:#fff !important;
+  border:2px solid #050817 !important;
+  background:linear-gradient(135deg,#347dff,#6954d8)!important;
+  box-shadow:0 4px 0 #030510,0 8px 20px rgba(41,105,255,.24),inset 0 1px 0 rgba(255,255,255,.25)!important;
+  text-shadow:0 1px 2px rgba(0,0,0,.45)!important;
+}
+.btn-green{background:linear-gradient(135deg,#19b98a,#167fc7)!important}
+.btn-red{background:linear-gradient(135deg,#ff557f,#b83bd4)!important}
+.btn-blue{background:linear-gradient(135deg,#25bfff,#4567e8)!important}
+.btn-orange{background:linear-gradient(135deg,#ffb84d,#ed5d8c)!important}
+.btn-yellow{background:linear-gradient(135deg,#ffd95c,#e99a38)!important;color:#15102a!important}
+.btn-purple,.btn-primary{background:linear-gradient(135deg,#a36bff,#5555e9)!important}
+.btn-gray{background:linear-gradient(135deg,#6676a8,#414c79)!important}
+button:not(:disabled):hover,.btn:not(:disabled):hover{
+  filter:brightness(1.15)!important;
+  transform:translateY(-2px)!important;
+  box-shadow:0 5px 0 #030510,0 11px 26px rgba(98,216,255,.24),inset 0 1px 0 rgba(255,255,255,.3)!important;
+}
+button:not(:disabled):active,.btn:not(:disabled):active{
+  transform:translateY(2px) scale(.97)!important;
+  box-shadow:0 2px 5px rgba(0,0,0,.45)!important;
+}
+button:disabled,.btn:disabled{
+  opacity:.38!important;
+  filter:saturate(.35)!important;
+  color:#aeb6d2!important;
+}
+/* Form controls */
+input,select,textarea{
+  background:rgba(5,10,35,.90)!important;
+  color:#fff!important;
+  border:2px solid rgba(98,216,255,.38)!important;
+  box-shadow:inset 0 2px 8px rgba(0,0,0,.22)!important;
+}
+input:focus,select:focus,textarea:focus{
+  outline:none!important;
+  border-color:var(--space-blue)!important;
+  box-shadow:0 0 0 3px rgba(98,216,255,.13),0 0 16px rgba(98,216,255,.16)!important;
+}
+input::placeholder,textarea::placeholder{
+  color:#7f8bb9!important;
+}
+/* badges and stats */
+.badge,.excellent,.good-badge,.fair{
+  border:1px solid rgba(255,255,255,.20)!important;
+  box-shadow:0 3px 10px rgba(0,0,0,.18)!important;
+}
+.excellent{background:rgba(24,202,145,.22)!important;color:#72ffd0!important}
+.good-badge{background:rgba(49,154,255,.22)!important;color:#78dcff!important}
+.fair{background:rgba(255,180,65,.22)!important;color:#ffd77b!important}
+/* Excel preview and selection areas */
+.excel-preview-list,.multi-select-bar{
+  background:linear-gradient(145deg,rgba(17,28,70,.95),rgba(8,14,43,.95))!important;
+  color:#fff!important;
+  border:2px solid var(--space-line)!important;
+  box-shadow:var(--space-shadow)!important;
+}
+.excel-preview-list div{color:#fff!important;border-bottom-color:rgba(255,255,255,.10)!important}
+/* Profile */
+#studentModal .modal-box,#studentModal .modal-content{
+  background:linear-gradient(145deg,#121e52 0%,#172b68 50%,#291653 100%)!important;
+  color:#fff!important;
+  border:2px solid rgba(98,216,255,.62)!important;
+  box-shadow:0 20px 55px rgba(0,0,0,.55),0 0 35px rgba(98,216,255,.16)!important;
+}
+#studentModal h1,#studentModal h2,#studentModal h3,#studentModal h4,
+#studentModal p,#studentModal span,#studentModal div,#studentModal label{
+  color:#fff!important;
+}
+#studentModal .muted,#studentModal small{
+  color:#c2cff5!important;
+}
+/* Make profile information tiles clearly related to the main page */
+#studentModal .stat-card,#studentModal .card,#studentModal .panel{
+  background:linear-gradient(145deg,rgba(30,48,112,.96),rgba(13,22,62,.96))!important;
+  border-color:rgba(98,216,255,.32)!important;
+}
+/* Links */
+a{color:#7de5ff!important}
+a:hover{color:#fff!important}
+/* Scrollbars */
+*{scrollbar-color:#4657a2 #080d2b;scrollbar-width:thin}
+</style>
+
+<style>
+/* Form fields: dark text for username/password/account changes */
+input[type="text"], input[type="password"], input[type="email"], input[type="number"], textarea, select {
+  color: #111827 !important;
+  caret-color: #111827 !important;
+}
+input::placeholder, textarea::placeholder { color: #6b7280 !important; opacity: 1; }
+select option { color: #111827 !important; background: #ffffff !important; }
+</style>
