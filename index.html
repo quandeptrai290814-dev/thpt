@@ -233,7 +233,7 @@ header h2{
     margin-bottom:20px;
 }
 
-.group{
+.group{cursor:pointer;user-select:none;
     background:white;
     padding:20px;
     border-radius:13px;
@@ -246,6 +246,7 @@ header h2{
 .group:nth-child(2){border-color:#315f91}
 .group:nth-child(3){border-color:#36734b}
 .group:nth-child(4){border-color:#b96f20}
+.group.active-group{transform:translateY(-3px) scale(1.02);box-shadow:0 6px 0 #111;background:#fff8dc;}
 
 .group h3{
     margin:0 0 7px;
@@ -812,6 +813,7 @@ Lưu ngày bắt đầu
 
 <button id="bulkImportButton" class="btn-green" type="button" onclick="openBulkImport()">📥 Tải danh sách tên Excel</button>
 <button id="multiSelectButton" class="btn-blue" type="button" onclick="toggleMultiSelectMode()">☑️ Chọn nhiều thành viên</button>
+<button id="deleteAllStudentsButton" class="btn-red" type="button" onclick="deleteAllStudents()">🗑️ Xóa toàn bộ học sinh</button>
 <input id="bulkExcelInput" type="file" accept=".xlsx,.xls,.csv" style="display:none" onchange="previewBulkExcel(event)">
 
 <button class="btn-purple" onclick="openWeeklyRanking()">
@@ -869,6 +871,18 @@ Lưu ngày bắt đầu
   <label>Tổ muốn chuyển đến<select id="moveStudentsGroup"><option value="1">🔴 Tổ 1</option><option value="2">🔵 Tổ 2</option><option value="3">🟢 Tổ 3</option><option value="4">🟠 Tổ 4</option></select></label>
   <div id="moveStudentsPreview" class="notice" style="margin-top:12px"></div>
   <div class="modal-actions"><button class="btn-green" type="button" onclick="confirmMoveStudents()">✅ Chuyển vào tổ</button><button class="btn-gray" type="button" onclick="closeModal('moveStudentsModal')">Hủy</button></div>
+ </div>
+</div>
+
+<div id="deleteAllStudentsModal" class="modal">
+ <div class="modal-box">
+  <h2>⚠️ Xóa toàn bộ học sinh</h2>
+  <p>Thao tác này sẽ xóa <b>tất cả học sinh</b> và các dữ liệu gắn trực tiếp với học sinh như vi phạm/việc tốt, đề xuất, yêu cầu xóa và báo cáo.</p>
+  <div class="notice">⚠️ Không thể hoàn tác sau khi xác nhận.</div>
+  <div class="modal-actions">
+   <button class="btn-red" type="button" onclick="confirmDeleteAllStudents()">🗑️ Xóa tất cả</button>
+   <button class="btn-gray" type="button" onclick="closeModal('deleteAllStudentsModal')">Hủy</button>
+  </div>
  </div>
 </div>
 
@@ -2089,6 +2103,7 @@ function setupInterface(){
     const rewardsBtn = document.getElementById("teacherRewardsButton");
     const bulkBtn = document.getElementById("bulkImportButton");
     const multiBtn = document.getElementById("multiSelectButton");
+    const deleteAllBtn = document.getElementById("deleteAllStudentsButton");
     const teacherOnly = currentUser.role === "teacher";
     const classOnly = currentUser.role === "classLeader";
 
@@ -2107,6 +2122,7 @@ function setupInterface(){
     bulkBtn.disabled = !teacherOnly;
     add.disabled = !teacherOnly;
     if(multiBtn) multiBtn.disabled = !teacherOnly;
+    if(deleteAllBtn) deleteAllBtn.disabled = !teacherOnly;
 
     teacher.querySelectorAll("button").forEach(btn=>{
         btn.disabled = !teacherOnly;
@@ -2144,12 +2160,24 @@ function setupInterface(){
 ========================================================= */
 
 function selectGroup(group){
+    // Giáo viên/lớp trưởng/tổ trưởng đều có thể chọn tổ để xem.
+    // Tổ trưởng chỉ bị giới hạn QUYỀN CHỈNH SỬA, không bị giới hạn QUYỀN XEM.
+    const g = Number(group);
+    if(![1,2,3,4].includes(g)) return;
+    selectedGroup = g;
 
-    // Tổ trưởng được xem cả 4 tổ; quyền chỉnh sửa vẫn bị giới hạn ở tổ của mình.
-    selectedGroup = group;
+    // Đánh dấu tổ đang xem để người dùng dễ nhận biết.
+    document.querySelectorAll('.group').forEach((el, i)=>{
+        const active = (i + 1) === g;
+        el.classList.toggle('active-group', active);
+        el.setAttribute('aria-pressed', active ? 'true' : 'false');
+    });
 
     render();
 
+    // Cuộn tới bảng học sinh trên điện thoại.
+    const table = document.getElementById('studentTable');
+    if(table) table.closest('table')?.scrollIntoView({behavior:'smooth', block:'start'});
 }
 
 
@@ -2175,7 +2203,7 @@ function render(){
 
         list =
             db.students.filter(
-                s => s.group === selectedGroup
+                s => Number(s.group) === Number(selectedGroup)
             );
 
     }
@@ -2230,7 +2258,7 @@ function render(){
             "count"+g
         ).innerText =
             db.students.filter(
-                s => s.group === g
+                s => Number(s.group) === Number(g)
             ).length +
             " học sinh";
 
@@ -4161,6 +4189,48 @@ function addStudent(){
    XÓA HỌC SINH
 ========================================================= */
 
+function deleteAllStudents(){
+    if(currentUser?.role !== "teacher") return;
+    if(!db?.students?.length){
+        alert("Hiện không có học sinh để xóa.");
+        return;
+    }
+    document.getElementById("deleteAllStudentsModal").style.display="flex";
+}
+
+async function confirmDeleteAllStudents(){
+    if(currentUser?.role !== "teacher") return;
+    if(!db?.students?.length){
+        closeModal("deleteAllStudentsModal");
+        return;
+    }
+    const count=db.students.length;
+    const studentIds=new Set(db.students.map(s=>Number(s.id)));
+
+    db.students=[];
+    db.records=(db.records||[]).filter(r=>!studentIds.has(Number(r.studentId)));
+    db.proposals=(db.proposals||[]).filter(r=>!studentIds.has(Number(r.studentId)));
+    db.deleteRequests=(db.deleteRequests||[]).filter(r=>!studentIds.has(Number(r.studentId)));
+    db.reports=(db.reports||[]).filter(r=>!studentIds.has(Number(r.studentId)));
+    if(db.notifications) db.notifications=db.notifications.filter(r=>!studentIds.has(Number(r.studentId)));
+
+    if(db.accounts){
+        Object.values(db.accounts).forEach(acc=>{
+            if(acc && studentIds.has(Number(acc.studentId))) acc.studentId=null;
+        });
+    }
+
+    selectedStudentId=null;
+    selectedRecordId=null;
+    selectedStudentIds.clear();
+    multiSelectMode=false;
+
+    await saveDB();
+    closeModal("deleteAllStudentsModal");
+    render();
+    alert(`✅ Đã xóa toàn bộ ${count} học sinh.`);
+}
+
 function deleteStudent(id){
 
     if(
@@ -4303,7 +4373,7 @@ function createSnapshot(week){
 
         const list =
             students.filter(
-                s => s.group === g
+                s => Number(s.group) === Number(g)
             );
 
         const average =
