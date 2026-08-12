@@ -49,9 +49,16 @@
     --green:#B5DDBD;
     --orange:#F2C98E;
     --purple:#CDBCE8;
-    --red:#D94B4B;
+
+    /* ===== MÀU DÙNG CHO NÚT ===== */
+    --red:#D96B6B;
     --text:#4A4033;
-    --green-dark:#4C8B5B;
+    --muted:#827563;
+    --red-bg:#FFF0EF;
+    --green-bg:#EFFAF1;
+    --blue-bg:#EEF6FF;
+    --orange-bg:#FFF6E7;
+    --yellow-bg:#FFF8D9;
 
     /* ===== BÓNG ===== */
     --shadow:
@@ -80,43 +87,57 @@ button,input,select,textarea{
 }
 
 button{
-    border:0;
-    border-radius:9px;
+    border:2px solid #2f2a24;
+    border-radius:16px;
     padding:10px 14px;
     cursor:pointer;
-    font-weight:700;
+    font-weight:800;
+    box-shadow:0 3px 0 #2f2a24, 0 6px 12px rgba(47,42,36,.10);
+    transition:transform .12s ease, box-shadow .12s ease, filter .15s ease, opacity .15s ease;
 }
 
-button:hover{
-    filter:brightness(1.08);
+button:hover:not(:disabled){
+    filter:brightness(1.06);
+    transform:translateY(-2px) rotate(-.3deg);
+    box-shadow:0 5px 0 #2f2a24, 0 9px 15px rgba(47,42,36,.13);
+}
+
+button:active:not(:disabled){
+    transform:translateY(3px) scale(.98);
+    box-shadow:0 1px 0 #2f2a24, 0 3px 7px rgba(47,42,36,.10);
+}
+
+button:not(:disabled){
+    filter:saturate(1.15) contrast(1.04);
+    font-weight:800;
 }
 
 button:disabled{
-    opacity:.5;
-    cursor:not-allowed;
+    opacity:.42 !important;
+    filter:saturate(.25) grayscale(.15) !important;
+    cursor:not-allowed !important;
+    box-shadow:0 2px 0 #8f8a82 !important;
+    transform:none !important;
 }
 
-.delete-record-btn{
-    background:#d94b4b !important;
-    color:#fff !important;
-    opacity:1 !important;
-    visibility:visible !important;
-    pointer-events:auto !important;
-    cursor:pointer !important;
-    position:relative !important;
-    z-index:60 !important;
-}
+.btn-disabled-hint{opacity:.55; filter:saturate(.25) grayscale(.1);}
 
-.delete-student-btn{
-    background:#d94b4b !important;
-    color:#fff !important;
-    opacity:1 !important;
-    visibility:visible !important;
-    pointer-events:auto !important;
-    cursor:pointer !important;
-    position:relative !important;
-    z-index:50 !important;
+.teacher-settings-popup{
+    position:fixed !important; left:50%; top:50%; transform:translate(-50%,-48%) scale(.96);
+    width:min(900px,94vw); max-height:88vh; overflow:auto; z-index:1000;
+    display:none; box-shadow:0 18px 50px rgba(0,0,0,.25);
+    border:3px solid #2f2a24; border-radius:24px;
+    animation:popIn .18s ease forwards;
 }
+.teacher-settings-backdrop{position:fixed;inset:0;background:rgba(42,36,28,.28);backdrop-filter:blur(2px);z-index:999;display:none;}
+.reward-drawer{display:none; margin-top:10px; animation:drawerIn .2s ease forwards;}
+.reward-backdrop{position:fixed;inset:0;background:rgba(42,36,28,.28);backdrop-filter:blur(2px);z-index:999;display:none;}
+.reward-popup{position:fixed!important;left:50%;top:50%;transform:translate(-50%,-50%) scale(.94);width:min(900px,94vw);max-height:88vh;overflow:auto;z-index:1000;display:none;border:3px solid #2f2a24;border-radius:24px;box-shadow:0 18px 50px rgba(0,0,0,.25);animation:popIn .18s ease forwards;}
+.reward-card{border:2px solid #2f2a24;border-radius:18px;padding:12px;background:#fffdf6;box-shadow:0 3px 0 #2f2a24;}
+.reward-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:12px;}
+@keyframes popIn{from{opacity:0;transform:translate(-50%,-46%) scale(.92)}to{opacity:1;transform:translate(-50%,-50%) scale(1)}}
+@keyframes drawerIn{from{opacity:0;transform:translateY(-8px) scaleY(.96)}to{opacity:1;transform:translateY(0) scaleY(1)}}
+
 
 input,select,textarea{
     width:100%;
@@ -136,7 +157,7 @@ textarea{
 }
 
 .btn-purple{background:var(--purple);color:#fff}
-.btn-red{background:var(--red);color:#fff}
+.btn-red{background:#D94B4B !important;color:#fff !important;border:1px solid #B83232 !important;box-shadow:0 2px 6px rgba(0,0,0,.18);opacity:1 !important;visibility:visible !important}
 .btn-green{background:var(--green);color:#fff}
 .btn-blue{background:var(--blue);color:#fff}
 .btn-orange{background:var(--orange);color:#fff}
@@ -561,38 +582,19 @@ label{
         padding:17px;
     }
 }
+.disabled-note{opacity:.55;font-weight:700;}
+</style>
+<script src="https://cdn.sheetjs.com/xlsx-0.20.3/package/dist/xlsx.full.min.js"></script>
 
-/* ===== KHÔNG ẨN NÚT ===== */
-button, .btn-purple, .btn-red, .btn-green, .btn-blue, .btn-orange, .btn-yellow, .btn-gray {
-    visibility: visible !important;
-    opacity: 1 !important;
-}
-.tabs button, .modal-actions button, td button {
-    display: inline-block !important;
-}
-
-/* ===== ĐIỆN THOẠI ===== */
-@media (max-width: 700px){
-    body{font-size:14px}
-    .container{padding:10px}
-    .cards{grid-template-columns:repeat(2,1fr);gap:8px}
-    .groups{grid-template-columns:repeat(2,1fr)!important;gap:8px!important}
-    .panel{padding:12px!important}
-    .tabs{display:grid;grid-template-columns:1fr 1fr;gap:8px}
-    .tabs button{width:100%;min-height:44px;padding:9px 7px}
-    .modal{padding:8px}
-    .modal-box{width:100%;max-width:100%;max-height:94vh;padding:14px;border-radius:12px}
-    .modal-actions{flex-wrap:wrap}
-    .modal-actions button{min-width:120px}
-    #attendanceList .notification > div{display:flex!important;flex-direction:column!important;align-items:stretch!important;gap:8px!important}
-    #attendanceList select,#attendanceList input{width:100%!important;min-height:44px}
-    #attendanceList .notification{padding:10px!important}
-    table{min-width:760px}
-    .table-wrap{-webkit-overflow-scrolling:touch}
-    .summary-grid{grid-template-columns:repeat(2,1fr)!important}
-    .avatar-editor{flex-direction:column!important;align-items:flex-start!important}
-}
-
+<style>
+.multi-select-bar{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin:12px 0;padding:12px 14px;border:2px solid #222;border-radius:18px;background:#fff7d6;box-shadow:3px 3px 0 #222;font-weight:800}
+#multiSelectHeader{min-width:70px}
+#studentTable input[type="checkbox"]{width:20px;height:20px;accent-color:#4f6f9a;cursor:pointer;vertical-align:middle;margin-right:7px}
+button{border:2px solid #222!important;border-radius:16px!important;transition:transform .12s ease,filter .12s ease,box-shadow .12s ease,opacity .12s ease}
+button:not(:disabled){box-shadow:2px 3px 0 #222;filter:saturate(1.12) contrast(1.04)}
+button:not(:disabled):hover{transform:translateY(-1px);filter:saturate(1.2) contrast(1.08)}
+button:not(:disabled):active{transform:translateY(2px) scale(.98);box-shadow:0 1px 0 #222}
+button:disabled{opacity:.42!important;filter:grayscale(.35)!important;cursor:not-allowed!important;box-shadow:1px 1px 0 #777!important}
 </style>
 </head>
 
@@ -674,9 +676,11 @@ Lưu tài khoản
 
 <h2 id="headerTitle">Quản lý học sinh</h2>
 
-<button class="btn-gray" onclick="logout()">
-Đăng xuất
-</button>
+<div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap;justify-content:flex-end">
+<button id="teacherSettingsButton" class="btn-purple" onclick="openTeacherSettings()">⚙️ Cài đặt</button>
+<button id="teacherRewardsButton" class="btn-yellow" onclick="toggleRewardDrawer()">⭐🎁 Sao & đổi quà</button>
+<button class="btn-gray" onclick="logout()">Đăng xuất</button>
+</div>
 
 </header>
 
@@ -727,9 +731,12 @@ Lưu tài khoản
 
 <!-- CÀI ĐẶT GV -->
 
-<div id="teacherSettings" class="panel hidden">
+<div id="teacherSettingsBackdrop" class="teacher-settings-backdrop" onclick="closeTeacherSettings()"></div>
+<div id="teacherSettings" class="panel teacher-settings-popup">
 
-<h2>⚙️ Cài đặt năm học</h2>
+<div style="display:flex;justify-content:space-between;align-items:center;gap:10px"><h2 style="margin:0">⚙️ Cài đặt giáo viên</h2><button class="btn-gray" type="button" onclick="closeTeacherSettings()">✕ Đóng</button></div>
+<p class="notice">Tất cả thiết lập giáo viên được gom ở đây.</p>
+<h3>📅 Năm học</h3>
 
 <p>
 Tuần 1 được tính từ ngày bắt đầu năm học.
@@ -749,13 +756,17 @@ Lưu ngày bắt đầu
 
 <hr style="margin:20px 0">
 <h2>🔐 Quản lý mật khẩu</h2>
-<p>Chỉ giáo viên mới nhìn thấy mục này. Có thể đổi mật khẩu lớp trưởng và 4 tổ trưởng.</p>
+<p>Chỉ giáo viên mới nhìn thấy mục này. Giáo viên có thể đổi mật khẩu lớp trưởng và 4 tổ trưởng; thay đổi sẽ được lưu chung trên Firebase.</p>
 <div id="passwordSettings"></div>
 
 <hr style="margin:20px 0">
-<h2>👥 Quản lý cán bộ lớp</h2>
-<p>Giáo viên chọn học sinh làm Lớp trưởng và Tổ trưởng. Tài khoản đăng nhập tương ứng vẫn giữ nguyên.</p>
-<div id="classOfficerSettings"></div>
+<h2>👑 Quản lý cán bộ lớp</h2>
+<p>Giáo viên có thể chỉ định học sinh làm lớp trưởng hoặc tổ trưởng, đặt/đổi tài khoản và mật khẩu. Cán bộ lớp vẫn là học sinh nên giáo viên có thể ghi vi phạm và trừ điểm như các học sinh khác.</p>
+<div class="tabs">
+    <button class="btn-purple" onclick="openLeaderManager('classLeader')">👑 Thêm / đổi lớp trưởng</button>
+    <button class="btn-blue" onclick="openLeaderManager('leader')">👥 Thêm / đổi tổ trưởng</button>
+</div>
+<div id="leaderManagerList" style="margin-top:12px"></div>
 
 </div>
 
@@ -789,7 +800,7 @@ Lưu ngày bắt đầu
 
 <!-- CHỨC NĂNG GV -->
 
-<div id="teacherFunctions" class="panel hidden">
+<div id="teacherFunctions" class="panel">
 
 <h2>👨‍🏫 Chức năng giáo viên</h2>
 
@@ -798,6 +809,10 @@ Lưu ngày bắt đầu
 <button class="btn-green" onclick="openAddStudent()">
 + Thêm học sinh
 </button>
+
+<button id="bulkImportButton" class="btn-green" type="button" onclick="openBulkImport()">📥 Tải danh sách tên Excel</button>
+<button id="multiSelectButton" class="btn-blue" type="button" onclick="toggleMultiSelectMode()">☑️ Chọn nhiều thành viên</button>
+<input id="bulkExcelInput" type="file" accept=".xlsx,.xls,.csv" style="display:none" onchange="previewBulkExcel(event)">
 
 <button class="btn-purple" onclick="openWeeklyRanking()">
 🏆 Xếp loại tuần
@@ -811,18 +826,55 @@ Lưu ngày bắt đầu
 ⏳ Duyệt đề xuất
 </button>
 
-<button type="button" class="btn-blue" onclick="openAttendance()">
-📋 Điểm danh hôm nay
-</button>
+<button class="btn-purple" onclick="openStarHistory()">⭐ Lịch sử sao</button>
+
+<button class="btn-yellow" onclick="toggleRewardDrawer()">⭐🎁 Sao & đổi quà</button>
 
 </div>
 
 </div>
 
+
+
+<!-- ===== SAO & ĐỔI QUÀ POPUP ===== -->
+<div id="rewardBackdrop" class="reward-backdrop" onclick="toggleRewardDrawer(false)"></div>
+<div id="rewardDrawer" class="panel reward-popup">
+  <div style="display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap">
+    <h2 style="margin:0">⭐🎁 Sao & đổi quà</h2>
+    <button class="btn-gray" type="button" onclick="toggleRewardDrawer(false)">✕ Đóng</button>
+  </div>
+  <p>Chọn học sinh để xem sao và đổi quà. Chức năng này chỉ giáo viên sử dụng được.</p>
+  <div class="tabs">
+    <label style="min-width:220px">Học sinh<select id="rewardStudentSelect" onchange="renderRewardPanel()"></select></label>
+  </div>
+  <div class="notice">⭐ Đang có: <strong id="rewardStudentStars">0</strong> sao</div>
+  <div id="rewardGrid" class="reward-grid"></div>
+</div>
+
+<!-- ===== BULK IMPORT ===== -->
+<div id="bulkImportModal" class="modal">
+ <div class="modal-box">
+  <h2>📥 Tải danh sách tên</h2>
+  <p>Excel chỉ cần một cột tên. Học sinh sẽ được tạo ở trạng thái <b>Chưa xếp tổ</b>. Sau đó giáo viên dùng <b>☑️ Chọn nhiều thành viên</b> để đưa các em vào cùng một tổ.</p>
+  <div id="bulkPreview" class="notice" style="margin-top:12px">Chưa chọn file.</div>
+  <button class="btn-blue" type="button" onclick="document.getElementById('bulkExcelInput').click()">📄 Chọn file Excel</button>
+  <div class="modal-actions"><button id="bulkImportConfirm" class="btn-green" type="button" onclick="confirmBulkImport()" disabled>📥 Thêm danh sách</button><button class="btn-gray" type="button" onclick="closeModal('bulkImportModal')">Hủy</button></div>
+ </div>
+</div>
+
+<div id="moveStudentsModal" class="modal">
+ <div class="modal-box">
+  <h2>👥 Chuyển nhiều thành viên vào tổ</h2>
+  <p id="moveStudentsCount">Đã chọn 0 học sinh.</p>
+  <label>Tổ muốn chuyển đến<select id="moveStudentsGroup"><option value="1">🔴 Tổ 1</option><option value="2">🔵 Tổ 2</option><option value="3">🟢 Tổ 3</option><option value="4">🟠 Tổ 4</option></select></label>
+  <div id="moveStudentsPreview" class="notice" style="margin-top:12px"></div>
+  <div class="modal-actions"><button class="btn-green" type="button" onclick="confirmMoveStudents()">✅ Chuyển vào tổ</button><button class="btn-gray" type="button" onclick="closeModal('moveStudentsModal')">Hủy</button></div>
+ </div>
+</div>
 
 <!-- CHỨC NĂNG LỚP TRƯỞNG -->
 
-<div id="classLeaderFunctions" class="panel hidden">
+<div id="classLeaderFunctions" class="panel">
 
 <h2>👑 Chức năng lớp trưởng</h2>
 
@@ -872,6 +924,8 @@ onclick="openAddStudent()">
 
 </div>
 
+<div id="multiSelectBar" class="multi-select-bar" style="display:none"></div>
+
 <div class="table-wrap">
 
 <table>
@@ -880,14 +934,14 @@ onclick="openAddStudent()">
 
 <tr>
 
-<th>STT</th>
+<th id="multiSelectHeader">STT</th>
 <th>Họ tên</th>
 <th>Tổ</th>
 <th>Điểm đầu tuần</th>
 <th>Điểm hiện tại</th>
-<th>⭐ Sao</th>
 <th>Xếp loại</th>
-<th id="teacherActionHeader" class="hidden">
+<th>⭐ Sao</th>
+<th id="teacherActionHeader">
 Thao tác
 </th>
 
@@ -915,15 +969,6 @@ Thao tác
 
 <h2 id="studentModalTitle"></h2>
 
-<div class="avatar-editor" style="display:flex;align-items:center;gap:14px;margin:10px 0 18px">
-    <img id="studentAvatar" src="" alt="Ảnh đại diện" style="width:88px;height:88px;border-radius:50%;object-fit:cover;border:3px solid #eadfbf;background:#f5f0e5">
-    <div>
-        <div style="font-weight:bold;margin-bottom:6px">🖼️ Ảnh đại diện</div>
-        <input type="file" id="studentAvatarInput" accept="image/*" onchange="changeStudentAvatar(event)" style="max-width:100%">
-        <small id="avatarHint">Giáo viên có thể đổi ảnh cho học sinh.</small>
-    </div>
-</div>
-
 <div class="summary-grid">
 
 <div class="summary">
@@ -946,15 +991,7 @@ Thao tác
 <strong id="studentGoodCount">0</strong>
 </div>
 
-<div class="summary" style="border:2px solid #f0c84b;background:#fffaf0">
-<small>⭐ Số sao</small>
-<strong id="studentStars">0</strong>
 </div>
-
-</div>
-
-<h3 style="margin-top:25px">🎁 Dùng sao đổi quà</h3>
-<div id="rewardList"></div>
 
 <h3>📕 Vi phạm</h3>
 
@@ -979,22 +1016,6 @@ onclick="closeModal('studentModal')">
 
 </div>
 
-</div>
-</div>
-
-
-<!-- ================= ATTENDANCE ================= -->
-<div id="attendanceModal" class="modal">
-<div class="modal-box" style="max-width:850px">
-<h2>📋 Điểm danh mỗi ngày</h2>
-<p>Chỉ giáo viên được sửa điểm danh.</p>
-<label>Ngày</label>
-<input type="date" id="attendanceDate" onchange="renderAttendance()" style="margin-bottom:15px">
-<div id="attendanceList"></div>
-<div class="modal-actions">
-<button type="button" class="btn-green" onclick="saveAttendance()">💾 Lưu điểm danh</button>
-<button type="button" class="btn-gray" onclick="closeModal('attendanceModal')">Đóng</button>
-</div>
 </div>
 </div>
 
@@ -1074,10 +1095,12 @@ Thêm vi phạm / việc tốt
 
 <textarea id="recordNote"></textarea>
 
+<div class="notice" style="margin-top:10px">⚠️ Excel có 5 hành vi nghiêm trọng được ghi chú riêng nhưng <b>không nêu mức điểm trừ</b>: hút thuốc/mang thuốc lá/rượu bia; đánh nhau/gây rối/kết băng nhóm; mang hung khí; tổ chức đánh bài có ăn tiền; mang pháo vào trường. Hệ thống không tự đặt điểm cho các mục này.</div>
+
 <div id="recordApprovalNotice"
 class="notice">
-Đề xuất sẽ được gửi đến người có thẩm quyền duyệt.
-Nếu lớp trưởng đề xuất vi phạm, chỉ cần giáo viên duyệt.
+Đây là đề xuất của cán bộ lớp.
+Sau khi gửi, lớp trưởng và giáo viên phải duyệt.
 Nếu quá 48 giờ chưa đủ duyệt, đề xuất sẽ tự mất.
 </div>
 
@@ -1309,7 +1332,8 @@ function defaultDB(){
                 group:1,
                 present:true,
                 initialScore:100,
-                stars:0
+                stars:0,
+                avatar:""
             },
 
             {
@@ -1318,7 +1342,8 @@ function defaultDB(){
                 group:1,
                 present:true,
                 initialScore:100,
-                stars:0
+                stars:0,
+                avatar:""
             },
 
             {
@@ -1327,7 +1352,8 @@ function defaultDB(){
                 group:2,
                 present:true,
                 initialScore:100,
-                stars:0
+                stars:0,
+                avatar:""
             },
 
             {
@@ -1336,26 +1362,15 @@ function defaultDB(){
                 group:2,
                 present:true,
                 initialScore:100,
-                stars:0
+                stars:0,
+                avatar:""
             }
 
         ],
 
         records:[],
 
-        attendance:{},
-
-        rewards:[
-            {id:1,name:"Đổi chỗ 1 ngày",cost:20},
-            {id:2,name:"Miễn bài tập",cost:65},
-            {id:3,name:"Gỡ điểm miệng",cost:15}
-        ],
-
-        rewardHistory:[],
-
         proposals:[],
-
-        notifications:[],
 
         deleteRequests:[],
 
@@ -1494,10 +1509,16 @@ async function loadDB(){
 
             if(remote){
                 db = remote;
-                if(!Array.isArray(db.notifications)) db.notifications=[];
 
                 if(currentUser){
                     render();
+                    updateApprovalButtons();
+
+                    const approvalModal = document.getElementById("approvalModal");
+                    if(approvalModal && approvalModal.style.display === "flex" &&
+                       (currentUser.role === "teacher" || currentUser.role === "classLeader")){
+                        showApprovalList(currentUser.role);
+                    }
 
                     if(selectedStudentId){
                         const student =
@@ -1515,7 +1536,6 @@ async function loadDB(){
 async function saveDB(){
 
     if(!db) return;
-    if(!Array.isArray(db.notifications)) db.notifications=[];
 
     if(!firebaseReady){
         try{
@@ -1524,7 +1544,7 @@ async function saveDB(){
                 JSON.stringify(db)
             );
         }catch(e){}
-        return true;
+        return;
     }
 
     try{
@@ -1535,7 +1555,6 @@ async function saveDB(){
             .collection("classData")
             .doc("main")
             .set(db);
-        return true;
 
     }catch(error){
 
@@ -1547,7 +1566,6 @@ async function saveDB(){
         alert(
             "Không thể lưu dữ liệu lên Internet."
         );
-        return false;
 
     }finally{
 
@@ -1912,6 +1930,7 @@ function renderPasswordSettings(){
     const box = document.getElementById("passwordSettings");
     if(!box || !db.accounts) return;
 
+    /* Giáo viên chỉ đổi mật khẩu lớp trưởng và 4 tổ trưởng. */
     const labels = {
         giaovien:"Giáo viên",
         loptruong:"Lớp trưởng",
@@ -1924,94 +1943,14 @@ function renderPasswordSettings(){
     box.innerHTML = Object.keys(labels).map(username => `
         <div style="margin-bottom:12px">
             <label>${labels[username]} (${username})</label>
-            <input id="newPassword_${username}" type="password" placeholder="Mật khẩu mới">
+            <input id="newPassword_${username}" type="password" placeholder="Mật khẩu mới (ít nhất 4 ký tự)">
         </div>
     `).join("") + `
         <button class="btn-purple" onclick="changeAccountPasswords()">
-            Lưu mật khẩu
+            🔐 Lưu mật khẩu
         </button>
         <div id="passwordSaveMessage" class="login-error"></div>
     `;
-}
-
-function renderClassOfficerSettings(){
-
-    if(currentUser?.role !== "teacher") return;
-
-    const box = document.getElementById("classOfficerSettings");
-    if(!box || !db.accounts || !db.students) return;
-
-    const studentOptions = (selectedId) =>
-        `<option value="">-- Chưa phân công --</option>` +
-        db.students.map(s =>
-            `<option value="${s.id}" ${Number(s.id) === Number(selectedId) ? "selected" : ""}>${escapeHtml(s.name)} (Tổ ${s.group})</option>`
-        ).join("");
-
-    const roles = [
-        ["loptruong", "👑 Lớp trưởng"],
-        ["to1", "🔴 Tổ trưởng tổ 1"],
-        ["to2", "🔵 Tổ trưởng tổ 2"],
-        ["to3", "🟢 Tổ trưởng tổ 3"],
-        ["to4", "🟠 Tổ trưởng tổ 4"]
-    ];
-
-    box.innerHTML = roles.map(([username,label]) => {
-        const acc = db.accounts[username] || {};
-        return `
-        <div style="padding:14px;margin:10px 0;border:1px solid #ddd;border-radius:12px;background:#fff">
-            <strong>${label}</strong>
-            <div style="margin-top:8px">
-                <label>Học sinh giữ chức vụ</label>
-                <select id="officerStudent_${username}" style="width:100%;padding:9px">
-                    ${studentOptions(acc.studentId)}
-                </select>
-            </div>
-            <div style="margin-top:8px">
-                <label>Tên hiển thị</label>
-                <input id="officerName_${username}" value="${escapeHtml(acc.name || label.replace(/^[^ ]+ /,'').trim())}" placeholder="Tên cán bộ lớp" style="width:100%;padding:9px">
-            </div>
-            <div style="margin-top:8px;font-size:13px;color:#777">Tài khoản: <b>${username}</b></div>
-        </div>`;
-    }).join("") + `
-        <button class="btn-blue" style="display:inline-block!important;opacity:1!important;visibility:visible!important" onclick="saveClassOfficers()">💾 Lưu phân công cán bộ lớp</button>
-        <div id="officerSaveMessage" class="login-error"></div>`;
-}
-
-async function saveClassOfficers(){
-
-    if(currentUser?.role !== "teacher") return;
-    if(!db.accounts) db.accounts = {};
-
-    const roles = ["loptruong","to1","to2","to3","to4"];
-
-    for(const username of roles){
-        if(!db.accounts[username]){
-            const group = username === "loptruong" ? 0 : Number(username.replace("to",""));
-            db.accounts[username] = {
-                password:"1234",
-                role: username === "loptruong" ? "classLeader" : "leader",
-                group,
-                name: username === "loptruong" ? "Lớp trưởng" : `Tổ trưởng tổ ${group}`
-            };
-        }
-
-        const select = document.getElementById("officerStudent_" + username);
-        const nameInput = document.getElementById("officerName_" + username);
-        db.accounts[username].studentId = select && select.value ? Number(select.value) : null;
-        if(nameInput && nameInput.value.trim()) db.accounts[username].name = nameInput.value.trim();
-    }
-
-    await saveDB();
-    renderPasswordSettings();
-    renderClassOfficerSettings();
-    render();
-
-    const msg=document.getElementById("officerSaveMessage");
-    if(msg) msg.innerText="Đã lưu phân công cán bộ lớp và đồng bộ Firestore.";
-}
-
-function escapeHtml(value){
-    return String(value ?? "").replace(/[&<>\"']/g, ch => ({"&":"&amp;","<":"&lt;",">":"&gt;",'\"':"&quot;", "'":"&#39;"}[ch]));
 }
 
 async function changeAccountPasswords(){
@@ -2021,108 +1960,183 @@ async function changeAccountPasswords(){
     const ids = ["giaovien","loptruong","to1","to2","to3","to4"];
     let changed = 0;
 
-    ids.forEach(username => {
-        const input = document.getElementById("newPassword_" + username);
-        if(!input) return;
+    try{
+        ids.forEach(username => {
+            const input = document.getElementById("newPassword_" + username);
+            if(!input) return;
 
-        const value = input.value.trim();
-        if(value){
-            if(value.length < 4){
-                throw new Error("Mật khẩu phải có ít nhất 4 ký tự.");
+            const value = input.value.trim();
+            if(value){
+                if(value.length < 4){
+                    throw new Error("Mật khẩu phải có ít nhất 4 ký tự.");
+                }
+
+                if(!db.accounts[username]){
+                    throw new Error("Không tìm thấy tài khoản " + username + ".");
+                }
+
+                db.accounts[username].password = value;
+                changed++;
+                input.value = "";
             }
-            db.accounts[username].password = value;
-            changed++;
-            input.value = "";
+        });
+
+        if(!changed){
+            document.getElementById("passwordSaveMessage").innerText =
+                "Chưa có mật khẩu nào được thay đổi.";
+            return;
         }
-    });
 
-    if(!changed){
+        await saveDB();
+
         document.getElementById("passwordSaveMessage").innerText =
-            "Chưa có mật khẩu nào được thay đổi.";
-        return;
+            "✅ Đã cập nhật mật khẩu và đồng bộ lên Firebase.";
+
+    }catch(error){
+        console.error(error);
+        document.getElementById("passwordSaveMessage").innerText =
+            "❌ " + (error.message || "Không thể đổi mật khẩu.");
     }
+}
 
-    await saveDB();
+/* =========================================================
+   QUẢN LÝ LỚP TRƯỞNG / TỔ TRƯỞNG
+========================================================= */
 
-    document.getElementById("passwordSaveMessage").innerText =
-        "Đã cập nhật mật khẩu.";
+function openLeaderManager(mode){
+    if(currentUser?.role !== "teacher") return;
+    const box = document.getElementById("leaderManagerList");
+    if(!box) return;
+    const students = Array.isArray(db.students) ? db.students : [];
+    if(!students.length){ box.innerHTML = `<div class="notice">Chưa có học sinh để chỉ định.</div>`; return; }
+    const roles = mode === "classLeader" ? [{key:"loptruong",label:"Lớp trưởng",group:0}] : [1,2,3,4].map(g=>({key:"to"+g,label:`Tổ trưởng tổ ${g}`,group:g}));
+    box.innerHTML = roles.map(r=>{
+        const acc=db.accounts?.[r.key]||{};
+        const currentStudent=students.find(st=>Number(st.id)===Number(acc.studentId));
+        const options=students.filter(st=>r.group===0||Number(st.group)===r.group).map(st=>`<option value="${st.id}" ${currentStudent&&Number(currentStudent.id)===Number(st.id)?"selected":""}>${esc(st.name)} - Tổ ${st.group}</option>`).join("");
+        return `<div class="item" style="margin-bottom:10px"><b>${r.label}</b>${currentStudent?`<div style="margin:5px 0">Đang phụ trách: <strong>${esc(currentStudent.name)}</strong></div>`:`<div style="margin:5px 0">Chưa chỉ định</div>`}<label>Chọn học sinh</label><select id="leaderStudent_${r.key}"><option value="">-- Chọn học sinh --</option>${options}</select><label>Tài khoản</label><input id="leaderUsername_${r.key}" value="${acc.username||r.key}" placeholder="${r.key}"><label>Mật khẩu mới</label><input id="leaderPassword_${r.key}" type="password" placeholder="Để trống nếu không đổi"><button class="btn-green" style="margin-top:8px" onclick="saveLeaderAccount('${r.key}','${r.label}',${r.group})">💾 Lưu ${r.label}</button></div>`;
+    }).join("");
+}
+
+async function saveLeaderAccount(key,label,group){
+    if(currentUser?.role !== "teacher") return;
+    const studentId=Number(document.getElementById("leaderStudent_"+key)?.value||0);
+    const username=(document.getElementById("leaderUsername_"+key)?.value||key).trim();
+    const newPassword=(document.getElementById("leaderPassword_"+key)?.value||"").trim();
+    if(!studentId){alert("Hãy chọn học sinh.");return;}
+    if(!username){alert("Hãy nhập tài khoản.");return;}
+    if(!db.accounts) db.accounts={};
+    const student=db.students.find(st=>Number(st.id)===studentId);
+    if(!student){alert("Không tìm thấy học sinh.");return;}
+    const old=db.accounts[key]||{};
+    const finalPassword=newPassword||old.password;
+    if(!finalPassword||finalPassword.length<4){alert("Mật khẩu phải có ít nhất 4 ký tự.");return;}
+    const other=Object.keys(db.accounts).find(k=>k!==key&&db.accounts[k]?.username===username);
+    if(other){alert("Tên tài khoản này đã được sử dụng.");return;}
+    db.accounts[key]={username,password:finalPassword,role:key==="loptruong"?"classLeader":"leader",group:key==="loptruong"?0:group,name:label,studentId};
+    if(key==="loptruong") db.students.forEach(st=>st.classLeader=Number(st.id)===studentId);
+    else db.students.forEach(st=>{if(Number(st.group)===Number(group))st.groupLeader=Number(st.id)===studentId;});
+    await saveDB(); renderLeaderManagerSummary(); alert(`Đã lưu ${label}: ${student.name}`);
+}
+
+function renderLeaderManagerSummary(){
+    const box=document.getElementById("leaderManagerList"); if(!box||currentUser?.role!=="teacher")return;
+    const a=db.accounts||{}, rows=[];
+    if(a.loptruong){const st=db.students.find(s=>Number(s.id)===Number(a.loptruong.studentId));rows.push(`👑 Lớp trưởng: ${st?esc(st.name):"Chưa gắn học sinh"} — tài khoản: ${esc(a.loptruong.username||"loptruong")}`);}else rows.push("👑 Lớp trưởng: chưa chỉ định");
+    for(let g=1;g<=4;g++){const x=a["to"+g],st=x?db.students.find(s=>Number(s.id)===Number(x.studentId)):null;rows.push(`👥 Tổ ${g}: ${st?esc(st.name):"Chưa chỉ định"}${x?` — tài khoản: ${esc(x.username||"to"+g)}`:""}`);}
+    box.innerHTML=`<div class="notice">${rows.join("<br>")}</div>`;
 }
 
 /* =========================================================
    GIAO DIỆN THEO QUYỀN
 ========================================================= */
 
-function setupInterface(){
+async function changeStudentAvatar(studentId){
+    if(currentUser?.role!=="teacher") return;
+    const student=getStudent(studentId);
+    if(!student) return;
+    const input=document.createElement("input");
+    input.type="file"; input.accept="image/*";
+    input.onchange=()=>{
+        const file=input.files?.[0];
+        if(!file) return;
+        const reader=new FileReader();
+        reader.onload=async()=>{
+            const img=new Image();
+            img.onload=async()=>{
+                const size=320, scale=Math.min(size/img.width,size/img.height,1);
+                const canvas=document.createElement("canvas");
+                canvas.width=Math.max(1,Math.round(img.width*scale));
+                canvas.height=Math.max(1,Math.round(img.height*scale));
+                const ctx=canvas.getContext("2d"); ctx.drawImage(img,0,0,canvas.width,canvas.height);
+                student.avatar=canvas.toDataURL("image/jpeg",.78);
+                await saveDB(); render();
+                if(selectedStudentId===student.id) openStudent(student.id);
+            };
+            img.src=reader.result;
+        };
+        reader.readAsDataURL(file);
+    };
+    input.click();
+}
 
-    const header = document.getElementById("mainHeader");
+function setupInterface(){
     const teacher = document.getElementById("teacherFunctions");
     const classLeader = document.getElementById("classLeaderFunctions");
-    const settings = document.getElementById("teacherSettings");
     const add = document.getElementById("addStudentButton");
     const action = document.getElementById("teacherActionHeader");
+    const settingsBtn = document.getElementById("teacherSettingsButton");
+    const rewardsBtn = document.getElementById("teacherRewardsButton");
+    const bulkBtn = document.getElementById("bulkImportButton");
+    const multiBtn = document.getElementById("multiSelectButton");
+    const teacherOnly = currentUser.role === "teacher";
+    const classOnly = currentUser.role === "classLeader";
 
-    /* Luôn reset toàn bộ khu vực trước khi cấp quyền.
-       Không dùng CSS để giả quyền: các hàm bên dưới vẫn tự kiểm tra role. */
-    teacher.classList.add("hidden");
-    classLeader.classList.add("hidden");
-    settings.classList.add("hidden");
-    add.classList.add("hidden");
-    action.classList.add("hidden");
+    // Chỉ hiện đúng khu chức năng của vai trò đang đăng nhập.
+    // Các nút bên trong khu đó vẫn luôn hiện; nếu chưa đủ quyền thì chỉ disabled/màu nhạt.
+    teacher.classList.toggle("hidden", !teacherOnly);
+    classLeader.classList.toggle("hidden", !classOnly);
 
-    if(currentUser.role === "teacher"){
+    // Nút thao tác chung: chỉ giáo viên được thêm/sửa trực tiếp.
+    add.classList.toggle("hidden", !teacherOnly);
+    action.classList.toggle("hidden", !teacherOnly);
 
-        header.style.background = "#5c4a8a";
+    // Chức năng riêng của giáo viên: chỉ giáo viên mới hiển thị.
+    settingsBtn.classList.toggle("hidden", !teacherOnly);
+    rewardsBtn.classList.toggle("hidden", !teacherOnly);
+    bulkBtn.disabled = !teacherOnly;
+    add.disabled = !teacherOnly;
+    if(multiBtn) multiBtn.disabled = !teacherOnly;
+
+    teacher.querySelectorAll("button").forEach(btn=>{
+        btn.disabled = !teacherOnly;
+    });
+    classLeader.querySelectorAll("button").forEach(btn=>{
+        btn.disabled = !classOnly;
+    });
+
+    if(teacherOnly){
+        document.getElementById("mainHeader").style.background = "#6E5794";
         document.getElementById("headerTitle").innerText = "👨‍🏫 Giáo viên";
-
-        teacher.classList.remove("hidden");
-        settings.classList.remove("hidden");
-        add.classList.remove("hidden");
-        action.classList.remove("hidden");
         selectedGroup = 0;
-
-        renderPasswordSettings();
-        renderClassOfficerSettings();
-
-    } else if(currentUser.role === "classLeader"){
-
-        header.style.background = "#315f91";
+    }else if(classOnly){
+        document.getElementById("mainHeader").style.background = "#315f91";
         document.getElementById("headerTitle").innerText = "👑 Lớp trưởng";
-
-        /* Chỉ lớp trưởng: không có chức năng GV */
-        classLeader.classList.remove("hidden");
         selectedGroup = 0;
-
-    } else if(currentUser.role === "leader"){
-
-        const colors = {
-            1:"#8f2929",
-            2:"#315f91",
-            3:"#36734b",
-            4:"#b96f20"
-        };
-
-        header.style.background = colors[currentUser.group] || "#315f91";
-        document.getElementById("headerTitle").innerText =
-            `👥 Tổ trưởng tổ ${currentUser.group}`;
-
-        /* Tổ trưởng chỉ thấy phần danh sách của tổ mình.
-           Tuyệt đối không hiện teacherFunctions/classLeaderFunctions/settings. */
-        selectedGroup = currentUser.group;
-
-    } else {
-
-        header.style.background = "#777";
-        document.getElementById("headerTitle").innerText = "👤 Học sinh";
-        selectedGroup = currentUser.group || 0;
+    }else{
+        const colors={1:"#A94E4E",2:"#416F9F",3:"#4C8B5B",4:"#A56E22"};
+        document.getElementById("mainHeader").style.background = colors[currentUser.group] || "#6E5794";
+        document.getElementById("headerTitle").innerText = `👥 Tổ ${currentUser.group}`;
+        selectedGroup = 0;
     }
 
-    const schoolStart = document.getElementById("schoolStartDate");
-    if(schoolStart && db.settings)
-        schoolStart.value = db.settings.startDate || "";
-
+    const date=document.getElementById("schoolStartDate");
+    if(date) date.value=db.settings.startDate;
     cleanupExpiredProposals();
     render();
+    renderRewardPanel();
 }
+
 
 
 /* =========================================================
@@ -2131,19 +2145,7 @@ function setupInterface(){
 
 function selectGroup(group){
 
-    if(
-        currentUser.role === "leader" &&
-        currentUser.group !== group
-    ){
-
-        alert(
-            "Tổ trưởng chỉ được xem tổ của mình."
-        );
-
-        return;
-
-    }
-
+    // Tổ trưởng được xem cả 4 tổ; quyền chỉnh sửa vẫn bị giới hạn ở tổ của mình.
     selectedGroup = group;
 
     render();
@@ -2157,7 +2159,6 @@ function selectGroup(group){
 
 function render(){
 
-    ensureStarData();
     cleanupExpiredProposals();
 
     const week =
@@ -2214,6 +2215,15 @@ function render(){
         "averageScore"
     ).innerText = avg;
 
+    const starSummary = list.reduce(
+        (sum, s) => sum + getStudentStars(s),
+        0
+    );
+
+    const starSummaryEl = document.getElementById("starSummary");
+    if(starSummaryEl)
+        starSummaryEl.innerText = starSummary;
+
     for(let g=1;g<=4;g++){
 
         document.getElementById(
@@ -2237,21 +2247,7 @@ function render(){
    BẢNG HỌC SINH
 ========================================================= */
 
-function getOfficerAccountForStudent(studentId){
-    if(!db.accounts) return null;
-    for(const username of ["to1","to2","to3","to4"]){
-        const acc=db.accounts[username];
-        if(acc && Number(acc.studentId)===Number(studentId)) return {username,...acc};
-    }
-    return null;
-}
-
-function getStudentNameStyle(student){
-    const officer=getOfficerAccountForStudent(student.id);
-    if(!officer) return "";
-    const colors={1:"#b83b3b",2:"#315f91",3:"#36734b",4:"#b96f20"};
-    return `color:${colors[officer.group]||"#333"};font-weight:800`;
-}
+function groupColor(group){return ({1:"#A94E4E",2:"#416F9F",3:"#4C8B5B",4:"#A56E22"})[Number(group)]||"#4A4033";}
 
 function renderTable(list){
 
@@ -2262,8 +2258,7 @@ function renderTable(list){
 
     tbody.innerHTML = "";
 
-    const teacher =
-        currentUser.role === "teacher";
+    const teacher = currentUser.role === "teacher";
 
     list.forEach((student,index)=>{
 
@@ -2285,23 +2280,14 @@ function renderTable(list){
 
         tr.innerHTML = `
 
-            <td>${index+1}</td>
+            <td>${teacher && multiSelectMode ? `<input type="checkbox" aria-label="Chọn ${esc(student.name)}" ${selectedStudentIds.has(Number(student.id)) ? "checked" : ""} onchange="toggleStudentSelection(${student.id}, this.checked)" onclick="event.stopPropagation()">` : ""}${index+1}</td>
 
             <td>
-                <div style="display:flex;align-items:center;gap:9px">
-                    <img
-                        src="${student.avatar || makeAvatar(student.name)}"
-                        alt="Ảnh đại diện"
-                        style="width:38px;height:38px;border-radius:50%;object-fit:cover;border:2px solid #eadfbf;cursor:pointer;flex:none"
-                        onclick="openStudent(${student.id})"
-                    >
-                    <span
-                        class="student-name"
-                        style="${getStudentNameStyle(student)}"
-                        onclick="openStudent(${student.id})">
-                        ${esc(student.name)}
-                    </span>
-                </div>
+                <span
+                    class="student-name"
+                    onclick="openStudent(${student.id})">
+                    ${student.avatar ? `<img src="${student.avatar}" alt="" style="width:34px;height:34px;border-radius:50%;object-fit:cover;border:2px solid #2f2a24;vertical-align:middle;margin-right:6px">` : "🧑"}${student.groupLeader ? `<span style="color:${groupColor(student.group)};font-weight:900">${esc(student.name)} 👥</span>` : (student.classLeader ? `<span style="color:#6E5794;font-weight:900">${esc(student.name)} 👑</span>` : esc(student.name))}
+                </span>
             </td>
 
             <td>Tổ ${student.group}</td>
@@ -2314,34 +2300,29 @@ function renderTable(list){
                 </strong>
             </td>
 
-            <td>⭐ ${Number(student.stars || 0)}</td>
-
             <td>
                 ${badge(score)}
             </td>
 
-            ${
-                teacher
-                ?
-                `
-                <td>
-                    <button type="button"
-                        class="btn-red delete-student-btn"
-                        style="padding:8px 12px !important;background:#d94b4b !important;color:#ffffff !important;opacity:1 !important;visibility:visible !important;display:inline-block !important;pointer-events:auto !important;cursor:pointer !important;position:relative;z-index:50"
-                        onclick="return handleDeleteStudentClick(event, ${student.id})">
-                        🗑️ Xóa học sinh
-                    </button>
-                </td>
-                `
-                :
-                ""
-            }
+            <td>
+                ⭐ ${getStudentStars(student)}
+            </td>
+
+            ${teacher ? `<td>
+                <button class="btn-red" type="button" onclick="deleteStudent(${student.id})">
+                    🗑️ Xóa học sinh
+                </button>
+                <button class="btn-purple" type="button" onclick="changeStudentAvatar(${student.id})">
+                    🖼️ Đổi ảnh
+                </button>
+            </td>` : `<td><span class="disabled-note">Chỉ giáo viên có quyền quản lý</span></td>`}
 
         `;
 
         tbody.appendChild(tr);
 
     });
+    updateMultiSelectBar();
 
 }
 
@@ -2349,55 +2330,6 @@ function renderTable(list){
 /* =========================================================
    HỌC SINH
 ========================================================= */
-
-function makeAvatar(name){
-    const initials = String(name||"HS").trim().split(/\s+/).slice(-2).map(x=>x[0]||"").join("").toUpperCase();
-    const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="180" height="180"><rect width="100%" height="100%" fill="#eee6d7"/><circle cx="90" cy="68" r="32" fill="#c9b89a"/><path d="M35 160c8-38 32-55 55-55s47 17 55 55" fill="#9b83c4"/><text x="90" y="178" text-anchor="middle" font-family="Arial" font-size="18" fill="#4a4033">${esc(initials||"HS")}</text></svg>`;
-    return "data:image/svg+xml;charset=UTF-8," + encodeURIComponent(svg);
-}
-
-async function changeStudentAvatar(event){
-    if(!currentUser || currentUser.role !== "teacher") return;
-    const file = event.target.files && event.target.files[0];
-    if(!file || !selectedStudentId) return;
-    if(!file.type.startsWith("image/")){ alert("Vui lòng chọn tệp ảnh."); return; }
-    try{
-        const data = await resizeImageToDataURL(file, 256, 0.78);
-        const student = getStudent(selectedStudentId);
-        if(!student) return;
-        student.avatar = data;
-        const img = document.getElementById("studentAvatar");
-        if(img) img.src = data;
-        await saveDB();
-        render();
-        alert("Đã cập nhật ảnh đại diện.");
-    }catch(error){
-        console.error(error);
-        alert("Không thể lưu ảnh. Hãy thử ảnh khác.");
-    }
-}
-
-function resizeImageToDataURL(file, maxSize, quality){
-    return new Promise((resolve,reject)=>{
-        const reader = new FileReader();
-        reader.onerror = reject;
-        reader.onload = ()=>{
-            const img = new Image();
-            img.onerror = reject;
-            img.onload = ()=>{
-                const scale = Math.min(1, maxSize / Math.max(img.width,img.height));
-                const canvas = document.createElement("canvas");
-                canvas.width = Math.max(1, Math.round(img.width*scale));
-                canvas.height = Math.max(1, Math.round(img.height*scale));
-                const ctx = canvas.getContext("2d");
-                ctx.drawImage(img,0,0,canvas.width,canvas.height);
-                resolve(canvas.toDataURL("image/jpeg",quality));
-            };
-            img.src = reader.result;
-        };
-        reader.readAsDataURL(file);
-    });
-}
 
 function openStudent(id){
 
@@ -2407,19 +2339,8 @@ function openStudent(id){
     if(!student)
         return;
 
-    if(
-        currentUser.role === "leader" &&
-        currentUser.group !== student.group
-    ){
-
-        alert(
-            "Bạn không có quyền xem học sinh này."
-        );
-
-        return;
-
-    }
-
+    // Tổ trưởng được mở/xem hồ sơ của mọi tổ. Các nút chỉnh sửa bên trong
+    // hồ sơ sẽ tự khóa nếu học sinh không thuộc tổ của mình.
     selectedStudentId =
         student.id;
 
@@ -2430,16 +2351,6 @@ function openStudent(id){
         "studentModalTitle"
     ).innerText =
         `${student.name} - Tổ ${student.group}`;
-
-    const avatar = document.getElementById("studentAvatar");
-    if(avatar){
-        avatar.src = student.avatar || makeAvatar(student.name);
-    }
-    const avatarInput = document.getElementById("studentAvatarInput");
-    if(avatarInput){
-        avatarInput.value = "";
-        avatarInput.style.display = currentUser.role === "teacher" ? "block" : "none";
-    }
 
     document.getElementById(
         "studentInitial"
@@ -2474,199 +2385,12 @@ function openStudent(id){
     ).innerText =
         goods.length;
 
-    document.getElementById(
-        "studentStars"
-    ).innerText =
-        Number(student.stars || 0);
-
     renderStudentRecords(student);
-    renderRewards(student);
 
     document.getElementById(
         "studentModal"
     ).style.display = "flex";
 
-}
-
-
-/* =========================================================
-   ⭐ SAO & 🎁 ĐỔI QUÀ
-========================================================= */
-
-function ensureAttendanceData(){
-    if(!db.attendance || typeof db.attendance !== "object" || Array.isArray(db.attendance))
-        db.attendance = {};
-}
-
-function getAttendanceForDate(date){
-    ensureAttendanceData();
-    if(!db.attendance[date]) db.attendance[date] = {};
-    return db.attendance[date];
-}
-
-function openAttendance(){
-    if(!currentUser || currentUser.role !== "teacher"){
-        alert("Chỉ giáo viên được điểm danh.");
-        return;
-    }
-    ensureAttendanceData();
-    const dateInput=document.getElementById("attendanceDate");
-    if(dateInput) dateInput.value=todayISO();
-    renderAttendance();
-    document.getElementById("attendanceModal").style.display="flex";
-}
-
-function renderAttendance(){
-    const date=document.getElementById("attendanceDate").value || todayISO();
-    const data=getAttendanceForDate(date);
-    const box=document.getElementById("attendanceList");
-    if(!box) return;
-    box.innerHTML=db.students.map((st,i)=>{
-        const a=data[st.id] || {status:"present",reason:""};
-        return `<div class="notification" style="margin-bottom:10px">
-            <div style="display:grid;grid-template-columns:1fr 180px;gap:10px;align-items:center">
-                <div><strong>${i+1}. ${esc(st.name)}</strong><br><small>Tổ ${st.group}</small></div>
-                <select id="att-status-${st.id}" style="padding:9px;border-radius:8px">
-                    <option value="present" ${a.status==="present"?"selected":""}>🟢 Có mặt</option>
-                    <option value="excused" ${a.status==="excused"?"selected":""}>🟡 Vắng có phép</option>
-                    <option value="unexcused" ${a.status==="unexcused"?"selected":""}>🔴 Vắng không phép</option>
-                </select>
-            </div>
-            <input id="att-reason-${st.id}" value="${esc(a.reason||"")}" placeholder="Lý do vắng (nếu có)" style="width:100%;margin-top:8px;padding:9px;border-radius:8px;box-sizing:border-box">
-        </div>`;
-    }).join("");
-}
-
-async function saveAttendance(){
-    if(!currentUser || currentUser.role !== "teacher"){ alert("Chỉ giáo viên được lưu điểm danh."); return; }
-    const date=document.getElementById("attendanceDate").value;
-    if(!date){ alert("Hãy chọn ngày."); return; }
-    ensureAttendanceData();
-    const data={};
-    db.students.forEach(st=>{
-        data[st.id]={
-            status:document.getElementById(`att-status-${st.id}`).value,
-            reason:document.getElementById(`att-reason-${st.id}`).value.trim(),
-            updatedAt:new Date().toISOString()
-        };
-        st.present=data[st.id].status === "present";
-    });
-    db.attendance[date]=data;
-    await saveDB();
-    render();
-    alert(`Đã lưu điểm danh ngày ${formatDate(date)}.`);
-}
-
-function ensureStarData(){
-    ensureAttendanceData();
-    if(!Array.isArray(db.rewards)){
-        db.rewards = [
-            {id:1,name:"Đổi chỗ 1 ngày",cost:20},
-            {id:2,name:"Miễn bài tập",cost:65},
-            {id:3,name:"Gỡ điểm miệng",cost:15}
-        ];
-    }
-    if(!Array.isArray(db.rewardHistory))
-        db.rewardHistory = [];
-    if(!db.starAwards || typeof db.starAwards !== "object")
-        db.starAwards = {};
-
-    db.students.forEach(s=>{
-        if(typeof s.stars !== "number")
-            s.stars = 0;
-    });
-}
-
-function renderRewards(student){
-    ensureStarData();
-
-    const box = document.getElementById("rewardList");
-    if(!box) return;
-
-    const stars = Number(student.stars || 0);
-
-    box.innerHTML = `
-        <div style="padding:12px;margin-bottom:12px;border-radius:12px;background:#fff8df;font-size:18px">
-            ⭐ <strong>${stars}</strong> sao
-        </div>
-        ${db.rewards.map(r=>`
-            <div class="notification" style="display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap">
-                <div>
-                    🎁 <strong>${esc(r.name)}</strong><br>
-                    <small>Giá: ${r.cost} ⭐</small>
-                </div>
-                <button type="button" class="btn-purple"
-                    style="display:inline-block!important;visibility:visible!important;opacity:1!important;cursor:pointer!important;"
-                    data-student-id="${student.id}" data-reward-id="${r.id}">
-                    🎁 Đổi quà (${r.cost} ⭐)
-                </button>
-            </div>
-        `).join("")}
-    `;
-
-    // Bảo đảm nút đổi quà luôn nhận click, kể cả khi CSS/HTML trước đó can thiệp.
-    box.querySelectorAll("[data-reward-id]").forEach(btn => {
-        btn.addEventListener("click", function(e){
-            e.preventDefault();
-            e.stopPropagation();
-            redeemReward(Number(this.dataset.studentId), Number(this.dataset.rewardId));
-        });
-    });
-}
-
-async function redeemReward(studentId,rewardId){
-    ensureStarData();
-
-    const student = getStudent(studentId);
-    const reward = db.rewards.find(r=>r.id === rewardId);
-
-    if(!student || !reward) return;
-
-    const stars = Number(student.stars || 0);
-    if(stars < reward.cost){
-        alert(`Không đủ sao. Cần ${reward.cost} ⭐, hiện có ${stars} ⭐.`);
-        return;
-    }
-
-    if(!confirm(`Đổi "${reward.name}" với ${reward.cost} ⭐?`))
-        return;
-
-    student.stars = stars - reward.cost;
-
-    db.rewardHistory.push({
-        id: Date.now(),
-        studentId: student.id,
-        rewardId: reward.id,
-        rewardName: reward.name,
-        cost: reward.cost,
-        date: todayISO()
-    });
-
-    await saveDB();
-
-    document.getElementById("studentStars").innerText = student.stars;
-    renderRewards(student);
-
-    alert(`Đã đổi: ${reward.name}. Còn ${student.stars} ⭐.`);
-}
-
-function addStars(studentId,amount,reason=""){
-    const student = getStudent(studentId);
-    if(!student) return;
-
-    ensureStarData();
-    student.stars = Number(student.stars || 0) + Number(amount || 0);
-
-    db.rewardHistory.push({
-        id: Date.now(),
-        studentId: student.id,
-        rewardId: null,
-        rewardName: reason || "Cộng/trừ sao",
-        cost: -Number(amount || 0),
-        date: todayISO()
-    });
-    saveDB();
-    render();
 }
 
 
@@ -2778,11 +2502,11 @@ function renderStudentRecords(student){
                         canDeleteRecord(r)
                         ?
                         `
-                        <button type="button"
-                            class="btn-red delete-record-btn"
-                            style="padding:6px 9px !important;background:#d94b4b !important;color:#fff !important;opacity:1 !important;visibility:visible !important;display:inline-block !important;pointer-events:auto !important;cursor:pointer !important;position:relative;z-index:60"
-                            onclick="event.preventDefault(); event.stopPropagation(); openDeleteRequest(${r.id})">
-                            🗑️ Xóa
+                        <button
+                            class="btn-red"
+                            style="padding:6px 9px"
+                            onclick="openDeleteRequest(${r.id})">
+                            Xóa
                         </button>
                         `
                         :
@@ -2887,11 +2611,11 @@ function renderStudentRecords(student){
                         canDeleteRecord(r)
                         ?
                         `
-                        <button type="button"
-                            class="btn-red delete-record-btn"
-                            style="padding:6px 9px !important;background:#d94b4b !important;color:#fff !important;opacity:1 !important;visibility:visible !important;display:inline-block !important;pointer-events:auto !important;cursor:pointer !important;position:relative;z-index:60"
-                            onclick="event.preventDefault(); event.stopPropagation(); openDeleteRequest(${r.id})">
-                            🗑️ Xóa
+                        <button
+                            class="btn-red"
+                            style="padding:6px 9px"
+                            onclick="openDeleteRequest(${r.id})">
+                            Xóa
                         </button>
                         `
                         :
@@ -2961,17 +2685,12 @@ function canDeleteRecord(record){
 function renderRecordButtons(student){
     const v=document.getElementById("violationButtons");
     const g=document.getElementById("goodButtons");
-    v.innerHTML=""; g.innerHTML="";
-    if(currentUser.role === "teacher"){
-        v.innerHTML=`<button class="btn-red" type="button" style="margin-top:10px!important;opacity:1!important;visibility:visible!important;display:inline-block!important;pointer-events:auto!important" onclick="openRecordModal('violation')">⚠️ Ghi vi phạm</button>`;
-        g.innerHTML=`<button class="btn-green" type="button" style="margin-top:10px!important;opacity:1!important;visibility:visible!important;display:inline-block!important;pointer-events:auto!important" onclick="openRecordModal('good')">🌟 Ghi việc tốt</button>`;
-    }else if(currentUser.role === "leader" && currentUser.group === student.group){
-        v.innerHTML=`<button class="btn-red" type="button" style="margin-top:10px!important;opacity:1!important;visibility:visible!important;display:inline-block!important;pointer-events:auto!important" onclick="openRecordModal('violation')">⚠️ Đề xuất vi phạm</button>`;
-        g.innerHTML=`<button class="btn-green" type="button" style="margin-top:10px!important;opacity:1!important;visibility:visible!important;display:inline-block!important;pointer-events:auto!important" onclick="openRecordModal('good')">🌟 Đề xuất việc tốt</button>`;
-    }else if(currentUser.role === "classLeader" && getOfficerAccountForStudent(student.id)){
-        v.innerHTML=`<button class="btn-red" type="button" style="margin-top:10px!important;opacity:1!important;visibility:visible!important;display:inline-block!important;pointer-events:auto!important" onclick="openRecordModal('violation')">⚠️ Đề xuất trừ điểm tổ trưởng</button>`;
-    }
+    if(!v||!g) return;
+    const canEdit=currentUser.role==="teacher" || (currentUser.role==="leader" && currentUser.group===student.group);
+    v.innerHTML=`<button class="btn-red" type="button" ${canEdit?"":"disabled"} onclick="openRecordModal('violation')">⚠️ Ghi vi phạm</button>`;
+    g.innerHTML=`<button class="btn-green" type="button" ${canEdit?"":"disabled"} onclick="openRecordModal('good')">🌟 Ghi việc tốt</button>`;
 }
+
 
 
 /* =========================================================
@@ -2979,85 +2698,18 @@ function renderRecordButtons(student){
 ========================================================= */
 
 const violationTypes = [
-    ["3","Vắng học có phép (lần 4)"],
-    ["5","Vắng có phép trong các buổi lao động"],
-    ["10","Vắng học không phép, tính cả học TT"],
-    ["20","Vắng không phép trong các buổi lao động"],
-    ["20","Bỏ tiết"],
-    ["5","Đi học trễ."],
-    ["5","Mất trật tự trong 10 phút đầu giờ sau khi đã nhắc 2 lần"],
-    ["10","Mất trật tự trong 10 phút đầu giờ sau khi đã nhắc 3 lần"],
-    ["5","Ra ngoài trong 10 phút đầu"],
-    ["10","Vắng sinh hoạt tập thể không phép"],
-    ["5","Không mang bảng tên hoặc ko đúng quy định"],
-    ["5","Đồng phục không đúng quy định"],
-    ["5","Mang dép lê, đi xe trong sân trường"],
-    ["10","Để xe không đúng nơi quy định"],
-    ["10","Nhuộm tóc"],
-    ["10","Son môi, trang điểm"],
-    ["5","Không đeo huy hiệu"],
-    ["20","Vô lễ với GV, CNV"],
-    ["20","Vi phạm luật giao thông"],
-    ["5","Vệ sinh chưa tốt"],
-    ["10","Ra về chưa tắt đèn, quạt"],
-    ["20","Sử dụng điện thoại trong giờ học"],
-    ["10","Điểm miệng : 0"],
-    ["10","Điểm miệng : 1"],
-    ["10","Điểm miệng : 2"],
-    ["5","Điểm miệng : 3"],
-    ["5","Điểm miệng : 4"],
-    ["2","Điểm nợ"],
-    ["10","Vi phạm giờ B"],
-    ["20","Vi phạm giờ C"],
-    ["5","Thiếu dụng cụ học tập, SGK, SBT …"],
-    ["5","Làm việc riêng trong giờ học"],
-    ["5","Vi phạm về việc để xe"],
-    ["10","Không làm bài tập về nhà"],
-    ["10","Tự ý đổi chỗ ngồi"],
-    ["10","Gian dối"],
-    ["10","Ban cán sự không hoàn thành xếp loại và công việc đúng thời hạn"],
-    ["10","Xỏ tai không đúng quy định"],
-    ["5","Vi phạm trong giờ chào cờ đầu tuần và trong các buổi lễ của nhà trường."],
-    ["10","Vượt đèn đỏ"],
-    ["15","Sao đỏ vắng trực"],
-    ["20","Không cất điện thoại theo quy định"]
+["3","Vắng học có phép (lần 4)"],["5","Vắng có phép trong các buổi lao động"],["10","Vắng học không phép, tính cả học TT"],["20","Vắng không phép trong các buổi lao động"],["20","Bỏ tiết"],["5","Đi học trễ."],["5","Mất trật tự trong 10 phút đầu giờ sau khi đã nhắc 2 lần"],["10","Mất trật tự trong 10 phút đầu giờ sau khi đã nhắc 3 lần"],["5","Ra ngoài trong 10 phút đầu"],["10","Vắng sinh hoạt tập thể không phép"],["5","Không mang bảng tên hoặc ko đúng quy định"],["5","Đồng phục không đúng quy định"],["5","Mang dép lê, đi xe trong sân trường"],["10","Để xe không đúng nơi quy định"],["10","Nhuộm tóc"],["10","Son môi, trang điểm"],["5","Không đeo huy hiệu"],["20","Vô lễ với GV, CNV"],["20","Vi phạm luật giao thông"],["5","Vệ sinh chưa tốt"],["10","Ra về chưa tắt đèn, quạt"],["20","Sử dụng điện thoại trong giờ học"],["10","Điểm miệng: 0"],["10","Điểm miệng: 1"],["10","Điểm miệng: 2"],["5","Điểm miệng: 3"],["5","Điểm miệng: 4"],["2","Điểm nợ"],["10","Vi phạm giờ B"],["20","Vi phạm giờ C"],["5","Thiếu dụng cụ học tập, SGK, SBT …"],["5","Làm việc riêng trong giờ học"],["5","Vi phạm về việc để xe"],["10","Không làm bài tập về nhà"],["10","Tự ý đổi chỗ ngồi"],["10","Gian dối"],["10","Ban cán sự không hoàn thành xếp loại và công việc đúng thời hạn"],["10","Xỏ tai không đúng quy định"],["5","Vi phạm trong giờ chào cờ đầu tuần và trong các buổi lễ của nhà trường"],["10","Vượt đèn đỏ"],["15","Sao đỏ vắng trực"],["20","Không cất điện thoại theo quy định"]
 ];
 
 const goodTypes = [
-    ["20","Tham gia 1 phong trào do trường phát động"],
-    ["5","Tham gia cổ vũ phong trào"],
-    ["30","Sinh hoạt tập thể đoạt giải 1"],
-    ["25","Sinh hoạt tập thể đoạt giải 2"],
-    ["20","Sinh hoạt tập thể đoạt giải 3"],
-    ["15","Sinh hoạt tập thể đoạt giải KK"],
-    ["10","Điểm miệng : 10"],
-    ["8","Điểm miệng : 9"],
-    ["7","Điểm miệng : 8"],
-    ["5","Điểm miệng : 7"],
-    ["3","Điểm cộng"],
-    ["40","Thi HSG đạt giải 1"],
-    ["30","Thi HSG đạt giải 2"],
-    ["25","Thi HSG đạt giải 3"],
-    ["10","Thi HSG đạt giải KK"],
-    ["10","Học sinh trung thực tố cáo những hành vi sai trái của học sinh trong lớp."],
-    ["15","Tham gia công tác xã hội và công tác khác được nhà trường khen."],
-    ["10","Học sinh nhặt được của rơi tìm người trả lại được nhà trường tuyên dương."],
-    ["10","Tham gia tình nguyện vào các hoạt động đột xuất"],
-    ["10","Ban cán sự làm việc tốt"],
-    ["15","Đạt điểm 10 trong giờ A*"],
-    ["10","Đạt điểm 9 trong giờ A*"],
-    ["3","Xung phong trả lời: Sai"],
-    ["5","Xung phong trả lời: Đúng"]
-];
 
-// 5 trường hợp Excel ghi chú là xét hạnh kiểm CHƯA ĐẠT cuối kỳ,
-// không có mức điểm trừ nên không tự cộng/trừ điểm trong hệ thống.
-const seriousConductWarnings = [
-    "Hút thuốc lá, mang thuốc lá vào khuôn viên trường, hút thuốc lá trong khuôn viên nhà trường, uống rượu bia trước khi đến lớp.",
-    "HS tham gia đánh nhau trong và ngoài trường, gây rối nơi công cộng, kết băng nhóm với thanh niên bên ngoài để gây gỗ đánh nhau",
-    "Mang hung khí đến trường",
-    "Tổ chức đánh bài trong khu vực nhà trường (có ăn tiền)",
-    "Mang pháo vào khu vực trường học (sử dụng hoặc chưa sử dụng)"
+    ["5","Giúp đỡ bạn bè"],
+    ["5","Phát biểu tích cực"],
+    ["10","Giúp giáo viên"],
+    ["10","Hoàn thành việc được giao"],
+    ["15","Việc tốt nổi bật"],
+    ["20","Thành tích đặc biệt"]
+
 ];
 
 
@@ -3109,23 +2761,9 @@ function openRecordModal(kind){
     if(!student)
         return;
 
-    if(
-        currentUser.role === "leader" &&
-        currentUser.group !== student.group
-    ){
-
-        alert("Không có quyền.");
-
+    if(currentUser.role === "leader" && currentUser.group !== student.group){
+        alert("Tổ trưởng chỉ được chỉnh sửa học sinh thuộc tổ mình.");
         return;
-
-    }
-
-    if(currentUser.role === "classLeader"){
-        const officer=getOfficerAccountForStudent(student.id);
-        if(kind !== "violation" || !officer){
-            alert("Lớp trưởng chỉ có thể trừ điểm các tổ trưởng.");
-            return;
-        }
     }
 
     document.getElementById(
@@ -3198,18 +2836,6 @@ function openClassLeaderProposal(){
 /* =========================================================
    THÊM RECORD
 ========================================================= */
-
-async function awaitSaveDB(){
-    try{
-        const result = saveDB();
-        if(result && typeof result.then === "function") await result;
-        return true;
-    }catch(error){
-        console.error(error);
-        alert("Không thể lưu dữ liệu lên Firebase: " + (error.message || error));
-        return false;
-    }
-}
 
 function submitRecord(){
 
@@ -3289,15 +2915,15 @@ function submitRecord(){
     };
 
 
-    /* Giáo viên: được ghi trực tiếp */
+    /* Giáo viên ghi trực tiếp */
     if(currentUser.role === "teacher"){
 
         record.status = "approved";
         record.teacherApproved = true;
-        record.classLeaderApproved = true;
+        record.classLeaderApproved = false;
 
         db.records.push(record);
-        awaitSaveDB();
+        saveDB();
 
         closeModal("recordModal");
         render();
@@ -3305,36 +2931,53 @@ function submitRecord(){
         if(selectedStudentId)
             openStudent(selectedStudentId);
 
-        alert("Đã ghi nhận và tính điểm.");
+        alert("Đã ghi nhận thành công.");
         return;
     }
 
-    /*
-       Tổ trưởng / lớp trưởng: KHÔNG được trừ điểm ngay.
-       Phải đưa vào danh sách đề xuất để giáo viên và lớp trưởng duyệt.
-       Nếu lớp trưởng tự đề xuất thì lượt duyệt của lớp trưởng được tính
-       là đã duyệt, nhưng vẫn phải chờ giáo viên.
-    */
-    if(
-        currentUser.role === "leader" ||
-        currentUser.role === "classLeader"
-    ){
+
+    /* Tổ trưởng gửi đề xuất → Giáo viên + Lớp trưởng cùng duyệt */
+    if(currentUser.role === "leader"){
 
         record.status = "pending";
         record.teacherApproved = false;
         record.classLeaderApproved = false;
 
         db.proposals.push(record);
-        awaitSaveDB();
+        saveDB();
 
         closeModal("recordModal");
         render();
 
+        alert("Đã gửi đề xuất. Giáo viên và lớp trưởng sẽ nhận được để duyệt.");
+        return;
+    }
+
+
+    /* Lớp trưởng */
+    if(
+        currentUser.role === "classLeader"
+    ){
+
+        record.status =
+            "pending";
+
+        record.teacherApproved = false;
+
+        record.classLeaderApproved = false;
+
+        db.proposals.push(record);
+
+        saveDB();
+
+        closeModal("recordModal");
+
+        render();
+
         alert(
-            currentUser.role === "classLeader"
-            ? "Đã gửi đề xuất. Đề xuất đang chờ giáo viên duyệt."
-            : "Đã gửi đề xuất. Đề xuất đang chờ giáo viên và lớp trưởng duyệt."
+            "Đã gửi đề xuất. Giáo viên và lớp trưởng sẽ duyệt trong 48 giờ."
         );
+
     }
 
 }
@@ -3406,7 +3049,7 @@ function openDeleteRequest(recordId){
 }
 
 
-async function submitDeleteRequest(){
+function submitDeleteRequest(){
 
     const record =
         db.records.find(
@@ -3421,7 +3064,7 @@ async function submitDeleteRequest(){
         currentUser.role === "teacher"
     ){
 
-        await permanentlyDeleteRecord(
+        permanentlyDeleteRecord(
             record.id
         );
 
@@ -3477,7 +3120,7 @@ async function submitDeleteRequest(){
    XÓA HẲN + HOÀN ĐIỂM
 ========================================================= */
 
-async function permanentlyDeleteRecord(recordId){
+function permanentlyDeleteRecord(recordId){
 
     const index =
         db.records.findIndex(
@@ -3492,12 +3135,7 @@ async function permanentlyDeleteRecord(recordId){
 
     db.records.splice(index,1);
 
-    const ok = await saveDB();
-    if(!ok){
-        db.records.splice(index, 0, record);
-        render();
-        return;
-    }
+    saveDB();
 
     render();
 
@@ -3687,37 +3325,65 @@ function cleanupExpiredProposals(){
    DUYỆT ĐỀ XUẤT
 ========================================================= */
 
-function openPendingApprovals(){
+async function refreshDBFromFirebase(){
 
-    if(
-        currentUser.role !== "teacher"
-    )
+    if(!firebaseReady)
         return;
 
-    showApprovalList(
-        "teacher"
-    );
+    try{
+        const snap = await firebase.firestore()
+            .collection("classData")
+            .doc("main")
+            .get();
+
+        if(snap.exists && snap.data()){
+            db = snap.data();
+        }
+    }catch(error){
+        console.error("Lỗi tải dữ liệu Firebase:", error);
+    }
 
 }
 
 
-function openClassLeaderApprovals(){
+async function openPendingApprovals(){
 
-    if(
-        currentUser.role !== "classLeader"
-    )
+    if(currentUser.role !== "teacher")
         return;
 
-    showApprovalList(
-        "classLeader"
-    );
+    await refreshDBFromFirebase();
+    showApprovalList("teacher");
 
+}
+
+
+async function openClassLeaderApprovals(){
+
+    if(currentUser.role !== "classLeader")
+        return;
+
+    await refreshDBFromFirebase();
+    showApprovalList("classLeader");
+
+}
+
+
+function updateApprovalButtons(){
+    if(!db || !currentUser) return;
+    const pending = Array.isArray(db.proposals)
+        ? db.proposals.filter(p => p.status === "pending")
+        : [];
+    const teacherBtn = document.querySelector('#teacherFunctions button[onclick*="openPendingApprovals"]');
+    const leaderBtn = document.querySelector('#classLeaderFunctions button[onclick*="openClassLeaderApprovals"]');
+    if(teacherBtn) teacherBtn.innerHTML = `⏳ Duyệt đề xuất${pending.length ? ` (${pending.length})` : ""}`;
+    if(leaderBtn) leaderBtn.innerHTML = `⏳ Duyệt đề xuất${pending.length ? ` (${pending.length})` : ""}`;
 }
 
 
 function showApprovalList(role){
 
     cleanupExpiredProposals();
+    updateApprovalButtons();
 
     const box =
         document.getElementById(
@@ -3729,11 +3395,10 @@ function showApprovalList(role){
     ).innerText =
         "⏳ Đề xuất vi phạm / việc tốt";
 
-    const proposals = db.proposals.filter(p => {
-        if(p.status !== "pending") return false;
-        if(role === "classLeader") return p.createdByRole === "leader";
-        return true;
-    });
+    const proposals =
+        db.proposals.filter(
+            p => p.status === "pending"
+        );
 
     if(!proposals.length){
 
@@ -3838,15 +3503,18 @@ function showApprovalList(role){
                         `
                         :
                         `
-                        <button type="button"
+                        <button
                             class="btn-green"
-                            onclick="return handleApproveProposalClick(event, ${p.id}, '${role}')">
+                            onclick="approveProposal(
+                                ${p.id},
+                                '${role}'
+                            )">
                             ✓ Duyệt
                         </button>
 
-                        <button type="button"
+                        <button
                             class="btn-red"
-                            onclick="return handleRejectProposalClick(event, ${p.id})">
+                            onclick="rejectProposal(${p.id})">
                             ✕ Từ chối
                         </button>
                         `
@@ -3869,111 +3537,93 @@ function showApprovalList(role){
 }
 
 
-async function approveProposal(id,role){
-    const p=db.proposals.find(x=>Number(x.id)===Number(id));
-    if(!p) return false;
-    if(role!=="teacher" && role!=="classLeader") return false;
+function approveProposal(id,role){
 
-    // Lớp trưởng chỉ xử lý đề xuất của tổ trưởng.
-    if(role === "classLeader" && p.createdByRole !== "leader"){
-        alert("Lớp trưởng chỉ có thể duyệt đề xuất của tổ trưởng.");
-        return false;
-    }
+    const p =
+        db.proposals.find(
+            x => x.id === Number(id)
+        );
 
-    // Đề xuất do lớp trưởng tạo: chỉ giáo viên duyệt.
-    if(p.createdByRole === "classLeader"){
-        if(role !== "teacher") return false;
+    if(!p)
+        return;
+
+    if(role === "teacher")
         p.teacherApproved = true;
+
+    if(role === "classLeader")
         p.classLeaderApproved = true;
-    }else if(p.createdByRole === "leader"){
-        if(role === "teacher") p.teacherApproved = true;
-        if(role === "classLeader") p.classLeaderApproved = true;
-    }
 
-    if(p.teacherApproved && p.classLeaderApproved){
-        p.status="approved";
-        db.records.push({...p,status:"approved"});
-        db.proposals=db.proposals.filter(x=>Number(x.id)!==Number(p.id));
+    if(
+        p.teacherApproved &&
+        p.classLeaderApproved
+    ){
 
-        db.notifications.push({
-            id:Date.now()+Math.random(),
-            recipient:p.createdBy,
-            type:"proposal",
-            status:"approved",
-            title:"Đề xuất đã được duyệt",
-            message:`Đề xuất ${p.kind==='violation'?'vi phạm':'việc tốt'} “${p.type}” cho ${p.studentName} đã được duyệt và tính ${p.points>0?'+':''}${p.points} điểm.`,
-            createdAt:Date.now(),
-            read:false
+        p.status = "approved";
+
+        db.records.push({
+
+            ...p,
+
+            status:"approved"
+
         });
 
-        await awaitSaveDB();
-        alert("Đã duyệt. Đề xuất đã được ghi nhận và tính điểm.");
+        db.proposals =
+            db.proposals.filter(
+                x => x.id !== p.id
+            );
+
+        saveDB();
+
+        alert(
+            "Đã đủ 2 bên duyệt. Đề xuất đã được đưa vào hệ thống và tính điểm."
+        );
+
     }else{
-        await awaitSaveDB();
-        alert("Đã ghi nhận lượt duyệt. Đang chờ bên còn lại.");
+
+        saveDB();
+
+        alert(
+            "Đã ghi nhận lượt duyệt. Đang chờ bên còn lại."
+        );
+
     }
+
     showApprovalList(role);
+
     render();
-    return false;
+
 }
 
-async function rejectProposal(id){
-    const p = db.proposals.find(x => Number(x.id) === Number(id));
-    if(!p) return false;
-    const role = currentUser && currentUser.role;
-    if(role !== "teacher" && role !== "classLeader"){
-        alert("Bạn không có quyền từ chối đề xuất.");
-        return false;
-    }
-    if(role === "classLeader" && p.createdByRole !== "leader"){
-        alert("Lớp trưởng chỉ có thể xử lý đề xuất của tổ trưởng.");
-        return false;
-    }
-    if(!confirm("Từ chối đề xuất này?")) return false;
 
-    const old = db.proposals.slice();
-    const oldNotifications = db.notifications.slice();
-    db.proposals = db.proposals.filter(x => Number(x.id) !== Number(p.id));
-    db.notifications.push({
-        id:Date.now()+Math.random(),
-        recipient:p.createdBy,
-        type:"proposal",
-        status:"rejected",
-        title:"Đề xuất bị từ chối",
-        message:`Đề xuất ${p.kind==='violation'?'vi phạm':'việc tốt'} “${p.type}” cho ${p.studentName} đã bị từ chối.`,
-        createdAt:Date.now(),
-        read:false
-    });
+function rejectProposal(id){
 
-    const ok = await saveDB();
-    if(!ok){
-        db.proposals = old;
-        db.notifications = oldNotifications;
-        render();
-        return false;
-    }
-    alert("Đã từ chối đề xuất.");
-    showApprovalList(role);
-    render();
-    return false;
-}
+    const p =
+        db.proposals.find(
+            x => x.id === Number(id)
+        );
 
-function handleRejectProposalClick(event,id){
-    if(event){event.preventDefault();event.stopPropagation();}
-    rejectProposal(id);
-    return false;
-}
+    if(!p)
+        return;
 
-function handleDeleteStudentClick(event,id){
-    if(event){event.preventDefault();event.stopPropagation();}
-    deleteStudent(id);
-    return false;
-}
+    if(
+        !confirm(
+            "Từ chối đề xuất này?"
+        )
+    )
+        return;
 
-function handleApproveProposalClick(event,id,role){
-    if(event){event.preventDefault();event.stopPropagation();}
-    approveProposal(id,role);
-    return false;
+    db.proposals =
+        db.proposals.filter(
+            x => x.id !== p.id
+        );
+
+    saveDB();
+
+    showApprovalList(
+        currentUser.role
+    );
+
 }
 
 
@@ -4156,14 +3806,6 @@ function rejectDelete(requestId){
    THÔNG BÁO
 ========================================================= */
 
-async function markNotificationRead(id){
-    const n=(db.notifications||[]).find(x=>String(x.id)===String(id));
-    if(!n) return;
-    n.read=true;
-    await saveDB();
-    renderNotifications();
-}
-
 function renderNotifications(){
 
     const panel =
@@ -4177,19 +3819,6 @@ function renderNotifications(){
         );
 
     let html = "";
-
-    /* Thông báo kết quả đề xuất cho người đã nộp */
-    if(currentUser){
-        const myNotes = (db.notifications || []).filter(n => n.recipient === currentUser.username && !n.read);
-        myNotes.forEach(n=>{
-            html += `
-                <div class="notification">
-                    ${n.status === "approved" ? "✅" : "❌"} <strong>${esc(n.title)}</strong><br>
-                    ${esc(n.message)}<br><br>
-                    <button type="button" class="btn-purple" onclick="markNotificationRead('${String(n.id)}')">Đã xem</button>
-                </div>`;
-        });
-    }
 
     /* Báo cáo cho GV */
     if(
@@ -4463,12 +4092,12 @@ function openAddStudent(){
 }
 
 
-async function addStudent(){
+function addStudent(){
 
-    if(!currentUser || currentUser.role !== "teacher"){
-        alert("Chỉ giáo viên được thêm học sinh.");
+    if(
+        currentUser.role !== "teacher"
+    )
         return;
-    }
 
     const name =
         document.getElementById(
@@ -4497,7 +4126,7 @@ async function addStudent(){
         ?
         Math.max(
             ...db.students.map(
-                s => Number(s.id) || 0
+                s => s.id
             )
         ) + 1
         :
@@ -4532,38 +4161,40 @@ async function addStudent(){
    XÓA HỌC SINH
 ========================================================= */
 
-async function deleteStudent(id){
+function deleteStudent(id){
 
-    if(currentUser.role !== "teacher"){
-        alert("Chỉ giáo viên mới được xóa học sinh.");
+    if(
+        currentUser.role !== "teacher"
+    )
         return;
-    }
 
-    const student = getStudent(Number(id));
-    if(!student) return;
+    const student =
+        getStudent(id);
 
-    if(!confirm(`Xóa học sinh "${student.name}"?`)) return;
-
-    const oldStudents = db.students.slice();
-    const oldRecords = db.records.slice();
-
-    db.students = db.students.filter(s => Number(s.id) !== Number(id));
-    db.records = db.records.filter(r => Number(r.studentId) !== Number(id));
-
-    const ok = await saveDB();
-    if(!ok){
-        db.students = oldStudents;
-        db.records = oldRecords;
-        render();
+    if(!student)
         return;
-    }
 
-    if(Number(selectedStudentId) === Number(id)){
-        selectedStudentId = null;
-        closeModal("studentModal");
-    }
+    if(
+        !confirm(
+            `Xóa học sinh "${student.name}"?`
+        )
+    )
+        return;
+
+    db.students =
+        db.students.filter(
+            s => s.id !== id
+        );
+
+    db.records =
+        db.records.filter(
+            r => r.studentId !== id
+        );
+
+    saveDB();
+
     render();
-    alert("Đã xóa học sinh.");
+
 }
 
 
@@ -4720,53 +4351,7 @@ function createSnapshot(week){
 }
 
 
-async function applyWeeklyStarAwards(){
-    ensureStarData();
-    const current = getCurrentWeek();
-    if(current <= 1) return false;
-
-    const awardKey = String(current);
-    if(db.starAwards[awardKey]) return false;
-
-    const previousWeek = current - 1;
-    if(!db.history[previousWeek])
-        createSnapshot(previousWeek);
-
-    const snapshot = db.history[previousWeek];
-    if(!snapshot || !Array.isArray(snapshot.students)) return false;
-
-    snapshot.students.forEach(result => {
-        const student = getStudent(result.id);
-        if(!student) return;
-
-        let amount = 0;
-        if(result.ranking === "Xuất sắc") amount = 20;
-        else if(result.ranking === "Tốt") amount = 15;
-        else if(result.ranking === "Khá") amount = 5;
-        else if(result.ranking === "Yếu" || result.ranking === "Tệ") amount = -30;
-
-        if(amount !== 0){
-            student.stars = Number(student.stars || 0) + amount;
-            db.rewardHistory.push({
-                id: Date.now() + result.id,
-                studentId: student.id,
-                rewardId: null,
-                rewardName: `Xếp loại tuần ${previousWeek}: ${result.ranking}`,
-                cost: -amount,
-                date: todayISO()
-            });
-        }
-    });
-
-    db.starAwards[awardKey] = {
-        week: current,
-        basedOnWeek: previousWeek,
-        date: todayISO()
-    };
-    return true;
-}
-
-async function autoCreateHistory(){
+function autoCreateHistory(){
 
     const current =
         getCurrentWeek();
@@ -4785,9 +4370,7 @@ async function autoCreateHistory(){
 
     }
 
-    const awarded = await applyWeeklyStarAwards();
-    if(awarded) await saveDB();
-    else await saveDB();
+    saveDB();
 
 }
 
@@ -4796,7 +4379,7 @@ async function autoCreateHistory(){
    MỞ LỊCH SỬ
 ========================================================= */
 
-async function openHistory(){
+function openHistory(){
 
     if(
         currentUser.role !== "teacher"
@@ -4998,7 +4581,7 @@ function showHistoryWeek(week){
    XẾP LOẠI TUẦN
 ========================================================= */
 
-async function openWeeklyRanking(){
+function openWeeklyRanking(){
 
     if(
         currentUser.role !== "teacher"
@@ -5051,6 +4634,32 @@ async function openWeeklyRanking(){
 }
 
 
+async function awardStarsForWeek(week, data){
+    if(!db.settings) db.settings={};
+    if(!db.settings.starAwards) db.settings.starAwards={};
+    if(db.settings.starAwards[String(week)]) return false;
+    ensureStudentStars();
+    let changed=false;
+    (data.students||[]).forEach(row=>{
+        const student=getStudent(row.id);
+        if(!student) return;
+        const r=ranking(Number(row.score));
+        const delta = r==="Xuất sắc" ? 20 : r==="Tốt" ? 15 : r==="Khá" ? 5 : r==="Yếu" ? -30 : 0;
+        if(delta!==0){
+            student.stars=Math.max(0,getStudentStars(student)+delta);
+            db.notifications=db.notifications||[];
+            db.notifications.push({id:Date.now()+Math.random(),type:"star",studentId:student.id,text:`⭐ Tuần ${week}: ${r} → ${delta>0?"+":""}${delta} sao.`,date:todayISO(),seen:false});
+            changed=true;
+        }
+    });
+    db.settings.starAwards[String(week)]={at:Date.now()};
+    if(changed) await saveDB();
+    else await saveDB();
+    render();
+    renderRewardPanel();
+    return true;
+}
+
 function renderRanking(week){
 
     if(!db.history[week])
@@ -5058,6 +4667,9 @@ function renderRanking(week){
 
     const data =
         db.history[week];
+
+    // Chốt sao một lần cho mỗi tuần khi giáo viên mở bảng xếp loại.
+    awardStarsForWeek(week,data);
 
     const box =
         document.getElementById(
@@ -5158,6 +4770,224 @@ function renderRanking(week){
 
 
 /* =========================================================
+   CÀI ĐẶT POPUP / SAO / NHẬP EXCEL
+========================================================= */
+function openTeacherSettings(){
+    if(currentUser?.role !== "teacher") return;
+    renderPasswordSettings();
+    renderLeaderManagerSummary();
+    const box=document.getElementById("teacherSettings");
+    const back=document.getElementById("teacherSettingsBackdrop");
+    if(box){ box.style.display="block"; }
+    if(back){ back.style.display="block"; }
+}
+function closeTeacherSettings(){
+    const box=document.getElementById("teacherSettings");
+    const back=document.getElementById("teacherSettingsBackdrop");
+    if(box) box.style.display="none";
+    if(back) back.style.display="none";
+}
+
+const REWARDS=[
+ {name:"Đổi chỗ 1 ngày",cost:20},
+ {name:"Miễn bài tập",cost:65},
+ {name:"Gỡ điểm miệng",cost:15},
+ {name:"Quà 30 sao",cost:30},
+ {name:"Quà 50 sao",cost:50},
+ {name:"Quà 100 sao",cost:100}
+];
+function getStudentStars(student){ return Math.max(0,Number(student?.stars||0)); }
+function ensureStudentStars(){ (db.students||[]).forEach(s=>{if(typeof s.stars!=="number") s.stars=0;}); }
+function toggleRewardDrawer(force){
+    if(currentUser?.role !== "teacher") return;
+    const box=document.getElementById("rewardDrawer");
+    const back=document.getElementById("rewardBackdrop");
+    if(!box) return;
+    const shouldOpen = typeof force === "boolean" ? force : box.style.display !== "block";
+    box.style.display = shouldOpen ? "block" : "none";
+    if(back) back.style.display = shouldOpen ? "block" : "none";
+    if(shouldOpen) renderRewardPanel();
+}
+function renderRewardPanel(){
+    if(!db) return;
+    ensureStudentStars();
+    const sel=document.getElementById("rewardStudentSelect");
+    if(!sel) return;
+    const old=sel.value;
+    sel.innerHTML=db.students.map(s=>`<option value="${s.id}">${esc(s.name)} — Tổ ${s.group}</option>`).join("");
+    if(old && db.students.some(s=>String(s.id)===old)) sel.value=old;
+    const student=db.students.find(s=>String(s.id)===String(sel.value)) || db.students[0];
+    if(!student) return;
+    document.getElementById("rewardStudentStars").textContent=getStudentStars(student);
+    document.getElementById("rewardGrid").innerHTML=REWARDS.map((r,i)=>`<div class="reward-card"><b>🎁 ${esc(r.name)}</b><p>Giá: ⭐ ${r.cost}</p><button class="btn-yellow" type="button" ${getStudentStars(student)<r.cost?'disabled':''} onclick="redeemReward(${student.id},${i})">Đổi quà</button></div>`).join("");
+}
+async function redeemReward(studentId,index){
+    if(currentUser?.role!=="teacher") return;
+    const student=getStudent(studentId), reward=REWARDS[index];
+    if(!student||!reward) return;
+    ensureStudentStars();
+    if(getStudentStars(student)<reward.cost){alert(`Chưa đủ sao. Cần thêm ${reward.cost-getStudentStars(student)} sao.`);return;}
+    if(!confirm(`Đổi "${reward.name}" cho ${student.name} với ${reward.cost} sao?`)) return;
+    student.stars-=reward.cost;
+    db.notifications=db.notifications||[];
+    db.notifications.push({id:Date.now(),type:"reward",studentId:student.id,text:`🎁 ${reward.name} đã được đổi bằng ${reward.cost} sao.` ,date:todayISO(),seen:false});
+    await saveDB(); render(); renderRewardPanel();
+}
+
+let multiSelectMode=false;
+let selectedStudentIds=new Set();
+
+function canTeacher(){ return currentUser?.role === "teacher"; }
+
+function toggleMultiSelectMode(){
+    if(!canTeacher()) return;
+    multiSelectMode=!multiSelectMode;
+    if(!multiSelectMode) selectedStudentIds.clear();
+    const btn=document.getElementById("multiSelectButton");
+    if(btn){
+        btn.innerText=multiSelectMode ? "☑️ Xong chọn thành viên" : "☑️ Chọn nhiều thành viên";
+        btn.classList.toggle("active", multiSelectMode);
+    }
+    render();
+}
+function toggleStudentSelection(id, checked){
+    if(!canTeacher()) return;
+    if(checked) selectedStudentIds.add(Number(id)); else selectedStudentIds.delete(Number(id));
+    updateMultiSelectBar();
+}
+function updateMultiSelectBar(){
+    const bar=document.getElementById("multiSelectBar");
+    if(!bar) return;
+    const n=selectedStudentIds.size;
+    bar.innerHTML = n ? `
+      <span>☑️ Đã chọn <b>${n}</b> học sinh</span>
+      <button class="btn-green" type="button" onclick="openMoveStudents()">➡️ Chọn tổ để chuyển</button>
+      <button class="btn-gray" type="button" onclick="selectedStudentIds.clear();render()">Bỏ chọn</button>` : "";
+    bar.style.display=n?"flex":"none";
+}
+function openMoveStudents(){
+    if(!canTeacher() || !selectedStudentIds.size) return;
+    const list=[...selectedStudentIds].map(id=>getStudent(id)).filter(Boolean);
+    document.getElementById("moveStudentsCount").innerText=`Đã chọn ${list.length} học sinh.`;
+    document.getElementById("moveStudentsPreview").innerHTML=list.map(s=>`• ${esc(s.name)} — hiện tại: ${Number(s.group)?"Tổ "+s.group:"Chưa xếp tổ"}`).join("<br>");
+    document.getElementById("moveStudentsModal").style.display="flex";
+}
+async function confirmMoveStudents(){
+    if(!canTeacher() || !selectedStudentIds.size) return;
+    const group=Number(document.getElementById("moveStudentsGroup").value);
+    [...selectedStudentIds].forEach(id=>{ const s=getStudent(id); if(s) s.group=group; });
+    await saveDB();
+    selectedStudentIds.clear();
+    multiSelectMode=false;
+    const btn=document.getElementById("multiSelectButton"); if(btn) btn.innerText="☑️ Chọn nhiều thành viên";
+    closeModal("moveStudentsModal");
+    render();
+    alert(`✅ Đã chuyển học sinh vào Tổ ${group}.`);
+}
+
+function openBulkImport(){
+    if(!canTeacher()) return;
+    document.getElementById("bulkPreview").innerHTML="Chưa chọn file.";
+    document.getElementById("bulkImportConfirm").disabled=true;
+    document.getElementById("bulkExcelInput").value="";
+    document.getElementById("bulkImportModal").style.display="flex";
+}
+function excelSuffix(n){
+    let x=n+1,out="";
+    while(x>0){let r=(x-1)%26;out=String.fromCharCode(97+r)+out;x=Math.floor((x-1)/26);}
+    return out;
+}
+function makeUniqueStudentName(base,used){
+    const name=String(base||"").trim(); if(!name) return "";
+    if(!used.has(name.toLocaleLowerCase())){used.add(name.toLocaleLowerCase());return name;}
+    let n=1; while(true){const c=`${name} ${excelSuffix(n)}`;if(!used.has(c.toLocaleLowerCase())){used.add(c.toLocaleLowerCase());return c;}n++;}
+}
+let bulkPendingNames=[];
+function previewBulkExcel(event){
+    if(!canTeacher()) return;
+    const file=event.target.files?.[0];
+    if(!file) return;
+    if(typeof XLSX==="undefined"){
+        alert("Không tải được bộ đọc Excel. Hãy kiểm tra Internet rồi tải lại trang.");
+        return;
+    }
+    const reader=new FileReader();
+    reader.onload=e=>{
+      try{
+        const wb=XLSX.read(new Uint8Array(e.target.result),{type:"array",cellDates:true});
+        let names=[];
+
+        // Ưu tiên sheet "SỔ GVCN" của file sổ theo dõi bạn đang dùng.
+        // Tìm cột có tiêu đề "Họ và tên" thay vì mặc định lấy cột A.
+        const preferredSheet = wb.Sheets["SỔ GVCN"] || wb.Sheets[wb.SheetNames[0]];
+        const sheetName = wb.SheetNames.includes("SỔ GVCN") ? "SỔ GVCN" : wb.SheetNames[0];
+        const rows = XLSX.utils.sheet_to_json(preferredSheet,{header:1,defval:"",raw:false});
+
+        let nameCol = -1;
+        for(let r=0;r<Math.min(rows.length,20);r++){
+            for(let c=0;c<(rows[r]||[]).length;c++){
+                const v=String(rows[r][c]??"").trim().toLocaleLowerCase();
+                if(["họ và tên","ho va ten","họ tên","ho ten","tên","ten","name"].includes(v)){
+                    nameCol=c;
+                    break;
+                }
+            }
+            if(nameCol>=0) break;
+        }
+
+        // Nếu không tìm thấy tiêu đề, thử các cột có dữ liệu dạng tên.
+        if(nameCol<0){
+            for(let c=0;c<Math.min(12,(rows[0]||[]).length);c++){
+                let count=0;
+                for(let r=0;r<rows.length;r++){
+                    const v=String(rows[r]?.[c]??"").trim();
+                    if(v && /[A-Za-zÀ-ỹĐđ]/.test(v) && !/^\d+$/.test(v)) count++;
+                }
+                if(count>=2){nameCol=c;break;}
+            }
+        }
+
+        if(nameCol<0) throw new Error("Không tìm thấy cột Họ và tên");
+
+        // Đọc các tên, bỏ STT/dòng tiêu đề và ô trống.
+        for(const row of rows){
+            const value=String(row?.[nameCol]??"").replace(/\s+/g," ").trim();
+            if(!value) continue;
+            if(/^(họ\s*và\s*tên|ho\s*va\s*ten|họ\s*tên|ho\s*ten|tên|ten|name)$/i.test(value)) continue;
+            if(/^(stt|số\s*tt|so\s*tt)$/i.test(value)) continue;
+            if(/^\d+$/.test(value)) continue;
+            names.push(value);
+        }
+
+        // Loại các tên trùng ngay trong file theo quy tắc a/b/c...
+        const used=new Set(db.students.map(s=>String(s.name||"").trim().toLocaleLowerCase()));
+        bulkPendingNames=names.map(n=>makeUniqueStudentName(n,used)).filter(Boolean);
+
+        document.getElementById("bulkPreview").innerHTML=
+          `<b>Đã đọc ${bulkPendingNames.length} tên từ sheet "${esc(sheetName)}".</b><br>`+
+          `<span>📌 Cột được đọc: <b>Họ và tên</b></span><br><br>`+
+          `${bulkPendingNames.slice(0,80).map((n,i)=>`${i+1}. ${esc(n)}`).join("<br>")}`+
+          `${bulkPendingNames.length>80?"<br>…":""}`;
+        document.getElementById("bulkImportConfirm").disabled=bulkPendingNames.length===0;
+      }catch(err){
+        console.error(err);
+        bulkPendingNames=[];
+        document.getElementById("bulkPreview").innerHTML=
+          "❌ Không đọc được danh sách tên.<br><small>Hãy kiểm tra file có sheet <b>SỔ GVCN</b> và cột <b>Họ và tên</b>.</small>";
+        document.getElementById("bulkImportConfirm").disabled=true;
+      }
+    };
+    reader.readAsArrayBuffer(file);
+}
+async function confirmBulkImport(){
+    if(!canTeacher()||!bulkPendingNames.length) return;
+    const startId=db.students.length?Math.max(...db.students.map(s=>Number(s.id)||0))+1:1;
+    bulkPendingNames.forEach((name,i)=>db.students.push({id:startId+i,name,group:0,present:true,initialScore:100,stars:0,avatar:""}));
+    await saveDB(); closeModal("bulkImportModal"); bulkPendingNames=[]; render();
+    alert("✅ Đã thêm danh sách. Các học sinh đang ở trạng thái Chưa xếp tổ. Hãy dùng Chọn nhiều thành viên để xếp tổ.");
+}
+
+/* =========================================================
    MODAL
 ========================================================= */
 
@@ -5187,7 +5017,7 @@ async function startApp(){
     }
 
     if(db){
-        await autoCreateHistory();
+        autoCreateHistory();
 
         if(!db.accounts){
             showAccountSetup();
@@ -5207,6 +5037,7 @@ async function startApp(){
         );
 }
 
+document.addEventListener("keydown",e=>{if(e.key==="Escape"){closeTeacherSettings();const r=document.getElementById("rewardDrawer");if(r)r.style.display="none";}});
 startApp();
 
 </script>
