@@ -693,7 +693,7 @@ Lưu tài khoản
 
 <div class="card">
 <small>Tuần hiện tại</small>
-<strong id="currentWeek">1</strong>
+<strong id="currentWeek">0</strong>
 </div>
 
 <div class="card">
@@ -740,7 +740,7 @@ Lưu tài khoản
 <h3>📅 Năm học</h3>
 
 <p>
-Tuần 1 được tính từ ngày bắt đầu năm học.
+Tuần 0 được tính từ ngày bắt đầu năm học.
 Mỗi 7 ngày tăng một tuần.
 </p>
 
@@ -1636,11 +1636,11 @@ function getCurrentWeek(){
         );
 
     if(diff < 0)
-        return 1;
+        return 0;
 
     return Math.min(
         MAX_WEEKS,
-        Math.floor(diff/7)+1
+        Math.floor(diff/7)
     );
 
 }
@@ -1660,11 +1660,11 @@ function getWeekFromDate(date){
         );
 
     if(diff < 0)
-        return 1;
+        return 0;
 
     return Math.min(
         MAX_WEEKS,
-        Math.floor(diff/7)+1
+        Math.floor(diff/7)
     );
 
 }
@@ -2730,14 +2730,30 @@ const violationTypes = [
 ];
 
 const goodTypes = [
-
-    ["5","Giúp đỡ bạn bè"],
-    ["5","Phát biểu tích cực"],
-    ["10","Giúp giáo viên"],
-    ["10","Hoàn thành việc được giao"],
-    ["15","Việc tốt nổi bật"],
-    ["20","Thành tích đặc biệt"]
-
+    ["20","Tham gia 1 phong trào do trường phát động"],
+    ["5","Tham gia cổ vũ phong trào"],
+    ["30","Sinh hoạt tập thể đoạt giải 1"],
+    ["25","Sinh hoạt tập thể đoạt giải 2"],
+    ["20","Sinh hoạt tập thể đoạt giải 3"],
+    ["15","Sinh hoạt tập thể đoạt giải KK"],
+    ["10","Điểm miệng: 10"],
+    ["8","Điểm miệng: 9"],
+    ["7","Điểm miệng: 8"],
+    ["5","Điểm miệng: 7"],
+    ["3","Điểm cộng"],
+    ["40","Thi HSG đạt giải 1"],
+    ["30","Thi HSG đạt giải 2"],
+    ["25","Thi HSG đạt giải 3"],
+    ["10","Thi HSG đạt giải KK"],
+    ["10","Học sinh trung thực tố cáo những hành vi sai trái của học sinh trong lớp"],
+    ["15","Tham gia công tác xã hội và công tác khác được nhà trường khen"],
+    ["10","Học sinh nhặt được của rơi tìm người trả lại được nhà trường tuyên dương"],
+    ["10","Tham gia tình nguyện vào các hoạt động đột xuất"],
+    ["10","Ban cán sự làm việc tốt"],
+    ["15","Đạt điểm 10 trong giờ A*"],
+    ["10","Đạt điểm 9 trong giờ A*"],
+    ["3","Xung phong trả lời: Sai"],
+    ["5","Xung phong trả lời: Đúng"]
 ];
 
 
@@ -4315,7 +4331,7 @@ function saveSchoolStart(){
 function createSnapshot(week){
 
     if(
-        week < 1 ||
+        week < 0 ||
         week > MAX_WEEKS
     )
         return;
@@ -4427,7 +4443,7 @@ function autoCreateHistory(){
         getCurrentWeek();
 
     for(
-        let w=1;
+        let w=0;
         w<current;
         w++
     ){
@@ -4469,7 +4485,7 @@ function openHistory(){
     list.innerHTML = "";
 
     for(
-        let w=1;
+        let w=0;
         w<=current;
         w++
     ){
@@ -4671,7 +4687,7 @@ function openWeeklyRanking(){
     select.innerHTML = "";
 
     for(
-        let w=1;
+        let w=0;
         w<=current;
         w++
     ){
