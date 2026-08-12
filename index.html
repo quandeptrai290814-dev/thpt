@@ -2288,12 +2288,20 @@ function renderTable(list){
             <td>${index+1}</td>
 
             <td>
-                <span
-                    class="student-name"
-                    style="${getStudentNameStyle(student)}"
-                    onclick="openStudent(${student.id})">
-                    ${esc(student.name)}
-                </span>
+                <div style="display:flex;align-items:center;gap:9px">
+                    <img
+                        src="${student.avatar || makeAvatar(student.name)}"
+                        alt="Ảnh đại diện"
+                        style="width:38px;height:38px;border-radius:50%;object-fit:cover;border:2px solid #eadfbf;cursor:pointer;flex:none"
+                        onclick="openStudent(${student.id})"
+                    >
+                    <span
+                        class="student-name"
+                        style="${getStudentNameStyle(student)}"
+                        onclick="openStudent(${student.id})">
+                        ${esc(student.name)}
+                    </span>
+                </div>
             </td>
 
             <td>Tổ ${student.group}</td>
