@@ -49,6 +49,9 @@
     --green:#B5DDBD;
     --orange:#F2C98E;
     --purple:#CDBCE8;
+    --red:#D94B4B;
+    --text:#4A4033;
+    --green-dark:#4C8B5B;
 
     /* ===== BÓNG ===== */
     --shadow:
@@ -91,6 +94,17 @@ button:hover{
 button:disabled{
     opacity:.5;
     cursor:not-allowed;
+}
+
+.delete-record-btn{
+    background:#d94b4b !important;
+    color:#fff !important;
+    opacity:1 !important;
+    visibility:visible !important;
+    pointer-events:auto !important;
+    cursor:pointer !important;
+    position:relative !important;
+    z-index:60 !important;
 }
 
 .delete-student-btn{
@@ -556,6 +570,29 @@ button, .btn-purple, .btn-red, .btn-green, .btn-blue, .btn-orange, .btn-yellow, 
 .tabs button, .modal-actions button, td button {
     display: inline-block !important;
 }
+
+/* ===== ĐIỆN THOẠI ===== */
+@media (max-width: 700px){
+    body{font-size:14px}
+    .container{padding:10px}
+    .cards{grid-template-columns:repeat(2,1fr);gap:8px}
+    .groups{grid-template-columns:repeat(2,1fr)!important;gap:8px!important}
+    .panel{padding:12px!important}
+    .tabs{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+    .tabs button{width:100%;min-height:44px;padding:9px 7px}
+    .modal{padding:8px}
+    .modal-box{width:100%;max-width:100%;max-height:94vh;padding:14px;border-radius:12px}
+    .modal-actions{flex-wrap:wrap}
+    .modal-actions button{min-width:120px}
+    #attendanceList .notification > div{display:flex!important;flex-direction:column!important;align-items:stretch!important;gap:8px!important}
+    #attendanceList select,#attendanceList input{width:100%!important;min-height:44px}
+    #attendanceList .notification{padding:10px!important}
+    table{min-width:760px}
+    .table-wrap{-webkit-overflow-scrolling:touch}
+    .summary-grid{grid-template-columns:repeat(2,1fr)!important}
+    .avatar-editor{flex-direction:column!important;align-items:flex-start!important}
+}
+
 </style>
 </head>
 
@@ -878,6 +915,15 @@ Thao tác
 
 <h2 id="studentModalTitle"></h2>
 
+<div class="avatar-editor" style="display:flex;align-items:center;gap:14px;margin:10px 0 18px">
+    <img id="studentAvatar" src="" alt="Ảnh đại diện" style="width:88px;height:88px;border-radius:50%;object-fit:cover;border:3px solid #eadfbf;background:#f5f0e5">
+    <div>
+        <div style="font-weight:bold;margin-bottom:6px">🖼️ Ảnh đại diện</div>
+        <input type="file" id="studentAvatarInput" accept="image/*" onchange="changeStudentAvatar(event)" style="max-width:100%">
+        <small id="avatarHint">Giáo viên có thể đổi ảnh cho học sinh.</small>
+    </div>
+</div>
+
 <div class="summary-grid">
 
 <div class="summary">
@@ -1030,8 +1076,8 @@ Thêm vi phạm / việc tốt
 
 <div id="recordApprovalNotice"
 class="notice">
-Đây là đề xuất của lớp trưởng.
-Sau khi gửi, lớp trưởng và giáo viên phải duyệt.
+Đề xuất sẽ được gửi đến người có thẩm quyền duyệt.
+Nếu lớp trưởng đề xuất vi phạm, chỉ cần giáo viên duyệt.
 Nếu quá 48 giờ chưa đủ duyệt, đề xuất sẽ tự mất.
 </div>
 
@@ -1309,6 +1355,8 @@ function defaultDB(){
 
         proposals:[],
 
+        notifications:[],
+
         deleteRequests:[],
 
         reports:[],
@@ -1446,6 +1494,7 @@ async function loadDB(){
 
             if(remote){
                 db = remote;
+                if(!Array.isArray(db.notifications)) db.notifications=[];
 
                 if(currentUser){
                     render();
@@ -1466,6 +1515,7 @@ async function loadDB(){
 async function saveDB(){
 
     if(!db) return;
+    if(!Array.isArray(db.notifications)) db.notifications=[];
 
     if(!firebaseReady){
         try{
@@ -2187,6 +2237,22 @@ function render(){
    BẢNG HỌC SINH
 ========================================================= */
 
+function getOfficerAccountForStudent(studentId){
+    if(!db.accounts) return null;
+    for(const username of ["to1","to2","to3","to4"]){
+        const acc=db.accounts[username];
+        if(acc && Number(acc.studentId)===Number(studentId)) return {username,...acc};
+    }
+    return null;
+}
+
+function getStudentNameStyle(student){
+    const officer=getOfficerAccountForStudent(student.id);
+    if(!officer) return "";
+    const colors={1:"#b83b3b",2:"#315f91",3:"#36734b",4:"#b96f20"};
+    return `color:${colors[officer.group]||"#333"};font-weight:800`;
+}
+
 function renderTable(list){
 
     const tbody =
@@ -2224,6 +2290,7 @@ function renderTable(list){
             <td>
                 <span
                     class="student-name"
+                    style="${getStudentNameStyle(student)}"
                     onclick="openStudent(${student.id})">
                     ${esc(student.name)}
                 </span>
@@ -2253,7 +2320,7 @@ function renderTable(list){
                     <button type="button"
                         class="btn-red delete-student-btn"
                         style="padding:8px 12px !important;background:#d94b4b !important;color:#ffffff !important;opacity:1 !important;visibility:visible !important;display:inline-block !important;pointer-events:auto !important;cursor:pointer !important;position:relative;z-index:50"
-                        onclick="event.stopPropagation(); deleteStudent(${student.id})">
+                        onclick="return handleDeleteStudentClick(event, ${student.id})">
                         🗑️ Xóa học sinh
                     </button>
                 </td>
@@ -2274,6 +2341,55 @@ function renderTable(list){
 /* =========================================================
    HỌC SINH
 ========================================================= */
+
+function makeAvatar(name){
+    const initials = String(name||"HS").trim().split(/\s+/).slice(-2).map(x=>x[0]||"").join("").toUpperCase();
+    const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="180" height="180"><rect width="100%" height="100%" fill="#eee6d7"/><circle cx="90" cy="68" r="32" fill="#c9b89a"/><path d="M35 160c8-38 32-55 55-55s47 17 55 55" fill="#9b83c4"/><text x="90" y="178" text-anchor="middle" font-family="Arial" font-size="18" fill="#4a4033">${esc(initials||"HS")}</text></svg>`;
+    return "data:image/svg+xml;charset=UTF-8," + encodeURIComponent(svg);
+}
+
+async function changeStudentAvatar(event){
+    if(!currentUser || currentUser.role !== "teacher") return;
+    const file = event.target.files && event.target.files[0];
+    if(!file || !selectedStudentId) return;
+    if(!file.type.startsWith("image/")){ alert("Vui lòng chọn tệp ảnh."); return; }
+    try{
+        const data = await resizeImageToDataURL(file, 256, 0.78);
+        const student = getStudent(selectedStudentId);
+        if(!student) return;
+        student.avatar = data;
+        const img = document.getElementById("studentAvatar");
+        if(img) img.src = data;
+        await saveDB();
+        render();
+        alert("Đã cập nhật ảnh đại diện.");
+    }catch(error){
+        console.error(error);
+        alert("Không thể lưu ảnh. Hãy thử ảnh khác.");
+    }
+}
+
+function resizeImageToDataURL(file, maxSize, quality){
+    return new Promise((resolve,reject)=>{
+        const reader = new FileReader();
+        reader.onerror = reject;
+        reader.onload = ()=>{
+            const img = new Image();
+            img.onerror = reject;
+            img.onload = ()=>{
+                const scale = Math.min(1, maxSize / Math.max(img.width,img.height));
+                const canvas = document.createElement("canvas");
+                canvas.width = Math.max(1, Math.round(img.width*scale));
+                canvas.height = Math.max(1, Math.round(img.height*scale));
+                const ctx = canvas.getContext("2d");
+                ctx.drawImage(img,0,0,canvas.width,canvas.height);
+                resolve(canvas.toDataURL("image/jpeg",quality));
+            };
+            img.src = reader.result;
+        };
+        reader.readAsDataURL(file);
+    });
+}
 
 function openStudent(id){
 
@@ -2306,6 +2422,16 @@ function openStudent(id){
         "studentModalTitle"
     ).innerText =
         `${student.name} - Tổ ${student.group}`;
+
+    const avatar = document.getElementById("studentAvatar");
+    if(avatar){
+        avatar.src = student.avatar || makeAvatar(student.name);
+    }
+    const avatarInput = document.getElementById("studentAvatarInput");
+    if(avatarInput){
+        avatarInput.value = "";
+        avatarInput.style.display = currentUser.role === "teacher" ? "block" : "none";
+    }
 
     document.getElementById(
         "studentInitial"
@@ -2644,11 +2770,11 @@ function renderStudentRecords(student){
                         canDeleteRecord(r)
                         ?
                         `
-                        <button
-                            class="btn-red"
-                            style="padding:6px 9px"
-                            onclick="openDeleteRequest(${r.id})">
-                            Xóa
+                        <button type="button"
+                            class="btn-red delete-record-btn"
+                            style="padding:6px 9px !important;background:#d94b4b !important;color:#fff !important;opacity:1 !important;visibility:visible !important;display:inline-block !important;pointer-events:auto !important;cursor:pointer !important;position:relative;z-index:60"
+                            onclick="event.preventDefault(); event.stopPropagation(); openDeleteRequest(${r.id})">
+                            🗑️ Xóa
                         </button>
                         `
                         :
@@ -2753,11 +2879,11 @@ function renderStudentRecords(student){
                         canDeleteRecord(r)
                         ?
                         `
-                        <button
-                            class="btn-red"
-                            style="padding:6px 9px"
-                            onclick="openDeleteRequest(${r.id})">
-                            Xóa
+                        <button type="button"
+                            class="btn-red delete-record-btn"
+                            style="padding:6px 9px !important;background:#d94b4b !important;color:#fff !important;opacity:1 !important;visibility:visible !important;display:inline-block !important;pointer-events:auto !important;cursor:pointer !important;position:relative;z-index:60"
+                            onclick="event.preventDefault(); event.stopPropagation(); openDeleteRequest(${r.id})">
+                            🗑️ Xóa
                         </button>
                         `
                         :
@@ -2825,48 +2951,18 @@ function canDeleteRecord(record){
 ========================================================= */
 
 function renderRecordButtons(student){
-
-    const v =
-        document.getElementById(
-            "violationButtons"
-        );
-
-    const g =
-        document.getElementById(
-            "goodButtons"
-        );
-
-    v.innerHTML = "";
-    g.innerHTML = "";
-
-    if(
-        currentUser.role === "teacher" ||
-        (
-            currentUser.role === "leader" &&
-            currentUser.group === student.group
-        )
-    ){
-
-        v.innerHTML = `
-            <button
-                class="btn-red"
-                style="margin-top:10px"
-                onclick="openRecordModal('violation')">
-                + Thêm vi phạm
-            </button>
-        `;
-
-        g.innerHTML = `
-            <button
-                class="btn-green"
-                style="margin-top:10px"
-                onclick="openRecordModal('good')">
-                + Thêm việc tốt
-            </button>
-        `;
-
+    const v=document.getElementById("violationButtons");
+    const g=document.getElementById("goodButtons");
+    v.innerHTML=""; g.innerHTML="";
+    if(currentUser.role === "teacher"){
+        v.innerHTML=`<button class="btn-red" type="button" style="margin-top:10px!important;opacity:1!important;visibility:visible!important;display:inline-block!important;pointer-events:auto!important" onclick="openRecordModal('violation')">⚠️ Ghi vi phạm</button>`;
+        g.innerHTML=`<button class="btn-green" type="button" style="margin-top:10px!important;opacity:1!important;visibility:visible!important;display:inline-block!important;pointer-events:auto!important" onclick="openRecordModal('good')">🌟 Ghi việc tốt</button>`;
+    }else if(currentUser.role === "leader" && currentUser.group === student.group){
+        v.innerHTML=`<button class="btn-red" type="button" style="margin-top:10px!important;opacity:1!important;visibility:visible!important;display:inline-block!important;pointer-events:auto!important" onclick="openRecordModal('violation')">⚠️ Đề xuất vi phạm</button>`;
+        g.innerHTML=`<button class="btn-green" type="button" style="margin-top:10px!important;opacity:1!important;visibility:visible!important;display:inline-block!important;pointer-events:auto!important" onclick="openRecordModal('good')">🌟 Đề xuất việc tốt</button>`;
+    }else if(currentUser.role === "classLeader" && getOfficerAccountForStudent(student.id)){
+        v.innerHTML=`<button class="btn-red" type="button" style="margin-top:10px!important;opacity:1!important;visibility:visible!important;display:inline-block!important;pointer-events:auto!important" onclick="openRecordModal('violation')">⚠️ Đề xuất trừ điểm tổ trưởng</button>`;
     }
-
 }
 
 
@@ -2875,25 +2971,85 @@ function renderRecordButtons(student){
 ========================================================= */
 
 const violationTypes = [
-
-    ["5","Đi học muộn"],
-    ["5","Không làm bài"],
-    ["10","Không đồng phục"],
-    ["10","Gây mất trật tự"],
-    ["15","Không trực nhật"],
-    ["20","Vi phạm nghiêm trọng"]
-
+    ["3","Vắng học có phép (lần 4)"],
+    ["5","Vắng có phép trong các buổi lao động"],
+    ["10","Vắng học không phép, tính cả học TT"],
+    ["20","Vắng không phép trong các buổi lao động"],
+    ["20","Bỏ tiết"],
+    ["5","Đi học trễ."],
+    ["5","Mất trật tự trong 10 phút đầu giờ sau khi đã nhắc 2 lần"],
+    ["10","Mất trật tự trong 10 phút đầu giờ sau khi đã nhắc 3 lần"],
+    ["5","Ra ngoài trong 10 phút đầu"],
+    ["10","Vắng sinh hoạt tập thể không phép"],
+    ["5","Không mang bảng tên hoặc ko đúng quy định"],
+    ["5","Đồng phục không đúng quy định"],
+    ["5","Mang dép lê, đi xe trong sân trường"],
+    ["10","Để xe không đúng nơi quy định"],
+    ["10","Nhuộm tóc"],
+    ["10","Son môi, trang điểm"],
+    ["5","Không đeo huy hiệu"],
+    ["20","Vô lễ với GV, CNV"],
+    ["20","Vi phạm luật giao thông"],
+    ["5","Vệ sinh chưa tốt"],
+    ["10","Ra về chưa tắt đèn, quạt"],
+    ["20","Sử dụng điện thoại trong giờ học"],
+    ["10","Điểm miệng : 0"],
+    ["10","Điểm miệng : 1"],
+    ["10","Điểm miệng : 2"],
+    ["5","Điểm miệng : 3"],
+    ["5","Điểm miệng : 4"],
+    ["2","Điểm nợ"],
+    ["10","Vi phạm giờ B"],
+    ["20","Vi phạm giờ C"],
+    ["5","Thiếu dụng cụ học tập, SGK, SBT …"],
+    ["5","Làm việc riêng trong giờ học"],
+    ["5","Vi phạm về việc để xe"],
+    ["10","Không làm bài tập về nhà"],
+    ["10","Tự ý đổi chỗ ngồi"],
+    ["10","Gian dối"],
+    ["10","Ban cán sự không hoàn thành xếp loại và công việc đúng thời hạn"],
+    ["10","Xỏ tai không đúng quy định"],
+    ["5","Vi phạm trong giờ chào cờ đầu tuần và trong các buổi lễ của nhà trường."],
+    ["10","Vượt đèn đỏ"],
+    ["15","Sao đỏ vắng trực"],
+    ["20","Không cất điện thoại theo quy định"]
 ];
 
 const goodTypes = [
+    ["20","Tham gia 1 phong trào do trường phát động"],
+    ["5","Tham gia cổ vũ phong trào"],
+    ["30","Sinh hoạt tập thể đoạt giải 1"],
+    ["25","Sinh hoạt tập thể đoạt giải 2"],
+    ["20","Sinh hoạt tập thể đoạt giải 3"],
+    ["15","Sinh hoạt tập thể đoạt giải KK"],
+    ["10","Điểm miệng : 10"],
+    ["8","Điểm miệng : 9"],
+    ["7","Điểm miệng : 8"],
+    ["5","Điểm miệng : 7"],
+    ["3","Điểm cộng"],
+    ["40","Thi HSG đạt giải 1"],
+    ["30","Thi HSG đạt giải 2"],
+    ["25","Thi HSG đạt giải 3"],
+    ["10","Thi HSG đạt giải KK"],
+    ["10","Học sinh trung thực tố cáo những hành vi sai trái của học sinh trong lớp."],
+    ["15","Tham gia công tác xã hội và công tác khác được nhà trường khen."],
+    ["10","Học sinh nhặt được của rơi tìm người trả lại được nhà trường tuyên dương."],
+    ["10","Tham gia tình nguyện vào các hoạt động đột xuất"],
+    ["10","Ban cán sự làm việc tốt"],
+    ["15","Đạt điểm 10 trong giờ A*"],
+    ["10","Đạt điểm 9 trong giờ A*"],
+    ["3","Xung phong trả lời: Sai"],
+    ["5","Xung phong trả lời: Đúng"]
+];
 
-    ["5","Giúp đỡ bạn bè"],
-    ["5","Phát biểu tích cực"],
-    ["10","Giúp giáo viên"],
-    ["10","Hoàn thành việc được giao"],
-    ["15","Việc tốt nổi bật"],
-    ["20","Thành tích đặc biệt"]
-
+// 5 trường hợp Excel ghi chú là xét hạnh kiểm CHƯA ĐẠT cuối kỳ,
+// không có mức điểm trừ nên không tự cộng/trừ điểm trong hệ thống.
+const seriousConductWarnings = [
+    "Hút thuốc lá, mang thuốc lá vào khuôn viên trường, hút thuốc lá trong khuôn viên nhà trường, uống rượu bia trước khi đến lớp.",
+    "HS tham gia đánh nhau trong và ngoài trường, gây rối nơi công cộng, kết băng nhóm với thanh niên bên ngoài để gây gỗ đánh nhau",
+    "Mang hung khí đến trường",
+    "Tổ chức đánh bài trong khu vực nhà trường (có ăn tiền)",
+    "Mang pháo vào khu vực trường học (sử dụng hoặc chưa sử dụng)"
 ];
 
 
@@ -2954,6 +3110,14 @@ function openRecordModal(kind){
 
         return;
 
+    }
+
+    if(currentUser.role === "classLeader"){
+        const officer=getOfficerAccountForStudent(student.id);
+        if(kind !== "violation" || !officer){
+            alert("Lớp trưởng chỉ có thể trừ điểm các tổ trưởng.");
+            return;
+        }
     }
 
     document.getElementById(
@@ -3026,6 +3190,18 @@ function openClassLeaderProposal(){
 /* =========================================================
    THÊM RECORD
 ========================================================= */
+
+async function awaitSaveDB(){
+    try{
+        const result = saveDB();
+        if(result && typeof result.then === "function") await result;
+        return true;
+    }catch(error){
+        console.error(error);
+        alert("Không thể lưu dữ liệu lên Firebase: " + (error.message || error));
+        return false;
+    }
+}
 
 function submitRecord(){
 
@@ -3105,65 +3281,52 @@ function submitRecord(){
     };
 
 
-    /* GV hoặc tổ trưởng */
-    if(
-        currentUser.role === "teacher" ||
-        currentUser.role === "leader"
-    ){
+    /* Giáo viên: được ghi trực tiếp */
+    if(currentUser.role === "teacher"){
 
-        record.status =
-            "approved";
-
-        record.teacherApproved =
-            currentUser.role === "teacher";
-
-        record.classLeaderApproved =
-            currentUser.role === "classLeader";
+        record.status = "approved";
+        record.teacherApproved = true;
+        record.classLeaderApproved = true;
 
         db.records.push(record);
-
-        saveDB();
+        awaitSaveDB();
 
         closeModal("recordModal");
-
         render();
 
         if(selectedStudentId)
             openStudent(selectedStudentId);
 
-        alert(
-            "Đã ghi nhận thành công."
-        );
-
+        alert("Đã ghi nhận và tính điểm.");
         return;
-
     }
 
-
-    /* Lớp trưởng */
+    /*
+       Tổ trưởng / lớp trưởng: KHÔNG được trừ điểm ngay.
+       Phải đưa vào danh sách đề xuất để giáo viên và lớp trưởng duyệt.
+       Nếu lớp trưởng tự đề xuất thì lượt duyệt của lớp trưởng được tính
+       là đã duyệt, nhưng vẫn phải chờ giáo viên.
+    */
     if(
+        currentUser.role === "leader" ||
         currentUser.role === "classLeader"
     ){
 
-        record.status =
-            "pending";
-
+        record.status = "pending";
         record.teacherApproved = false;
-
         record.classLeaderApproved = false;
 
         db.proposals.push(record);
-
-        saveDB();
+        awaitSaveDB();
 
         closeModal("recordModal");
-
         render();
 
         alert(
-            "Đã gửi đề xuất. Cần lớp trưởng và giáo viên duyệt trong 48 giờ."
+            currentUser.role === "classLeader"
+            ? "Đã gửi đề xuất. Đề xuất đang chờ giáo viên duyệt."
+            : "Đã gửi đề xuất. Đề xuất đang chờ giáo viên và lớp trưởng duyệt."
         );
-
     }
 
 }
@@ -3235,7 +3398,7 @@ function openDeleteRequest(recordId){
 }
 
 
-function submitDeleteRequest(){
+async function submitDeleteRequest(){
 
     const record =
         db.records.find(
@@ -3250,7 +3413,7 @@ function submitDeleteRequest(){
         currentUser.role === "teacher"
     ){
 
-        permanentlyDeleteRecord(
+        await permanentlyDeleteRecord(
             record.id
         );
 
@@ -3306,7 +3469,7 @@ function submitDeleteRequest(){
    XÓA HẲN + HOÀN ĐIỂM
 ========================================================= */
 
-function permanentlyDeleteRecord(recordId){
+async function permanentlyDeleteRecord(recordId){
 
     const index =
         db.records.findIndex(
@@ -3321,7 +3484,12 @@ function permanentlyDeleteRecord(recordId){
 
     db.records.splice(index,1);
 
-    saveDB();
+    const ok = await saveDB();
+    if(!ok){
+        db.records.splice(index, 0, record);
+        render();
+        return;
+    }
 
     render();
 
@@ -3553,10 +3721,11 @@ function showApprovalList(role){
     ).innerText =
         "⏳ Đề xuất vi phạm / việc tốt";
 
-    const proposals =
-        db.proposals.filter(
-            p => p.status === "pending"
-        );
+    const proposals = db.proposals.filter(p => {
+        if(p.status !== "pending") return false;
+        if(role === "classLeader") return p.createdByRole === "leader";
+        return true;
+    });
 
     if(!proposals.length){
 
@@ -3661,18 +3830,15 @@ function showApprovalList(role){
                         `
                         :
                         `
-                        <button
+                        <button type="button"
                             class="btn-green"
-                            onclick="approveProposal(
-                                ${p.id},
-                                '${role}'
-                            )">
+                            onclick="return handleApproveProposalClick(event, ${p.id}, '${role}')">
                             ✓ Duyệt
                         </button>
 
-                        <button
+                        <button type="button"
                             class="btn-red"
-                            onclick="rejectProposal(${p.id})">
+                            onclick="return handleRejectProposalClick(event, ${p.id})">
                             ✕ Từ chối
                         </button>
                         `
@@ -3695,93 +3861,111 @@ function showApprovalList(role){
 }
 
 
-function approveProposal(id,role){
+async function approveProposal(id,role){
+    const p=db.proposals.find(x=>Number(x.id)===Number(id));
+    if(!p) return false;
+    if(role!=="teacher" && role!=="classLeader") return false;
 
-    const p =
-        db.proposals.find(
-            x => x.id === Number(id)
-        );
-
-    if(!p)
-        return;
-
-    if(role === "teacher")
-        p.teacherApproved = true;
-
-    if(role === "classLeader")
-        p.classLeaderApproved = true;
-
-    if(
-        p.teacherApproved &&
-        p.classLeaderApproved
-    ){
-
-        p.status = "approved";
-
-        db.records.push({
-
-            ...p,
-
-            status:"approved"
-
-        });
-
-        db.proposals =
-            db.proposals.filter(
-                x => x.id !== p.id
-            );
-
-        saveDB();
-
-        alert(
-            "Đã đủ 2 bên duyệt. Đề xuất đã được đưa vào hệ thống và tính điểm."
-        );
-
-    }else{
-
-        saveDB();
-
-        alert(
-            "Đã ghi nhận lượt duyệt. Đang chờ bên còn lại."
-        );
-
+    // Lớp trưởng chỉ xử lý đề xuất của tổ trưởng.
+    if(role === "classLeader" && p.createdByRole !== "leader"){
+        alert("Lớp trưởng chỉ có thể duyệt đề xuất của tổ trưởng.");
+        return false;
     }
 
+    // Đề xuất do lớp trưởng tạo: chỉ giáo viên duyệt.
+    if(p.createdByRole === "classLeader"){
+        if(role !== "teacher") return false;
+        p.teacherApproved = true;
+        p.classLeaderApproved = true;
+    }else if(p.createdByRole === "leader"){
+        if(role === "teacher") p.teacherApproved = true;
+        if(role === "classLeader") p.classLeaderApproved = true;
+    }
+
+    if(p.teacherApproved && p.classLeaderApproved){
+        p.status="approved";
+        db.records.push({...p,status:"approved"});
+        db.proposals=db.proposals.filter(x=>Number(x.id)!==Number(p.id));
+
+        db.notifications.push({
+            id:Date.now()+Math.random(),
+            recipient:p.createdBy,
+            type:"proposal",
+            status:"approved",
+            title:"Đề xuất đã được duyệt",
+            message:`Đề xuất ${p.kind==='violation'?'vi phạm':'việc tốt'} “${p.type}” cho ${p.studentName} đã được duyệt và tính ${p.points>0?'+':''}${p.points} điểm.`,
+            createdAt:Date.now(),
+            read:false
+        });
+
+        await awaitSaveDB();
+        alert("Đã duyệt. Đề xuất đã được ghi nhận và tính điểm.");
+    }else{
+        await awaitSaveDB();
+        alert("Đã ghi nhận lượt duyệt. Đang chờ bên còn lại.");
+    }
     showApprovalList(role);
-
     render();
-
+    return false;
 }
 
+async function rejectProposal(id){
+    const p = db.proposals.find(x => Number(x.id) === Number(id));
+    if(!p) return false;
+    const role = currentUser && currentUser.role;
+    if(role !== "teacher" && role !== "classLeader"){
+        alert("Bạn không có quyền từ chối đề xuất.");
+        return false;
+    }
+    if(role === "classLeader" && p.createdByRole !== "leader"){
+        alert("Lớp trưởng chỉ có thể xử lý đề xuất của tổ trưởng.");
+        return false;
+    }
+    if(!confirm("Từ chối đề xuất này?")) return false;
 
-function rejectProposal(id){
+    const old = db.proposals.slice();
+    const oldNotifications = db.notifications.slice();
+    db.proposals = db.proposals.filter(x => Number(x.id) !== Number(p.id));
+    db.notifications.push({
+        id:Date.now()+Math.random(),
+        recipient:p.createdBy,
+        type:"proposal",
+        status:"rejected",
+        title:"Đề xuất bị từ chối",
+        message:`Đề xuất ${p.kind==='violation'?'vi phạm':'việc tốt'} “${p.type}” cho ${p.studentName} đã bị từ chối.`,
+        createdAt:Date.now(),
+        read:false
+    });
 
-    const p =
-        db.proposals.find(
-            x => x.id === Number(id)
-        );
+    const ok = await saveDB();
+    if(!ok){
+        db.proposals = old;
+        db.notifications = oldNotifications;
+        render();
+        return false;
+    }
+    alert("Đã từ chối đề xuất.");
+    showApprovalList(role);
+    render();
+    return false;
+}
 
-    if(!p)
-        return;
+function handleRejectProposalClick(event,id){
+    if(event){event.preventDefault();event.stopPropagation();}
+    rejectProposal(id);
+    return false;
+}
 
-    if(
-        !confirm(
-            "Từ chối đề xuất này?"
-        )
-    )
-        return;
+function handleDeleteStudentClick(event,id){
+    if(event){event.preventDefault();event.stopPropagation();}
+    deleteStudent(id);
+    return false;
+}
 
-    db.proposals =
-        db.proposals.filter(
-            x => x.id !== p.id
-        );
-
-    saveDB();
-
-    showApprovalList(
-        currentUser.role
-    );
-
+function handleApproveProposalClick(event,id,role){
+    if(event){event.preventDefault();event.stopPropagation();}
+    approveProposal(id,role);
+    return false;
 }
 
 
@@ -3964,6 +4148,14 @@ function rejectDelete(requestId){
    THÔNG BÁO
 ========================================================= */
 
+async function markNotificationRead(id){
+    const n=(db.notifications||[]).find(x=>String(x.id)===String(id));
+    if(!n) return;
+    n.read=true;
+    await saveDB();
+    renderNotifications();
+}
+
 function renderNotifications(){
 
     const panel =
@@ -3977,6 +4169,19 @@ function renderNotifications(){
         );
 
     let html = "";
+
+    /* Thông báo kết quả đề xuất cho người đã nộp */
+    if(currentUser){
+        const myNotes = (db.notifications || []).filter(n => n.recipient === currentUser.username && !n.read);
+        myNotes.forEach(n=>{
+            html += `
+                <div class="notification">
+                    ${n.status === "approved" ? "✅" : "❌"} <strong>${esc(n.title)}</strong><br>
+                    ${esc(n.message)}<br><br>
+                    <button type="button" class="btn-purple" onclick="markNotificationRead('${String(n.id)}')">Đã xem</button>
+                </div>`;
+        });
+    }
 
     /* Báo cáo cho GV */
     if(
@@ -4319,42 +4524,38 @@ async function addStudent(){
    XÓA HỌC SINH
 ========================================================= */
 
-function deleteStudent(id){
+async function deleteStudent(id){
 
-    if(
-        currentUser.role !== "teacher"
-    )
+    if(currentUser.role !== "teacher"){
+        alert("Chỉ giáo viên mới được xóa học sinh.");
         return;
+    }
 
-    const student =
-        getStudent(id);
+    const student = getStudent(Number(id));
+    if(!student) return;
 
-    if(!student)
+    if(!confirm(`Xóa học sinh "${student.name}"?`)) return;
+
+    const oldStudents = db.students.slice();
+    const oldRecords = db.records.slice();
+
+    db.students = db.students.filter(s => Number(s.id) !== Number(id));
+    db.records = db.records.filter(r => Number(r.studentId) !== Number(id));
+
+    const ok = await saveDB();
+    if(!ok){
+        db.students = oldStudents;
+        db.records = oldRecords;
+        render();
         return;
+    }
 
-    if(
-        !confirm(
-            `Xóa học sinh "${student.name}"?`
-        )
-    )
-        return;
-
-    db.students =
-        db.students.filter(
-            s => s.id !== id
-        );
-
-    db.records =
-        db.records.filter(
-            r => r.studentId !== id
-        );
-
-    saveDB();
-
+    if(Number(selectedStudentId) === Number(id)){
+        selectedStudentId = null;
+        closeModal("studentModal");
+    }
     render();
-
     alert("Đã xóa học sinh.");
-
 }
 
 
