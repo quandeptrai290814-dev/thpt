@@ -774,6 +774,10 @@ Lưu ngày bắt đầu
 ⏳ Duyệt đề xuất
 </button>
 
+<button type="button" class="btn-blue" onclick="openAttendance()">
+📋 Điểm danh hôm nay
+</button>
+
 </div>
 
 </div>
@@ -929,6 +933,22 @@ onclick="closeModal('studentModal')">
 
 </div>
 
+</div>
+</div>
+
+
+<!-- ================= ATTENDANCE ================= -->
+<div id="attendanceModal" class="modal">
+<div class="modal-box" style="max-width:850px">
+<h2>📋 Điểm danh mỗi ngày</h2>
+<p>Chỉ giáo viên được sửa điểm danh.</p>
+<label>Ngày</label>
+<input type="date" id="attendanceDate" onchange="renderAttendance()" style="margin-bottom:15px">
+<div id="attendanceList"></div>
+<div class="modal-actions">
+<button type="button" class="btn-green" onclick="saveAttendance()">💾 Lưu điểm danh</button>
+<button type="button" class="btn-gray" onclick="closeModal('attendanceModal')">Đóng</button>
+</div>
 </div>
 </div>
 
@@ -1276,6 +1296,8 @@ function defaultDB(){
         ],
 
         records:[],
+
+        attendance:{},
 
         rewards:[
             {id:1,name:"Đổi chỗ 1 ngày",cost:20},
@@ -2337,7 +2359,72 @@ function openStudent(id){
    ⭐ SAO & 🎁 ĐỔI QUÀ
 ========================================================= */
 
+function ensureAttendanceData(){
+    if(!db.attendance || typeof db.attendance !== "object" || Array.isArray(db.attendance))
+        db.attendance = {};
+}
+
+function getAttendanceForDate(date){
+    ensureAttendanceData();
+    if(!db.attendance[date]) db.attendance[date] = {};
+    return db.attendance[date];
+}
+
+function openAttendance(){
+    if(!currentUser || currentUser.role !== "teacher"){
+        alert("Chỉ giáo viên được điểm danh.");
+        return;
+    }
+    ensureAttendanceData();
+    const dateInput=document.getElementById("attendanceDate");
+    if(dateInput) dateInput.value=todayISO();
+    renderAttendance();
+    document.getElementById("attendanceModal").style.display="flex";
+}
+
+function renderAttendance(){
+    const date=document.getElementById("attendanceDate").value || todayISO();
+    const data=getAttendanceForDate(date);
+    const box=document.getElementById("attendanceList");
+    if(!box) return;
+    box.innerHTML=db.students.map((st,i)=>{
+        const a=data[st.id] || {status:"present",reason:""};
+        return `<div class="notification" style="margin-bottom:10px">
+            <div style="display:grid;grid-template-columns:1fr 180px;gap:10px;align-items:center">
+                <div><strong>${i+1}. ${esc(st.name)}</strong><br><small>Tổ ${st.group}</small></div>
+                <select id="att-status-${st.id}" style="padding:9px;border-radius:8px">
+                    <option value="present" ${a.status==="present"?"selected":""}>🟢 Có mặt</option>
+                    <option value="excused" ${a.status==="excused"?"selected":""}>🟡 Vắng có phép</option>
+                    <option value="unexcused" ${a.status==="unexcused"?"selected":""}>🔴 Vắng không phép</option>
+                </select>
+            </div>
+            <input id="att-reason-${st.id}" value="${esc(a.reason||"")}" placeholder="Lý do vắng (nếu có)" style="width:100%;margin-top:8px;padding:9px;border-radius:8px;box-sizing:border-box">
+        </div>`;
+    }).join("");
+}
+
+async function saveAttendance(){
+    if(!currentUser || currentUser.role !== "teacher"){ alert("Chỉ giáo viên được lưu điểm danh."); return; }
+    const date=document.getElementById("attendanceDate").value;
+    if(!date){ alert("Hãy chọn ngày."); return; }
+    ensureAttendanceData();
+    const data={};
+    db.students.forEach(st=>{
+        data[st.id]={
+            status:document.getElementById(`att-status-${st.id}`).value,
+            reason:document.getElementById(`att-reason-${st.id}`).value.trim(),
+            updatedAt:new Date().toISOString()
+        };
+        st.present=data[st.id].status === "present";
+    });
+    db.attendance[date]=data;
+    await saveDB();
+    render();
+    alert(`Đã lưu điểm danh ngày ${formatDate(date)}.`);
+}
+
 function ensureStarData(){
+    ensureAttendanceData();
     if(!Array.isArray(db.rewards)){
         db.rewards = [
             {id:1,name:"Đổi chỗ 1 ngày",cost:20},
