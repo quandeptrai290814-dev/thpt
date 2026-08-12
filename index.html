@@ -93,6 +93,17 @@ button:disabled{
     cursor:not-allowed;
 }
 
+.delete-student-btn{
+    background:#d94b4b !important;
+    color:#fff !important;
+    opacity:1 !important;
+    visibility:visible !important;
+    pointer-events:auto !important;
+    cursor:pointer !important;
+    position:relative !important;
+    z-index:50 !important;
+}
+
 input,select,textarea{
     width:100%;
     padding:11px;
@@ -536,6 +547,15 @@ label{
         padding:17px;
     }
 }
+
+/* ===== KHÔNG ẨN NÚT ===== */
+button, .btn-purple, .btn-red, .btn-green, .btn-blue, .btn-orange, .btn-yellow, .btn-gray {
+    visibility: visible !important;
+    opacity: 1 !important;
+}
+.tabs button, .modal-actions button, td button {
+    display: inline-block !important;
+}
 </style>
 </head>
 
@@ -694,6 +714,11 @@ Lưu ngày bắt đầu
 <h2>🔐 Quản lý mật khẩu</h2>
 <p>Chỉ giáo viên mới nhìn thấy mục này. Có thể đổi mật khẩu lớp trưởng và 4 tổ trưởng.</p>
 <div id="passwordSettings"></div>
+
+<hr style="margin:20px 0">
+<h2>👥 Quản lý cán bộ lớp</h2>
+<p>Giáo viên chọn học sinh làm Lớp trưởng và Tổ trưởng. Tài khoản đăng nhập tương ứng vẫn giữ nguyên.</p>
+<div id="classOfficerSettings"></div>
 
 </div>
 
@@ -1837,6 +1862,86 @@ function renderPasswordSettings(){
     `;
 }
 
+function renderClassOfficerSettings(){
+
+    if(currentUser?.role !== "teacher") return;
+
+    const box = document.getElementById("classOfficerSettings");
+    if(!box || !db.accounts || !db.students) return;
+
+    const studentOptions = (selectedId) =>
+        `<option value="">-- Chưa phân công --</option>` +
+        db.students.map(s =>
+            `<option value="${s.id}" ${Number(s.id) === Number(selectedId) ? "selected" : ""}>${escapeHtml(s.name)} (Tổ ${s.group})</option>`
+        ).join("");
+
+    const roles = [
+        ["loptruong", "👑 Lớp trưởng"],
+        ["to1", "🔴 Tổ trưởng tổ 1"],
+        ["to2", "🔵 Tổ trưởng tổ 2"],
+        ["to3", "🟢 Tổ trưởng tổ 3"],
+        ["to4", "🟠 Tổ trưởng tổ 4"]
+    ];
+
+    box.innerHTML = roles.map(([username,label]) => {
+        const acc = db.accounts[username] || {};
+        return `
+        <div style="padding:14px;margin:10px 0;border:1px solid #ddd;border-radius:12px;background:#fff">
+            <strong>${label}</strong>
+            <div style="margin-top:8px">
+                <label>Học sinh giữ chức vụ</label>
+                <select id="officerStudent_${username}" style="width:100%;padding:9px">
+                    ${studentOptions(acc.studentId)}
+                </select>
+            </div>
+            <div style="margin-top:8px">
+                <label>Tên hiển thị</label>
+                <input id="officerName_${username}" value="${escapeHtml(acc.name || label.replace(/^[^ ]+ /,'').trim())}" placeholder="Tên cán bộ lớp" style="width:100%;padding:9px">
+            </div>
+            <div style="margin-top:8px;font-size:13px;color:#777">Tài khoản: <b>${username}</b></div>
+        </div>`;
+    }).join("") + `
+        <button class="btn-blue" style="display:inline-block!important;opacity:1!important;visibility:visible!important" onclick="saveClassOfficers()">💾 Lưu phân công cán bộ lớp</button>
+        <div id="officerSaveMessage" class="login-error"></div>`;
+}
+
+async function saveClassOfficers(){
+
+    if(currentUser?.role !== "teacher") return;
+    if(!db.accounts) db.accounts = {};
+
+    const roles = ["loptruong","to1","to2","to3","to4"];
+
+    for(const username of roles){
+        if(!db.accounts[username]){
+            const group = username === "loptruong" ? 0 : Number(username.replace("to",""));
+            db.accounts[username] = {
+                password:"1234",
+                role: username === "loptruong" ? "classLeader" : "leader",
+                group,
+                name: username === "loptruong" ? "Lớp trưởng" : `Tổ trưởng tổ ${group}`
+            };
+        }
+
+        const select = document.getElementById("officerStudent_" + username);
+        const nameInput = document.getElementById("officerName_" + username);
+        db.accounts[username].studentId = select && select.value ? Number(select.value) : null;
+        if(nameInput && nameInput.value.trim()) db.accounts[username].name = nameInput.value.trim();
+    }
+
+    await saveDB();
+    renderPasswordSettings();
+    renderClassOfficerSettings();
+    render();
+
+    const msg=document.getElementById("officerSaveMessage");
+    if(msg) msg.innerText="Đã lưu phân công cán bộ lớp và đồng bộ Firestore.";
+}
+
+function escapeHtml(value){
+    return String(value ?? "").replace(/[&<>\"']/g, ch => ({"&":"&amp;","<":"&lt;",">":"&gt;",'\"':"&quot;", "'":"&#39;"}[ch]));
+}
+
 async function changeAccountPasswords(){
 
     if(currentUser?.role !== "teacher") return;
@@ -1877,81 +1982,45 @@ async function changeAccountPasswords(){
 
 function setupInterface(){
 
-    const header =
-        document.getElementById("mainHeader");
+    const header = document.getElementById("mainHeader");
+    const teacher = document.getElementById("teacherFunctions");
+    const classLeader = document.getElementById("classLeaderFunctions");
+    const settings = document.getElementById("teacherSettings");
+    const add = document.getElementById("addStudentButton");
+    const action = document.getElementById("teacherActionHeader");
 
-    const teacher =
-        document.getElementById("teacherFunctions");
-
-    const classLeader =
-        document.getElementById(
-            "classLeaderFunctions"
-        );
-
-    const settings =
-        document.getElementById(
-            "teacherSettings"
-        );
-
-    const add =
-        document.getElementById(
-            "addStudentButton"
-        );
-
-    const action =
-        document.getElementById(
-            "teacherActionHeader"
-        );
+    /* Luôn reset toàn bộ khu vực trước khi cấp quyền.
+       Không dùng CSS để giả quyền: các hàm bên dưới vẫn tự kiểm tra role. */
+    teacher.classList.add("hidden");
+    classLeader.classList.add("hidden");
+    settings.classList.add("hidden");
+    add.classList.add("hidden");
+    action.classList.add("hidden");
 
     if(currentUser.role === "teacher"){
 
-        header.style.background =
-            "#5c4a8a";
-
-        document.getElementById(
-            "headerTitle"
-        ).innerText =
-            "👨‍🏫 Giáo viên";
+        header.style.background = "#5c4a8a";
+        document.getElementById("headerTitle").innerText = "👨‍🏫 Giáo viên";
 
         teacher.classList.remove("hidden");
-
         settings.classList.remove("hidden");
-
         add.classList.remove("hidden");
-
         action.classList.remove("hidden");
-
         selectedGroup = 0;
 
-    }
+        renderPasswordSettings();
+        renderClassOfficerSettings();
 
-    else if(
-        currentUser.role === "classLeader"
-    ){
+    } else if(currentUser.role === "classLeader"){
 
-        header.style.background =
-            "#315f91";
+        header.style.background = "#315f91";
+        document.getElementById("headerTitle").innerText = "👑 Lớp trưởng";
 
-        document.getElementById(
-            "headerTitle"
-        ).innerText =
-            "👑 Lớp trưởng";
-
-        teacher.classList.add("hidden");
-
-        settings.classList.add("hidden");
-
+        /* Chỉ lớp trưởng: không có chức năng GV */
         classLeader.classList.remove("hidden");
-
-        add.classList.add("hidden");
-
-        action.classList.add("hidden");
-
         selectedGroup = 0;
 
-    }
-
-    else{
+    } else if(currentUser.role === "leader"){
 
         const colors = {
             1:"#8f2929",
@@ -1960,38 +2029,27 @@ function setupInterface(){
             4:"#b96f20"
         };
 
-        header.style.background =
-            colors[currentUser.group];
+        header.style.background = colors[currentUser.group] || "#315f91";
+        document.getElementById("headerTitle").innerText =
+            `👥 Tổ trưởng tổ ${currentUser.group}`;
 
-        document.getElementById(
-            "headerTitle"
-        ).innerText =
-            `👥 Tổ ${currentUser.group}`;
+        /* Tổ trưởng chỉ thấy phần danh sách của tổ mình.
+           Tuyệt đối không hiện teacherFunctions/classLeaderFunctions/settings. */
+        selectedGroup = currentUser.group;
 
-        teacher.classList.add("hidden");
+    } else {
 
-        settings.classList.add("hidden");
-
-        classLeader.classList.add("hidden");
-
-        add.classList.add("hidden");
-
-        action.classList.add("hidden");
-
-        selectedGroup =
-            currentUser.group;
-
+        header.style.background = "#777";
+        document.getElementById("headerTitle").innerText = "👤 Học sinh";
+        selectedGroup = currentUser.group || 0;
     }
 
-    document.getElementById(
-        "schoolStartDate"
-    ).value =
-        db.settings.startDate;
+    const schoolStart = document.getElementById("schoolStartDate");
+    if(schoolStart && db.settings)
+        schoolStart.value = db.settings.startDate || "";
 
     cleanupExpiredProposals();
-
     render();
-
 }
 
 
@@ -2170,11 +2228,11 @@ function renderTable(list){
                 ?
                 `
                 <td>
-                    <button
-                        class="btn-red"
-                        style="padding:6px 9px"
-                        onclick="deleteStudent(${student.id})">
-                        Xóa
+                    <button type="button"
+                        class="btn-red delete-student-btn"
+                        style="padding:8px 12px !important;background:#d94b4b !important;color:#ffffff !important;opacity:1 !important;visibility:visible !important;display:inline-block !important;pointer-events:auto !important;cursor:pointer !important;position:relative;z-index:50"
+                        onclick="event.stopPropagation(); deleteStudent(${student.id})">
+                        🗑️ Xóa học sinh
                     </button>
                 </td>
                 `
@@ -2289,6 +2347,8 @@ function ensureStarData(){
     }
     if(!Array.isArray(db.rewardHistory))
         db.rewardHistory = [];
+    if(!db.starAwards || typeof db.starAwards !== "object")
+        db.starAwards = {};
 
     db.students.forEach(s=>{
         if(typeof s.stars !== "number")
@@ -2314,14 +2374,23 @@ function renderRewards(student){
                     🎁 <strong>${esc(r.name)}</strong><br>
                     <small>Giá: ${r.cost} ⭐</small>
                 </div>
-                <button class="btn-purple"
-                    ${stars < r.cost ? 'disabled style="opacity:.45;cursor:not-allowed"' : ''}
-                    onclick="redeemReward(${student.id},${r.id})">
-                    Đổi quà
+                <button type="button" class="btn-purple"
+                    style="display:inline-block!important;visibility:visible!important;opacity:1!important;cursor:pointer!important;"
+                    data-student-id="${student.id}" data-reward-id="${r.id}">
+                    🎁 Đổi quà (${r.cost} ⭐)
                 </button>
             </div>
         `).join("")}
     `;
+
+    // Bảo đảm nút đổi quà luôn nhận click, kể cả khi CSS/HTML trước đó can thiệp.
+    box.querySelectorAll("[data-reward-id]").forEach(btn => {
+        btn.addEventListener("click", function(e){
+            e.preventDefault();
+            e.stopPropagation();
+            redeemReward(Number(this.dataset.studentId), Number(this.dataset.rewardId));
+        });
+    });
 }
 
 async function redeemReward(studentId,rewardId){
@@ -2375,6 +2444,8 @@ function addStars(studentId,amount,reason=""){
         cost: -Number(amount || 0),
         date: todayISO()
     });
+    saveDB();
+    render();
 }
 
 
@@ -4195,6 +4266,8 @@ function deleteStudent(id){
 
     render();
 
+    alert("Đã xóa học sinh.");
+
 }
 
 
@@ -4351,7 +4424,53 @@ function createSnapshot(week){
 }
 
 
-function autoCreateHistory(){
+async function applyWeeklyStarAwards(){
+    ensureStarData();
+    const current = getCurrentWeek();
+    if(current <= 1) return false;
+
+    const awardKey = String(current);
+    if(db.starAwards[awardKey]) return false;
+
+    const previousWeek = current - 1;
+    if(!db.history[previousWeek])
+        createSnapshot(previousWeek);
+
+    const snapshot = db.history[previousWeek];
+    if(!snapshot || !Array.isArray(snapshot.students)) return false;
+
+    snapshot.students.forEach(result => {
+        const student = getStudent(result.id);
+        if(!student) return;
+
+        let amount = 0;
+        if(result.ranking === "Xuất sắc") amount = 20;
+        else if(result.ranking === "Tốt") amount = 15;
+        else if(result.ranking === "Khá") amount = 5;
+        else if(result.ranking === "Yếu" || result.ranking === "Tệ") amount = -30;
+
+        if(amount !== 0){
+            student.stars = Number(student.stars || 0) + amount;
+            db.rewardHistory.push({
+                id: Date.now() + result.id,
+                studentId: student.id,
+                rewardId: null,
+                rewardName: `Xếp loại tuần ${previousWeek}: ${result.ranking}`,
+                cost: -amount,
+                date: todayISO()
+            });
+        }
+    });
+
+    db.starAwards[awardKey] = {
+        week: current,
+        basedOnWeek: previousWeek,
+        date: todayISO()
+    };
+    return true;
+}
+
+async function autoCreateHistory(){
 
     const current =
         getCurrentWeek();
@@ -4370,7 +4489,9 @@ function autoCreateHistory(){
 
     }
 
-    saveDB();
+    const awarded = await applyWeeklyStarAwards();
+    if(awarded) await saveDB();
+    else await saveDB();
 
 }
 
@@ -4379,7 +4500,7 @@ function autoCreateHistory(){
    MỞ LỊCH SỬ
 ========================================================= */
 
-function openHistory(){
+async function openHistory(){
 
     if(
         currentUser.role !== "teacher"
@@ -4581,7 +4702,7 @@ function showHistoryWeek(week){
    XẾP LOẠI TUẦN
 ========================================================= */
 
-function openWeeklyRanking(){
+async function openWeeklyRanking(){
 
     if(
         currentUser.role !== "teacher"
@@ -4770,7 +4891,7 @@ async function startApp(){
     }
 
     if(db){
-        autoCreateHistory();
+        await autoCreateHistory();
 
         if(!db.accounts){
             showAccountSetup();
