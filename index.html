@@ -898,6 +898,181 @@ option { color:#111 !important; background:#fff !important; }
   };
 })();
 </script>
+
+<style id="contrast-popup-fix">
+/* Quy tắc tương phản */
+body, .app, .main, .container, .card, .panel, .modal-content, .popup-content,
+section, article, .dashboard, .student-card, .student-list, .history-content {
+  color: #fff;
+}
+input, textarea, select,
+input[type="text"], input[type="password"], input[type="number"], input[type="date"], input[type="email"] {
+  background: #bfe9ff !important;
+  color: #000 !important;
+  -webkit-text-fill-color: #000 !important;
+}
+input::placeholder, textarea::placeholder { color: #222 !important; opacity: .8; }
+select option { background: #bfe9ff; color: #000; }
+
+/* Nền sáng thì chữ đen */
+[style*="background: white"], [style*="background:white"],
+[style*="background-color: white"], [style*="background-color:white"],
+.light, .white, .light-bg {
+  color: #000 !important;
+}
+
+/* Nền tối/xanh đậm thì chữ trắng */
+button, .btn, .group-btn, .group-tab, .team-btn,
+.modal, .popup, .overlay, .dark, .dark-bg {
+  color: #fff;
+}
+
+/* Tổ 1-4 xanh đậm */
+.group-btn, .group-tab, .team-btn,
+button[data-group], [data-team], .group-selector button {
+  background: #063b78 !important;
+  color: #fff !important;
+  border-color: #7ec8ff !important;
+}
+
+/* Popup toàn màn hình */
+.fullscreen-popup, .fullscreen-modal {
+  position: fixed !important;
+  inset: 0 !important;
+  width: 100vw !important;
+  height: 100vh !important;
+  max-width: none !important;
+  max-height: none !important;
+  border-radius: 0 !important;
+  overflow: auto !important;
+  z-index: 9999 !important;
+}
+</style>
+
+<style id="final-ui-fix">
+/* Xếp loại 4 tổ */
+#rankingModal, #rankingModal *, #rankingContent, #rankingContent * { }
+#rankingModal, .ranking-modal, .ranking-panel, .ranking-table, .ranking-table th, .ranking-table td,
+[id*="rank"], [class*="rank"] { color:#fff; }
+.ranking-table, .ranking-table th, .ranking-table td { background:#07162f !important; border-color:#4aa3ff !important; }
+.ranking-table input, .ranking-table select, [id*="average"], [class*="average"] { background:#07162f !important; color:#fff !important; }
+
+/* Notification bell */
+#notificationBell{position:fixed;right:20px;top:18px;z-index:12000;background:#0b4f91;color:#fff;border:2px solid #8dd8ff;border-radius:50%;width:52px;height:52px;font-size:24px;cursor:pointer}
+#notificationModal{display:none;position:fixed;inset:0;z-index:13000;background:rgba(0,0,0,.72)}
+#notificationModal .inner{min-height:100vh;background:#07162f;color:#fff;padding:24px;overflow:auto}
+#notificationModal textarea{width:100%;min-height:120px;background:#bfe9ff;color:#000}
+.notice-item{background:#0d2a4b;border:1px solid #4aa3ff;padding:12px;border-radius:12px;margin:10px 0;color:#fff}
+</style><style id="upload-delete-popup-fix">
+#quickUploadPopup,#deleteAllPopup{display:none;position:fixed;inset:0;z-index:30000;background:rgba(0,0,0,.78);align-items:center;justify-content:center;padding:20px}
+#quickUploadPopup.open,#deleteAllPopup.open{display:flex}
+.popup-box-cosmic{width:min(680px,96vw);background:#071b38;color:#fff;border:2px solid #56bfff;border-radius:22px;padding:28px;box-shadow:0 0 35px rgba(86,191,255,.45)}
+.popup-box-cosmic input[type=file]{width:100%;padding:14px;background:#bfe9ff;color:#000;border-radius:12px}
+.popup-box-cosmic button{margin:8px 4px}
+</style>
+<style id="contrast-history-drag-fix">
+/* Tương phản cho xếp loại, lịch sử và điểm TB */
+.ranking-table, .ranking-table th, .ranking-table td,
+[id*="ranking"], [class*="ranking"],
+[id*="history"], [class*="history"],
+[id*="average"], [class*="average"] {
+  color:#fff !important;
+}
+.ranking-table input, .ranking-table textarea, .ranking-table select,
+[id*="ranking"] input, [class*="ranking"] input,
+[id*="history"] input, [class*="history"] input {
+  background:#bfe9ff !important;
+  color:#000 !important;
+  -webkit-text-fill-color:#000 !important;
+}
+#notificationBell{
+  position:fixed !important;
+  cursor:grab !important;
+  touch-action:none !important;
+  user-select:none !important;
+}
+#notificationBell.dragging{cursor:grabbing !important;}
+</style>
+
+<style id="popup-real-contrast-fix">
+/* Chỉ sửa tương phản trong popup Lịch sử tuần + Xếp loại tuần */
+.modal, .popup, .fullscreen-popup {
+  color:#fff !important;
+}
+.modal h1,.modal h2,.modal h3,.modal h4,.modal p,.modal span,.modal div,
+.popup h1,.popup h2,.popup h3,.popup h4,.popup p,.popup span,.popup div,
+.fullscreen-popup h1,.fullscreen-popup h2,.fullscreen-popup h3,.fullscreen-popup h4,
+.fullscreen-popup p,.fullscreen-popup span,.fullscreen-popup div{
+  color:#fff;
+}
+/* Các phần nền sáng phải chữ đen */
+.modal input,.modal textarea,.modal select,
+.popup input,.popup textarea,.popup select,
+.fullscreen-popup input,.fullscreen-popup textarea,.fullscreen-popup select,
+.modal option,.popup option,.fullscreen-popup option{
+  background:#bfe9ff !important;
+  color:#000 !important;
+  -webkit-text-fill-color:#000 !important;
+}
+.modal input::placeholder,.modal textarea::placeholder,
+.popup input::placeholder,.popup textarea::placeholder,
+.fullscreen-popup input::placeholder,.fullscreen-popup textarea::placeholder{color:#111!important}
+
+/* Bảng: header tối chữ trắng; ô sáng chữ đen */
+.modal table th,.popup table th,.fullscreen-popup table th{
+  background:#061b36 !important;color:#fff !important;
+}
+.modal table td,.popup table td,.fullscreen-popup table td{
+  background:#dff3ff !important;color:#000 !important;
+}
+.modal table td *,.popup table td *,.fullscreen-popup table td *{
+  color:#000 !important;
+}
+.modal table td button,.popup table td button,.fullscreen-popup table td button{
+  color:#fff !important;
+}
+/* Badge và ô nền tối */
+.modal .dark,.popup .dark,.fullscreen-popup .dark,
+.modal [style*="#0"],.popup [style*="#0"],.fullscreen-popup [style*="#0"]{
+  color:#fff !important;
+}
+</style>
+<style id="ranking-history-title-visibility-fix">
+/* Làm nổi riêng toàn bộ tiêu đề/nhãn trong popup Xếp loại tuần và Lịch sử */
+.modal h1,.modal h2,.modal h3,.modal h4,.modal h5,.modal h6,
+.popup h1,.popup h2,.popup h3,.popup h4,.popup h5,.popup h6,
+.fullscreen-popup h1,.fullscreen-popup h2,.fullscreen-popup h3,.fullscreen-popup h4,.fullscreen-popup h5,.fullscreen-popup h6{
+  color:#fff !important;
+  opacity:1 !important;
+  text-shadow:0 1px 8px rgba(110,210,255,.45);
+  font-weight:800 !important;
+}
+.modal label,.modal .label,.modal .title,.modal .section-title,.modal .subtitle,
+.popup label,.popup .label,.popup .title,.popup .section-title,.popup .subtitle,
+.fullscreen-popup label,.fullscreen-popup .label,.fullscreen-popup .title,.fullscreen-popup .section-title,.fullscreen-popup .subtitle{
+  color:#fff !important;
+  opacity:1 !important;
+  font-weight:700 !important;
+}
+/* Các dòng chứa thông tin xếp loại và điểm tổ */
+.modal [class*="info"],.modal [class*="rank"],.modal [class*="score"],.modal [class*="point"],
+.popup [class*="info"],.popup [class*="rank"],.popup [class*="score"],.popup [class*="point"],
+.fullscreen-popup [class*="info"],.fullscreen-popup [class*="rank"],.fullscreen-popup [class*="score"],.fullscreen-popup [class*="point"]{
+  color:#fff !important;
+  opacity:1 !important;
+}
+/* Badge tối và tiêu đề bảng */
+.modal th,.popup th,.fullscreen-popup th,
+.modal caption,.popup caption,.fullscreen-popup caption{
+  color:#fff !important;
+  font-weight:800 !important;
+  opacity:1 !important;
+}
+/* Chỉ ô có nền sáng mới đen */
+.modal td,.popup td,.fullscreen-popup td{
+  color:#000 !important;
+}
+</style>
 </head>
 
 <body>
@@ -5455,6 +5630,209 @@ startApp();
 
 </script>
 
+
+<style id="fullscreen-action-popups">
+/* Full-screen action popups — visual layer only, old logic unchanged */
+:root{--input-sky:#bfeaff;--input-sky-focus:#d9f4ff}
+input[type="text"],input[type="password"],input[type="email"],input[type="number"],input[type="date"],textarea,select{
+  background:var(--input-sky)!important;color:#111827!important;border:2px solid rgba(36,120,190,.75)!important;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.7),0 0 0 1px rgba(255,255,255,.12)!important;
+}
+input:focus,textarea:focus,select:focus{background:var(--input-sky-focus)!important;outline:3px solid rgba(90,210,255,.42)!important}
+select option{background:#bfeaff!important;color:#111827!important}
+/* Make every existing action dialog expand to the screen without changing IDs/JS */
+#bulkImportModal,#moveStudentsModal,#deleteAllStudentsModal,#studentModal,#addStudentModal,#recordModal,#deleteRequestModal,#reportModal,#approvalModal,#historyModal,#rankingModal,
+#teacherSettingsBackdrop,#rewardBackdrop{
+  align-items:stretch!important;justify-content:stretch!important;padding:0!important;
+}
+#bulkImportModal>*,#moveStudentsModal>*,#deleteAllStudentsModal>*,#studentModal>*,#addStudentModal>*,#recordModal>*,#deleteRequestModal>*,#reportModal>*,#approvalModal>*,#historyModal>*,#rankingModal>*,
+#teacherSettingsBackdrop>*,#rewardBackdrop>*{
+  width:100vw!important;max-width:none!important;min-height:100vh!important;max-height:none!important;height:100vh!important;
+  margin:0!important;border-radius:0!important;border-width:0!important;overflow:auto!important;
+  background:linear-gradient(135deg,rgba(8,14,52,.985),rgba(20,30,83,.985) 52%,rgba(38,19,78,.985))!important;
+  box-shadow:none!important;padding:clamp(20px,4vw,56px)!important;
+}
+/* Keep content readable on mobile */
+#bulkImportModal .modal-box,#moveStudentsModal .modal-box,#deleteAllStudentsModal .modal-box,#studentModal .modal-box,#addStudentModal .modal-box,#recordModal .modal-box,#deleteRequestModal .modal-box,#reportModal .modal-box,#approvalModal .modal-box,#historyModal .modal-box,#rankingModal .modal-box{
+  width:100%!important;max-width:1200px!important;margin:auto!important;min-height:calc(100vh - 40px)!important;background:transparent!important;
+}
+/* Large popups preserve the cosmic starfield feeling */
+#bulkImportModal:before,#moveStudentsModal:before,#deleteAllStudentsModal:before,#studentModal:before,#addStudentModal:before,#recordModal:before,#deleteRequestModal:before,#reportModal:before,#approvalModal:before,#historyModal:before,#rankingModal:before,#teacherSettingsBackdrop:before,#rewardBackdrop:before{
+  content:"";position:fixed;inset:0;pointer-events:none;opacity:.32;z-index:-1;
+  background-image:radial-gradient(circle at 12% 18%,#fff 0 1px,transparent 2px),radial-gradient(circle at 78% 12%,#8ee8ff 0 1px,transparent 2px),radial-gradient(circle at 35% 72%,#fff 0 1px,transparent 2px),radial-gradient(circle at 88% 82%,#c8a8ff 0 1px,transparent 2px);
+  background-size:150px 170px,230px 210px,190px 240px,280px 260px;
+}
+@media(max-width:700px){
+ #bulkImportModal>*,#moveStudentsModal>*,#deleteAllStudentsModal>*,#studentModal>*,#addStudentModal>*,#recordModal>*,#deleteRequestModal>*,#reportModal>*,#approvalModal>*,#historyModal>*,#rankingModal>*,#teacherSettingsBackdrop>*,#rewardBackdrop>*{padding:18px!important}
+}
+</style>
+
+
+<script id="proposal-popup-fix">
+(function(){
+  function findProposalTarget(){
+    const ids=['proposalModal','approvalModal','approveModal','pendingModal','suggestionModal','proposalPopup','approvalPopup'];
+    for(const id of ids){ const e=document.getElementById(id); if(e) return e; }
+    const all=[...document.querySelectorAll('[id],[class]')];
+    return all.find(e=>/duyệt đề xuất|de xuat|proposal|approval|pending/i.test((e.id||'')+' '+(e.className||'')+' '+(e.textContent||'')));
+  }
+  function openProposal(){
+    const target=findProposalTarget();
+    if(!target) return;
+    target.classList.add('fullscreen-popup');
+    target.style.display='block';
+    target.style.visibility='visible';
+    target.style.opacity='1';
+    target.setAttribute('aria-hidden','false');
+  }
+  document.addEventListener('click', function(e){
+    const b=e.target.closest('button,a,[role="button"]');
+    if(!b) return;
+    const txt=(b.textContent||'').trim().toLowerCase();
+    if(/duyệt\s*đề\s*xuất|duyet\s*de\s*xuat|proposal|approval/.test(txt)){
+      setTimeout(openProposal,0);
+    }
+  }, true);
+})();
+</script>
+
+<script id="function-repair">
+(function(){
+function label(el){return (el.textContent||el.value||'').trim().toLowerCase();}
+function targetByWords(words){
+ const all=[...document.querySelectorAll('[id],[class]')];
+ return all.find(x=>words.some(w=>((x.id||'')+' '+(x.className||'')+' '+(x.getAttribute?.('aria-label')||'')).toLowerCase().includes(w)));
+}
+function showFull(t){
+ if(!t) return false;
+ t.classList.add('fullscreen-popup');
+ t.style.display='block';t.style.visibility='visible';t.style.opacity='1';t.style.zIndex='11000';
+ return true;
+}
+document.addEventListener('click',e=>{
+ const b=e.target.closest('button,a,[role="button"],label');
+ if(!b)return; const x=label(b);
+ if(/tải danh sách|tải excel|nhập excel|import/.test(x)){
+   setTimeout(()=>showFull(targetByWords(['excel','import','upload','studentmodal','addstudent'])),0);
+ }
+ if(/lịch sử/.test(x)){
+   setTimeout(()=>showFull(targetByWords(['history','lịch sử'])),0);
+ }
+},true);
+window.__notifyData=JSON.parse(localStorage.getItem('quanly_notifications')||'[]');
+function renderNotice(){
+ const box=document.getElementById('noticeList'); if(!box)return;
+ box.innerHTML=window.__notifyData.length?window.__notifyData.map(n=>`<div class="notice-item"><b>${n.title}</b><br>${n.text}<br><small>${n.time}</small></div>`).join(''):'<p>Chưa có thông báo.</p>';
+}
+window.addNotification=function(title,text){
+ window.__notifyData.unshift({title,text,time:new Date().toLocaleString('vi-VN')});
+ localStorage.setItem('quanly_notifications',JSON.stringify(window.__notifyData));renderNotice();
+};
+document.addEventListener('DOMContentLoaded',()=>{
+ const bell=document.createElement('button');bell.id='notificationBell';bell.textContent='🔔';bell.title='Thông báo';
+ const modal=document.createElement('div');modal.id='notificationModal';
+ modal.innerHTML='<div class="inner"><button id="closeNotice">✕ Đóng</button><h2>🔔 Thông báo</h2><div id="noticeList"></div></div>';
+ document.body.append(bell,modal);renderNotice();
+ bell.onclick=()=>modal.style.display='block';
+ document.getElementById('closeNotice').onclick=()=>modal.style.display='none';
+});
+})();
+</script><script id="upload-delete-popup-real">
+(function(){
+function text(el){return (el.textContent||el.value||'').trim().toLowerCase();}
+function clickOriginalUpload(){
+ const inputs=[...document.querySelectorAll('input[type=file]')];
+ if(inputs[0]) inputs[0].click();
+}
+function openUpload(){document.getElementById('quickUploadPopup').classList.add('open')}
+function closeUpload(){document.getElementById('quickUploadPopup').classList.remove('open')}
+function openDelete(){document.getElementById('deleteAllPopup').classList.add('open')}
+function closeDelete(){document.getElementById('deleteAllPopup').classList.remove('open')}
+function originalDelete(){
+ const btn=[...document.querySelectorAll('button')].find(b=>/xóa toàn bộ học sinh|xoá toàn bộ học sinh/.test(text(b)));
+ if(btn){ btn.dataset.skipPopup='1'; btn.click(); btn.dataset.skipPopup='0'; }
+}
+document.addEventListener('DOMContentLoaded',()=>{
+ const up=document.createElement('div');up.id='quickUploadPopup';
+ up.innerHTML='<div class="popup-box-cosmic"><h2>📂 Tải danh sách học sinh</h2><p>Chọn file Excel (.xlsx hoặc .xls)</p><input id="quickExcelFile" type="file" accept=".xlsx,.xls"><div><button id="quickUploadClose">Đóng</button></div></div>';
+ document.body.appendChild(up);
+ document.getElementById('quickExcelFile').addEventListener('change',()=>{clickOriginalUpload();closeUpload()});
+ document.getElementById('quickUploadClose').onclick=closeUpload;
+ const del=document.createElement('div');del.id='deleteAllPopup';
+ del.innerHTML='<div class="popup-box-cosmic"><h2>🗑️ Xóa toàn bộ học sinh?</h2><p>Thao tác này sẽ xóa danh sách học sinh. Hãy chắc chắn trước khi tiếp tục.</p><button id="deleteAllCancel">Hủy</button><button id="deleteAllConfirm">🗑️ Xác nhận xóa</button></div>';
+ document.body.appendChild(del);
+ document.getElementById('deleteAllCancel').onclick=closeDelete;
+ document.getElementById('deleteAllConfirm').onclick=()=>{closeDelete();originalDelete()};
+});
+document.addEventListener('click',e=>{
+ const b=e.target.closest('button,a,[role=button]');if(!b)return;
+ const t=text(b);
+ if((/tải danh sách|tải excel|nhập excel/.test(t)) && !b.closest('#quickUploadPopup')){
+   e.preventDefault();e.stopImmediatePropagation();openUpload();
+ }
+ if((/xóa toàn bộ học sinh|xoá toàn bộ học sinh/.test(t)) && b.dataset.skipPopup!=='1'){
+   e.preventDefault();e.stopImmediatePropagation();openDelete();
+ }
+},true);
+})();
+</script>
+<script id="history-remove-drag-notification">
+(function(){
+  function norm(s){return (s||'').trim().toLowerCase();}
+  function removeHistoryStar(){
+    [...document.querySelectorAll('button,a,[role="button"]')].forEach(el=>{
+      const t=norm(el.textContent);
+      if((t.includes('lịch sử') && t.includes('sao')) || t==='lịch sử sao'){
+        el.style.display='none';
+        el.setAttribute('aria-hidden','true');
+      }
+    });
+  }
+  document.addEventListener('DOMContentLoaded',()=>{
+    removeHistoryStar();
+    const bell=document.getElementById('notificationBell');
+    if(!bell)return;
+    const saved=JSON.parse(localStorage.getItem('notificationBellPosition')||'null');
+    if(saved && Number.isFinite(saved.left) && Number.isFinite(saved.top)){
+      bell.style.left=Math.max(0,Math.min(saved.left,window.innerWidth-bell.offsetWidth))+'px';
+      bell.style.top=Math.max(0,Math.min(saved.top,window.innerHeight-bell.offsetHeight))+'px';
+      bell.style.right='auto';
+    }
+    let dragging=false, moved=false, dx=0, dy=0;
+    function start(x,y){
+      const r=bell.getBoundingClientRect();
+      dragging=true;moved=false;dx=x-r.left;dy=y-r.top;
+      bell.classList.add('dragging');bell.style.right='auto';
+    }
+    function move(x,y){
+      if(!dragging)return;
+      moved=true;
+      const left=Math.max(0,Math.min(x-dx,window.innerWidth-bell.offsetWidth));
+      const top=Math.max(0,Math.min(y-dy,window.innerHeight-bell.offsetHeight));
+      bell.style.left=left+'px';bell.style.top=top+'px';
+    }
+    function end(){
+      if(!dragging)return;
+      dragging=false;bell.classList.remove('dragging');
+      const r=bell.getBoundingClientRect();
+      localStorage.setItem('notificationBellPosition',JSON.stringify({left:r.left,top:r.top}));
+      setTimeout(()=>moved=false,0);
+    }
+    bell.addEventListener('pointerdown',e=>{bell.setPointerCapture?.(e.pointerId);start(e.clientX,e.clientY);});
+    bell.addEventListener('pointermove',e=>move(e.clientX,e.clientY));
+    bell.addEventListener('pointerup',end);
+    bell.addEventListener('pointercancel',end);
+    bell.addEventListener('click',e=>{if(moved){e.preventDefault();e.stopImmediatePropagation();}},true);
+    window.addEventListener('resize',()=>{
+      const r=bell.getBoundingClientRect();
+      bell.style.left=Math.max(0,Math.min(r.left,window.innerWidth-bell.offsetWidth))+'px';
+      bell.style.top=Math.max(0,Math.min(r.top,window.innerHeight-bell.offsetHeight))+'px';
+    });
+  });
+  new MutationObserver(removeHistoryStar).observe(document.documentElement,{childList:true,subtree:true});
+})();
+</script>
+
 </body>
 </html>
 <style id="cohesive-cosmic-theme">
@@ -5669,3 +6047,65 @@ input[type="text"], input[type="password"], input[type="email"], input[type="num
 input::placeholder, textarea::placeholder { color: #6b7280 !important; opacity: 1; }
 select option { color: #111827 !important; background: #ffffff !important; }
 </style>
+<style id="final-popup-and-blue-input-fix">
+/* Đồng bộ ô nhập: xanh nhạt + chữ đen */
+input:not([type="checkbox"]):not([type="radio"]), textarea, select{
+  background:#bfe9ff !important;
+  color:#000 !important;
+  caret-color:#000 !important;
+  border:2px solid #061b4f !important;
+}
+input::placeholder, textarea::placeholder{color:#26384d !important;opacity:1!important}
+option{background:#bfe9ff !important;color:#000 !important}
+
+/* Bốn thanh tổ cùng nền xanh đậm */
+.group, .group:nth-child(n){
+  background:linear-gradient(135deg,#062a66,#0b4f9c) !important;
+  border:2px solid #1f8cff !important;
+  box-shadow:0 0 18px rgba(30,144,255,.35) !important;
+}
+.group h1,.group h2,.group h3,.group h4,.group p{color:#fff!important;text-shadow:0 1px 2px #000!important}
+
+/* Các modal chính luôn phủ toàn màn hình */
+#addStudentModal,#historyModal,#rankingModal{
+  position:fixed!important; inset:0!important; width:100vw!important; height:100dvh!important;
+  z-index:100000!important; background:rgba(1,8,35,.86)!important;
+  backdrop-filter:blur(8px)!important; align-items:stretch!important; justify-content:center!important;
+}
+#addStudentModal .modal-box,#historyModal .modal-box,#rankingModal .modal-box{
+  width:100vw!important; max-width:none!important; min-height:100dvh!important; max-height:100dvh!important;
+  overflow:auto!important; border-radius:0!important; margin:0!important;
+  background:linear-gradient(145deg,#06163f,#0b245d)!important; color:#fff!important;
+}
+</style>
+<script id="robust-fullscreen-modal-open">
+(function(){
+  function forceOpen(id){
+    const m=document.getElementById(id); if(!m) return;
+    m.style.setProperty('display','flex','important');
+    m.style.setProperty('position','fixed','important');
+    m.style.setProperty('inset','0','important');
+    m.style.setProperty('z-index','100000','important');
+    document.body.style.overflow='hidden';
+  }
+  const oldClose=window.closeModal;
+  window.closeModal=function(id){
+    if(typeof oldClose==='function') oldClose(id);
+    else { const m=document.getElementById(id); if(m) m.style.display='none'; }
+    if(['addStudentModal','historyModal','rankingModal'].includes(id)) document.body.style.overflow='';
+  };
+  function bind(text,id,fn){
+    document.querySelectorAll('button').forEach(b=>{
+      if(b.textContent.trim().includes(text)){
+        b.addEventListener('click',function(){
+          try{ if(typeof fn==='function') fn(); }catch(e){ console.error(e); }
+          setTimeout(()=>forceOpen(id),0);
+        });
+      }
+    });
+  }
+  bind('Thêm học sinh','addStudentModal',()=>{ if(typeof window.openAddStudent==='function') window.openAddStudent(); });
+  bind('Xếp loại tuần','rankingModal',()=>{ if(typeof window.openWeeklyRanking==='function') window.openWeeklyRanking(); });
+  bind('Lịch sử tuần','historyModal',()=>{ if(typeof window.openHistory==='function') window.openHistory(); });
+})();
+</script>
