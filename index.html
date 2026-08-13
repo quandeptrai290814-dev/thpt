@@ -1073,6 +1073,43 @@ button[data-group], [data-team], .group-selector button {
   color:#000 !important;
 }
 </style>
+<style id="fix-current-ranking-cards">
+#historyContent .ranking-group-card,
+#rankingContent .ranking-group-card{
+  background:#102a52 !important;
+  color:#fff !important;
+  opacity:1 !important;
+  filter:none !important;
+  visibility:visible !important;
+}
+#historyContent .ranking-group-card *,
+#rankingContent .ranking-group-card *{
+  color:#fff !important;
+  opacity:1 !important;
+  filter:none !important;
+  visibility:visible !important;
+}
+</style>
+<style id="notification-black-background-fix">
+/* Chỉ đổi nền khu vực tin thông báo */
+#notificationModal .inner,
+#noticeList,
+.notice-item{
+  background:#000 !important;
+  color:#fff !important;
+}
+#notificationModal .inner *,
+#noticeList *,
+.notice-item *{
+  color:#fff !important;
+}
+#closeNotice{
+  background:#111 !important;
+  color:#fff !important;
+  border-color:#fff !important;
+}
+</style>
+
 </head>
 
 <body>
@@ -5137,8 +5174,8 @@ function showHistoryWeek(week){
 
         html += `
 
-            <div class="item"
-                 style="background:#f7f3e8">
+            <div class="item ranking-group-card"
+                 style="background:#102a52;color:#ffffff;opacity:1;filter:none">
 
                 <b>Tổ ${g}</b>
 
@@ -5330,8 +5367,8 @@ function renderRanking(week){
 
         html += `
 
-            <div class="item"
-                 style="background:#f7f3e8">
+            <div class="item ranking-group-card"
+                 style="background:#102a52;color:#ffffff;opacity:1;filter:none">
 
                 <b>Tổ ${g}</b>
 
