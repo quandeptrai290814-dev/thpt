@@ -736,7 +736,7 @@ input[type=button],input[type=submit]{
 button:not(:disabled):hover,.btn:not(:disabled):hover{filter:brightness(1.12);transform:translateY(-2px)}
 button:not(:disabled):active,.btn:not(:disabled):active{transform:translateY(2px) scale(.97) !important;box-shadow:0 3px 8px rgba(0,0,0,.35) !important}
 button:disabled,.btn:disabled{opacity:.42 !important;filter:saturate(.35) !important;cursor:not-allowed !important}
-.card,.panel,.modal-content,.box,.section,.student-card,.dashboard-card{background:linear-gradient(145deg,rgba(27,36,91,.94),rgba(12,18,52,.94)) !important;border:2px solid var(--cosmic-border) !important;border-radius:24px !important;box-shadow:0 12px 35px rgba(0,0,0,.28) !important;color:var(--cosmic-text) !important}
+.card,.panel,.modal-content,.box,.section,.student-card,.dashboard-card{/* neutralized: theme controls bg */border-radius:24px !important;}
 input,select,textarea{background:rgba(4,8,29,.78) !important;color:var(--cosmic-text) !important;border:2px solid rgba(130,154,255,.4) !important;border-radius:14px !important}
 input::placeholder,textarea::placeholder{color:#8791bc !important}
 label,.muted,small{color:var(--cosmic-muted)}
@@ -752,7 +752,7 @@ button,.btn,.action-btn,.tab-btn,input[type=button],input[type=submit]{border:2p
 button:hover,.btn:hover,.action-btn:hover,.tab-btn:hover{filter:brightness(1.18)!important;transform:translateY(-2px)!important;box-shadow:0 9px 0 #020817,0 0 25px rgba(155,124,255,.5)!important}
 button:active,.btn:active,.action-btn:active,.tab-btn:active{transform:translateY(4px) scale(.98)!important;box-shadow:0 3px 0 #020817,0 0 12px rgba(98,216,255,.25)!important}
 button:disabled,.btn:disabled,.action-btn:disabled{opacity:.42!important;filter:saturate(.45)!important;box-shadow:0 4px 0 #020817!important}
-.student-card,.student-item,.card,.panel{border:2px solid rgba(98,216,255,.45)!important;border-radius:22px!important;background:linear-gradient(145deg,rgba(23,39,88,.94),rgba(9,18,48,.96))!important;box-shadow:0 12px 30px rgba(0,0,0,.3),0 0 20px rgba(98,216,255,.1)!important}
+.student-card,.student-item,.card,.panel{border-radius:22px!important;/* bg neutralized for theme */}
 .student-card,.student-item{cursor:pointer}
 .student-card:hover,.student-item:hover{transform:translateY(-3px);border-color:#9b7cff!important;box-shadow:0 15px 34px rgba(0,0,0,.35),0 0 28px rgba(155,124,255,.3)!important}
 #studentProfileModal,.student-profile-modal,.profile-modal{backdrop-filter:blur(10px)!important}
@@ -801,7 +801,7 @@ button:disabled,.btn:disabled,.action-btn:disabled{opacity:.42!important;filter:
 html,body{background:#070b2b!important;color:#f4f7ff!important;}
 body{background-image:radial-gradient(circle at 15% 10%,rgba(95,120,255,.22),transparent 30%),radial-gradient(circle at 85% 20%,rgba(190,70,255,.18),transparent 28%),linear-gradient(135deg,#050722,#0c1550 55%,#160b35)!important;}
 body *, .app, .container, .main, main, section, header, footer, nav, aside, .card, .panel, .box, .table-wrap, .student-list, .student-card, .student-row, .modal, .modal-content, .popup, .login, .login-card, .auth, .form-card, .select, select, option, input, textarea{border-color:rgba(160,190,255,.28)!important;}
-.card,.panel,.box,.table-wrap,.student-list,.student-card,.student-row,.modal-content,.popup,.login-card,.auth,.form-card{background:rgba(10,18,62,.82)!important;color:#f4f7ff!important;backdrop-filter:blur(12px);}
+.card,.panel,.box,.table-wrap,.student-list,.student-card,.student-row,.modal-content,.popup,.login-card,.auth,.form-card{/* neutralized */backdrop-filter:blur(12px);}
 .student-card:hover,.student-row:hover{background:rgba(42,58,130,.72)!important;}
 input,textarea,select{background:rgba(5,10,40,.9)!important;color:#fff!important;}
 option{background:#10194f!important;color:#fff!important;}
@@ -825,7 +825,7 @@ body > * { position:relative; z-index:1; }
 /* Đồng bộ các vùng nội dung với nền vũ trụ, không để trắng */
 input, select, textarea { color:#111 !important; }
 option { color:#111 !important; background:#fff !important; }
-.modal, .popup, .profile-modal, .card, .student-card, table, th, td, .panel, .section, .violation, .good-deed { background-color:rgba(11,15,55,.88) !important; color:#f7fbff !important; }
+.modal, .popup, .profile-modal, .student-card, table, th, td, .section, .violation, .good-deed { /* panel bg neutralized */ }
 </style>
 
 <style id="popup-fix-final">
@@ -1073,40 +1073,40 @@ button[data-group], [data-team], .group-selector button {
   color:#000 !important;
 }
 </style>
-<style id="fix-current-ranking-cards">
+<style id="ranking-cards-unblur-fix">
+#rankingContent .ranking-group-card,
 #historyContent .ranking-group-card,
-#rankingContent .ranking-group-card{
-  background:#102a52 !important;
-  color:#fff !important;
+#rankingContent .item,
+#historyContent .item{
   opacity:1 !important;
   filter:none !important;
-  visibility:visible !important;
+  backdrop-filter:none !important;
+  color:#fff !important;
+  background:#071b38 !important;
+  position:relative !important;
+  isolation:isolate !important;
+  z-index:5 !important;
 }
+#rankingContent .ranking-group-card *,
 #historyContent .ranking-group-card *,
-#rankingContent .ranking-group-card *{
-  color:#fff !important;
+#rankingContent .item *,
+#historyContent .item *{
   opacity:1 !important;
   filter:none !important;
-  visibility:visible !important;
-}
-</style>
-<style id="notification-black-background-fix">
-/* Chỉ đổi nền khu vực tin thông báo */
-#notificationModal .inner,
-#noticeList,
-.notice-item{
-  background:#000 !important;
   color:#fff !important;
+  text-shadow:none !important;
+  mix-blend-mode:normal !important;
 }
-#notificationModal .inner *,
-#noticeList *,
-.notice-item *{
-  color:#fff !important;
-}
-#closeNotice{
-  background:#111 !important;
-  color:#fff !important;
-  border-color:#fff !important;
+#rankingContent .ranking-group-card::before,
+#rankingContent .ranking-group-card::after,
+#historyContent .ranking-group-card::before,
+#historyContent .ranking-group-card::after,
+#rankingContent .item::before,
+#rankingContent .item::after,
+#historyContent .item::before,
+#historyContent .item::after{
+  display:none !important;
+  content:none !important;
 }
 </style>
 
@@ -1191,6 +1191,10 @@ Lưu tài khoản
 <h2 id="headerTitle">Quản lý học sinh</h2>
 
 <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap;justify-content:flex-end">
+<span id="connectionStatusBadge" style="display:inline-flex;align-items:center;gap:6px;padding:6px 12px;border-radius:20px;background:rgba(255,255,255,.18);border:2px solid rgba(255,255,255,.4);font-size:12px;font-weight:800;color:#fff">🔄 Đang kiểm tra kết nối...</span>
+<button id="themeSwitcherBtn" class="btn-blue" type="button" onclick="openThemePicker()" title="Đổi chủ đề giao diện">🎨 Chủ đề</button>
+<button id="headerAttendanceBtn" class="btn-green" type="button" onclick="if(typeof openAttendanceModal==='function')openAttendanceModal()" title="Điểm danh học sinh" style="display:none">📋 Điểm danh</button>
+<button id="headerTimesheetBtn" class="btn-orange" type="button" onclick="if(typeof openTimesheetModal==='function')openTimesheetModal()" title="Chấm công" style="display:none">⏰ Chấm công</button>
 <button id="teacherSettingsButton" class="btn-purple" onclick="openTeacherSettings()">⚙️ Cài đặt</button>
 <button id="teacherRewardsButton" class="btn-yellow" onclick="toggleRewardDrawer()">⭐🎁 Sao & đổi quà</button>
 <button class="btn-gray" onclick="logout()">Đăng xuất</button>
@@ -1344,6 +1348,8 @@ Lưu ngày bắt đầu
 <button class="btn-purple" onclick="openStarHistory()">⭐ Lịch sử sao</button>
 
 <button class="btn-yellow" onclick="toggleRewardDrawer()">⭐🎁 Sao & đổi quà</button>
+<button id="openAttendanceBtn" class="btn-blue" type="button" onclick="openAttendanceModal()">📋 Điểm danh</button>
+<button id="openTimesheetBtn" class="btn-orange" type="button" onclick="openTimesheetModal()">⏰ Chấm công</button>
 
 </div>
 
@@ -1428,6 +1434,16 @@ Không được tự ý cộng hoặc trừ điểm.
 
 </div>
 
+
+
+<!-- CHỨC NĂNG TỔ TRƯỞNG: ĐIỂM DANH -->
+<div id="leaderAttendancePanel" class="panel" style="display:none">
+  <h2>👥 Chức năng tổ trưởng</h2>
+  <div class="tabs">
+    <button id="leaderAttendanceBtn" class="btn-blue" type="button" onclick="openAttendanceModal()">📋 Điểm danh tổ</button>
+  </div>
+  <p class="notice" style="margin-top:10px">Tổ trưởng chỉ điểm danh học sinh thuộc tổ của mình.</p>
+</div>
 
 <!-- DANH SÁCH HỌC SINH -->
 
@@ -2638,25 +2654,52 @@ function setupInterface(){
     const bulkBtn = document.getElementById("bulkImportButton");
     const multiBtn = document.getElementById("multiSelectButton");
     const deleteAllBtn = document.getElementById("deleteAllStudentsButton");
+    const attHeader = document.getElementById("headerAttendanceBtn");
+    const attPanel = document.getElementById("openAttendanceBtn");
     const teacherOnly = currentUser.role === "teacher";
     const classOnly = currentUser.role === "classLeader";
 
     // Chỉ hiện đúng khu chức năng của vai trò đang đăng nhập.
-    // Các nút bên trong khu đó vẫn luôn hiện; nếu chưa đủ quyền thì chỉ disabled/màu nhạt.
     teacher.classList.toggle("hidden", !teacherOnly);
     classLeader.classList.toggle("hidden", !classOnly);
 
-    // Nút thao tác chung: chỉ giáo viên được thêm/sửa trực tiếp.
     add.classList.toggle("hidden", !teacherOnly);
     action.classList.toggle("hidden", !teacherOnly);
 
-    // Chức năng riêng của giáo viên: chỉ giáo viên mới hiển thị.
     settingsBtn.classList.toggle("hidden", !teacherOnly);
     rewardsBtn.classList.toggle("hidden", !teacherOnly);
     bulkBtn.disabled = !teacherOnly;
     add.disabled = !teacherOnly;
     if(multiBtn) multiBtn.disabled = !teacherOnly;
     if(deleteAllBtn) deleteAllBtn.disabled = !teacherOnly;
+
+    // Nút điểm danh: header + trong panel chức năng GV
+    const canAttendance = teacherOnly || currentUser.role === "leader";
+    if(attHeader){
+        attHeader.style.setProperty("display", canAttendance ? "inline-flex" : "none", "important");
+        attHeader.disabled = !canAttendance;
+    }
+    if(attPanel){
+        // Nút trong panel chức năng GV: chỉ GV; tổ trưởng dùng nút header
+        attPanel.style.setProperty("display", teacherOnly ? "inline-flex" : "none", "important");
+        attPanel.disabled = !teacherOnly;
+    }
+    const tsHeader = document.getElementById("headerTimesheetBtn");
+    const tsPanel = document.getElementById("openTimesheetBtn");
+    if(tsHeader){
+        tsHeader.style.setProperty("display", teacherOnly ? "inline-flex" : "none", "important");
+        tsHeader.disabled = !teacherOnly;
+    }
+    if(tsPanel){
+        tsPanel.style.setProperty("display", teacherOnly ? "inline-flex" : "none", "important");
+        tsPanel.disabled = !teacherOnly;
+    }
+    // Nút điểm danh riêng cho tổ trưởng (nếu có)
+    const leaderAtt = document.getElementById("leaderAttendanceBtn");
+    if(leaderAtt){
+        leaderAtt.style.setProperty("display", currentUser.role === "leader" ? "inline-flex" : "none", "important");
+        leaderAtt.disabled = currentUser.role !== "leader";
+    }
 
     teacher.querySelectorAll("button").forEach(btn=>{
         btn.disabled = !teacherOnly;
@@ -2665,20 +2708,27 @@ function setupInterface(){
         btn.disabled = !classOnly;
     });
 
+    // Load chủ đề theo tài khoản đang đăng nhập
+    if(typeof loadThemeForUser === "function"){
+        loadThemeForUser(currentUser.username);
+    }
+    // Hiện panel điểm danh tổ trưởng
+    const leaderPanel = document.getElementById("leaderAttendancePanel");
+    if(leaderPanel){
+        leaderPanel.style.display = currentUser.role === "leader" ? "block" : "none";
+    }
+
     if(teacherOnly){
-        document.getElementById("mainHeader").style.background = "#6E5794";
         document.getElementById("headerTitle").innerText = "👨‍🏫 Giáo viên";
         selectedGroup = 0;
     }else if(classOnly){
-        document.getElementById("mainHeader").style.background = "#315f91";
         document.getElementById("headerTitle").innerText = "👑 Lớp trưởng";
         selectedGroup = 0;
     }else{
-        const colors={1:"#A94E4E",2:"#416F9F",3:"#4C8B5B",4:"#A56E22"};
-        document.getElementById("mainHeader").style.background = colors[currentUser.group] || "#6E5794";
         document.getElementById("headerTitle").innerText = `👥 Tổ ${currentUser.group}`;
         selectedGroup = 0;
     }
+    // Màu header do theme quản lý (không ghi đè cứng nữa)
 
     const date=document.getElementById("schoolStartDate");
     if(date) date.value=db.settings.startDate;
@@ -4786,42 +4836,57 @@ async function confirmDeleteAllStudents(){
     alert(`✅ Đã xóa toàn bộ ${count} học sinh.`);
 }
 
-function deleteStudent(id){
+async function deleteStudent(id){
 
-    if(
-        currentUser.role !== "teacher"
-    )
-        return;
+    if(currentUser?.role !== "teacher") return;
 
-    const student =
-        getStudent(id);
+    const student = getStudent(id);
+    if(!student) return;
 
-    if(!student)
-        return;
+    db.students = (db.students || []).filter(
+        s => Number(s.id) !== Number(id)
+    );
 
-    if(
-        !confirm(
-            `Xóa học sinh "${student.name}"?`
-        )
-    )
-        return;
+    db.records = (db.records || []).filter(
+        r => Number(r.studentId) !== Number(id)
+    );
 
-    db.students =
-        db.students.filter(
-            s => s.id !== id
+    db.proposals = (db.proposals || []).filter(
+        r => Number(r.studentId) !== Number(id)
+    );
+
+    db.deleteRequests = (db.deleteRequests || []).filter(
+        r => Number(r.studentId) !== Number(id)
+    );
+
+    db.reports = (db.reports || []).filter(
+        r => Number(r.studentId) !== Number(id)
+    );
+
+    if(db.notifications){
+        db.notifications = db.notifications.filter(
+            r => Number(r.studentId) !== Number(id)
         );
+    }
 
-    db.records =
-        db.records.filter(
-            r => r.studentId !== id
-        );
+    if(db.accounts){
+        Object.values(db.accounts).forEach(acc=>{
+            if(acc && Number(acc.studentId) === Number(id))
+                acc.studentId = null;
+        });
+    }
 
-    saveDB();
+    if(typeof selectedStudentId !== "undefined" &&
+       Number(selectedStudentId) === Number(id))
+        selectedStudentId = null;
 
+    if(typeof selectedStudentIds !== "undefined" &&
+       selectedStudentIds?.delete)
+        selectedStudentIds.delete(Number(id));
+
+    await saveDB();
     render();
-
 }
-
 
 /* =========================================================
    CÀI ĐẶT NĂM HỌC
@@ -5175,7 +5240,7 @@ function showHistoryWeek(week){
         html += `
 
             <div class="item ranking-group-card"
-                 style="background:#102a52;color:#ffffff;opacity:1;filter:none">
+                 style="background:#071b38;color:#ffffff;opacity:1;filter:none;backdrop-filter:none">
 
                 <b>Tổ ${g}</b>
 
@@ -5368,7 +5433,7 @@ function renderRanking(week){
         html += `
 
             <div class="item ranking-group-card"
-                 style="background:#102a52;color:#ffffff;opacity:1;filter:none">
+                 style="background:#071b38;color:#ffffff;opacity:1;filter:none;backdrop-filter:none">
 
                 <b>Tổ ${g}</b>
 
@@ -5870,6 +5935,389 @@ document.addEventListener('click',e=>{
 })();
 </script>
 
+
+<style id="student-avatar-upload-only">
+#studentAvatarUploadBox{margin:12px 0;padding:12px;border:1px solid rgba(98,216,255,.55);border-radius:16px;background:rgba(8,18,48,.7);color:#fff}
+#studentAvatarUploadBox label{display:flex;align-items:center;gap:10px;flex-wrap:wrap;font-weight:700}
+#studentAvatarPreview{width:72px;height:72px;border-radius:50%;object-fit:cover;border:3px solid #62d8ff;background:#0a1230}
+</style>
+<script id="student-avatar-upload-only-script">
+(function(){
+  let activeStudentId=null;
+
+  function getStudent(id){
+    return (window.db&&Array.isArray(db.students)) ? db.students.find(x=>String(x.id)===String(id)) : null;
+  }
+  function imageFor(st){
+    return st && st.avatar ? st.avatar : "";
+  }
+  async function saveAvatar(id,file){
+    if(!file || !String(file.type||"").startsWith("image/")) return;
+    const reader=new FileReader();
+    reader.onload=async function(){
+      const st=getStudent(id); if(!st) return;
+      st.avatar=reader.result;
+      if(typeof saveDB==="function") await saveDB();
+      if(typeof render==="function") render();
+      const img=document.getElementById("studentAvatarPreview");
+      if(img) img.src=st.avatar;
+    };
+    reader.readAsDataURL(file);
+  }
+
+  window.addStudentAvatarUpload=function(id){
+    activeStudentId=id;
+    const modal=document.getElementById("studentModal") || document.getElementById("studentProfileModal");
+    if(!modal) return;
+    let box=modal.querySelector("#studentAvatarUploadBox");
+    if(!box){
+      box=document.createElement("div");
+      box.id="studentAvatarUploadBox";
+      const first=modal.querySelector(".modal-box, .modal-content") || modal;
+      first.insertBefore(box, first.firstChild);
+    }
+    const st=getStudent(id);
+    const src=imageFor(st);
+    box.innerHTML='<label>🖼️ Ảnh đại diện học sinh<br>'+
+      '<img id="studentAvatarPreview" '+(src?'src="'+src+'"':'')+' alt="Ảnh đại diện" style="'+(src?'':'display:none')+'">'+
+      '<input id="studentAvatarFileInput" type="file" accept="image/*">'+
+      '<button type="button" class="btn-red" id="removeStudentAvatarBtn">Xóa ảnh</button></label>';
+    const input=box.querySelector("#studentAvatarFileInput");
+    input.addEventListener("change",e=>saveAvatar(id,e.target.files&&e.target.files[0]));
+    box.querySelector("#removeStudentAvatarBtn").onclick=async()=>{
+      const x=getStudent(id); if(!x)return;
+      delete x.avatar;
+      if(typeof saveDB==="function")await saveDB();
+      if(typeof render==="function")render();
+      window.addStudentAvatarUpload(id);
+    };
+  };
+
+  function hook(){
+    if(typeof window.openStudent==="function" && !window.openStudent.__avatarUploadOnly){
+      const old=window.openStudent;
+      window.openStudent=function(id){
+        const r=old.apply(this,arguments);
+        setTimeout(()=>window.addStudentAvatarUpload(id),80);
+        return r;
+      };
+      window.openStudent.__avatarUploadOnly=true;
+    }
+  }
+  setInterval(hook,250);
+  hook();
+})();
+</script>
+
+<style id="attendance-feature-style-v2">
+#attendanceModal{position:fixed;inset:0;z-index:100000;display:none;background:rgba(1,8,35,.9);backdrop-filter:blur(8px);align-items:stretch;justify-content:center;padding:0}
+#attendanceModal.open{display:flex}
+#attendanceModal .modal-box{width:100vw;max-width:none;min-height:100dvh;max-height:100dvh;overflow:auto;border-radius:0;margin:0;background:linear-gradient(145deg,#06163f,#0b245d);color:#fff;padding:clamp(18px,4vw,48px)}
+#attendanceModal h2{color:#fff;margin-top:0}
+#attendanceModal .att-topbar{display:flex;gap:12px;align-items:center;flex-wrap:wrap;margin-bottom:16px}
+#attendanceModal .att-topbar label{color:#dfe7ff;font-weight:800;margin:0}
+#attendanceModal #attendanceDate{max-width:220px}
+.att-summary{display:flex;gap:10px;flex-wrap:wrap;margin:14px 0 18px}
+.att-summary-card{flex:1;min-width:140px;padding:14px 16px;border-radius:16px;background:rgba(17,28,70,.85);border:2px solid rgba(98,216,255,.35);text-align:center}
+.att-summary-card small{display:block;color:#b9c5ee;font-weight:800;margin-bottom:6px}
+.att-summary-card strong{font-size:26px;color:#fff}
+.att-summary-card.present strong{color:#72ffd0}
+.att-summary-card.absent strong{color:#ff8fa3}
+.att-summary-card.late strong{color:#ffd77b}
+.att-student-list{display:flex;flex-direction:column;gap:8px;margin-top:10px}
+.att-row{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;padding:12px 14px;border-radius:14px;background:rgba(17,27,70,.82);border:1px solid rgba(151,174,255,.18)}
+.att-row .att-name{font-weight:800;color:#fff;min-width:160px}
+.att-row .att-group{color:#b9c5ee;font-size:13px;margin-left:8px}
+.att-row .att-buttons{display:flex;gap:6px;flex-wrap:wrap}
+.att-btn{border:2px solid #050817;border-radius:12px;padding:7px 12px;font-weight:800;cursor:pointer;color:#fff;box-shadow:0 3px 0 #050817;font-size:13px}
+.att-btn.present{background:linear-gradient(135deg,#19b98a,#167fc7)}
+.att-btn.late{background:linear-gradient(135deg,#ffd95c,#e99a38);color:#15102a}
+.att-btn.absent{background:linear-gradient(135deg,#ff557f,#b83bd4)}
+.att-btn.active{outline:3px solid #fff;transform:translateY(-1px)}
+.att-btn:hover{filter:brightness(1.1)}
+#openAttendanceBtn{align-items:center;gap:6px}
+
+/* Chuyên cần trong hồ sơ học sinh */
+#studentModal .attendance-summary{margin-top:14px;padding:14px;border:1px solid rgba(98,216,255,.4);border-radius:16px;background:rgba(17,28,70,.85);color:#fff}
+#studentModal .attendance-summary h3{margin:0 0 10px;color:#fff}
+#studentModal .attendance-stats{display:flex;gap:8px;flex-wrap:wrap}
+#studentModal .attendance-stat{padding:8px 12px;border-radius:10px;background:rgba(30,48,112,.9);color:#fff;font-weight:700}
+#studentModal .attendance-list{max-height:220px;overflow:auto;margin-top:12px}
+#studentModal .attendance-row{display:flex;justify-content:space-between;gap:10px;padding:7px 4px;border-bottom:1px solid rgba(255,255,255,.12)}
+</style>
+
+<div id="attendanceModal">
+  <div class="modal-box">
+    <h2>📋 Điểm danh</h2>
+    <div class="att-topbar">
+      <label>Ngày điểm danh</label>
+      <input type="date" id="attendanceDate">
+      <button class="btn-gray" type="button" onclick="closeAttendanceModal()">✕ Đóng</button>
+    </div>
+
+    <div class="att-summary">
+      <div class="att-summary-card present"><small>✅ Có mặt</small><strong id="attCountPresent">0</strong></div>
+      <div class="att-summary-card late"><small>🕗 Đi muộn</small><strong id="attCountLate">0</strong></div>
+      <div class="att-summary-card absent"><small>🚫 Vắng</small><strong id="attCountAbsent">0</strong></div>
+      <div class="att-summary-card"><small>❔ Chưa điểm danh</small><strong id="attCountNone">0</strong></div>
+    </div>
+
+    <div id="attendanceStudentList" class="att-student-list"></div>
+  </div>
+</div>
+
+<script id="attendance-feature-v2">
+(function(){
+
+  function todayLocal(){
+    if(typeof todayISO === "function") return todayISO();
+    const d=new Date();
+    return d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")+"-"+String(d.getDate()).padStart(2,"0");
+  }
+
+  function ensureAttendance(){
+    if(!window.db) return;
+    if(!db.attendance || typeof db.attendance!=="object") db.attendance={};
+  }
+
+  function attKey(date,studentId){
+    return String(date)+"_"+String(studentId);
+  }
+
+  // status: "present" | "late" | "absent"
+  window.setStudentAttendance=async function(id,status,date){
+    if(!window.db) return;
+    ensureAttendance();
+    date=date||document.getElementById("attendanceDate")?.value||todayLocal();
+    db.attendance[attKey(date,id)]={studentId:Number(id),status,date};
+    if(typeof saveDB==="function") await saveDB();
+    renderAttendanceModal();
+    if(typeof render==="function") render();
+    if(window.selectedStudentId===Number(id)) renderAttendanceInProfile(Number(id));
+  };
+
+  window.getStudentAttendanceStats=function(id){
+    ensureAttendance();
+    const rows=Object.values(db.attendance||{}).filter(x=>Number(x.studentId)===Number(id));
+    const total=rows.length;
+    const present=rows.filter(x=>x.status==="present").length;
+    const late=rows.filter(x=>x.status==="late").length;
+    const absent=rows.filter(x=>x.status==="absent").length;
+    return {total,present,late,absent,rate: total ? Math.round((present/total)*100) : 0, rows};
+  };
+
+  function getAttendanceForDate(date){
+    ensureAttendance();
+    const map={};
+    Object.values(db.attendance||{}).forEach(row=>{
+      if(row.date===date) map[Number(row.studentId)]=row.status;
+    });
+    return map;
+  }
+
+  window.openAttendanceModal=function(){
+    if(!window.currentUser) return;
+    if(currentUser.role!=="teacher" && currentUser.role!=="leader") return;
+    ensureAttendance();
+    const dateInput=document.getElementById("attendanceDate");
+    if(dateInput && !dateInput.value) dateInput.value=todayLocal();
+    document.getElementById("attendanceModal").classList.add("open");
+    document.body.style.overflow="hidden";
+    renderAttendanceModal();
+  };
+
+  window.closeAttendanceModal=function(){
+    document.getElementById("attendanceModal").classList.remove("open");
+    document.body.style.overflow="";
+  };
+
+  function esc2(v){
+    return typeof esc==="function" ? esc(v) : String(v??"");
+  }
+
+  window.renderAttendanceModal=function(){
+    if(!window.db) return;
+    const date=document.getElementById("attendanceDate")?.value || todayLocal();
+    const map=getAttendanceForDate(date);
+    let students=(db.students||[]);
+    // Tổ trưởng chỉ điểm danh tổ của mình
+    if(currentUser && currentUser.role==="leader" && currentUser.group){
+      students = students.filter(s => Number(s.group) === Number(currentUser.group));
+    }
+
+    let present=0, late=0, absent=0;
+    students.forEach(s=>{
+      const st=map[Number(s.id)];
+      if(st==="present") present++;
+      else if(st==="late") late++;
+      else if(st==="absent") absent++;
+    });
+    const none=students.length-present-late-absent;
+
+    document.getElementById("attCountPresent").innerText=present;
+    document.getElementById("attCountLate").innerText=late;
+    document.getElementById("attCountAbsent").innerText=absent;
+    document.getElementById("attCountNone").innerText=Math.max(0,none);
+
+    const list=document.getElementById("attendanceStudentList");
+    if(!students.length){
+      list.innerHTML='<div class="notice">Chưa có học sinh.</div>';
+      return;
+    }
+
+    list.innerHTML=students.map(s=>{
+      const st=map[Number(s.id)]||"";
+      return `<div class="att-row">
+        <div><span class="att-name">${esc2(s.name)}</span><span class="att-group">Tổ ${s.group||"?"}</span></div>
+        <div class="att-buttons">
+          <button type="button" class="att-btn present ${st==="present"?"active":""}" onclick="setStudentAttendance(${Number(s.id)},'present','${date}')">✅ Có mặt</button>
+          <button type="button" class="att-btn late ${st==="late"?"active":""}" onclick="setStudentAttendance(${Number(s.id)},'late','${date}')">🕗 Đi muộn</button>
+          <button type="button" class="att-btn absent ${st==="absent"?"active":""}" onclick="setStudentAttendance(${Number(s.id)},'absent','${date}')">🚫 Vắng</button>
+        </div>
+      </div>`;
+    }).join("");
+  };
+
+  document.addEventListener("change", e=>{
+    if(e.target && e.target.id==="attendanceDate") renderAttendanceModal();
+  });
+
+  /* Nút "Điểm danh" trong khu Chức năng giáo viên
+     Dùng polling độc lập (không phụ thuộc vào việc ghi đè render())
+     để đảm bảo nút LUÔN xuất hiện ngay khi giáo viên đăng nhập,
+     kể cả khi thứ tự tải script hoặc các đoạn code khác thay đổi. */
+  function attachButton(){
+    if(!window.currentUser || currentUser.role!=="teacher") return;
+    if(document.getElementById("openAttendanceBtn")) return;
+    const target=document.getElementById("teacherFunctions");
+    if(!target) return;
+    const tabs=target.querySelector(".tabs");
+    if(!tabs) return;
+    const b=document.createElement("button");
+    b.id="openAttendanceBtn";
+    b.type="button";
+    b.className="btn-blue";
+    b.innerHTML="📋 Điểm danh";
+    b.onclick=function(){ openAttendanceModal(); };
+    tabs.appendChild(b);
+    console.log("[Điểm danh] Đã gắn nút Điểm danh vào khu Chức năng giáo viên.");
+  }
+
+  /* Poll liên tục thay vì chỉ dựa vào việc render() có được gọi lại
+     hay không — đây là cách chắc chắn nhất để nút luôn xuất hiện. */
+  setInterval(attachButton, 400);
+  document.addEventListener("DOMContentLoaded", attachButton);
+
+  /* Cập nhật "Có mặt" / "Vắng" trên dashboard theo điểm danh hôm nay.
+     Chạy độc lập bằng setInterval để không phụ thuộc render(). */
+  function updateDashboardCounts(){
+    try{
+      if(!window.db || !window.currentUser) return;
+      ensureAttendance();
+      const date=todayLocal();
+      const map=getAttendanceForDate(date);
+
+      let list=db.students||[];
+      if(typeof selectedGroup!=="undefined" && selectedGroup!==0){
+        list=list.filter(s=>Number(s.group)===Number(selectedGroup));
+      }
+
+      let present=0, absent=0;
+      list.forEach(s=>{
+        const st=map[Number(s.id)];
+        if(st==="present" || st==="late") present++;
+        else if(st==="absent") absent++;
+      });
+
+      const pEl=document.getElementById("presentStudents");
+      const aEl=document.getElementById("absentStudents");
+      if(pEl) pEl.innerText=present;
+      if(aEl) aEl.innerText=absent;
+    }catch(err){ console.error("[Điểm danh] Lỗi cập nhật dashboard:", err); }
+  }
+  setInterval(updateDashboardCounts, 800);
+
+  /* Chuyên cần trong hồ sơ học sinh */
+  window.renderAttendanceInProfile=function(id){
+    const modal=document.getElementById("studentModal");
+    if(!modal) return;
+    const container=modal.querySelector(".modal-box");
+    if(!container) return;
+
+    let box=container.querySelector(".attendance-summary");
+    if(!box){
+      box=document.createElement("div");
+      box.className="attendance-summary";
+      const dreamBox=container.querySelector("#studentDream")?.closest(".modal-actions") || container.querySelector("#studentDream");
+      if(dreamBox && dreamBox.parentNode){
+        dreamBox.parentNode.insertBefore(box, dreamBox.nextSibling);
+      }else{
+        container.appendChild(box);
+      }
+    }
+
+    const stats=getStudentAttendanceStats(id);
+    box.innerHTML = '<h3>📋 Chuyên cần</h3>'
+      + '<div class="attendance-stats">'
+      + '<div class="attendance-stat">✅ Có mặt: <b>'+stats.present+'</b></div>'
+      + '<div class="attendance-stat">🕗 Đi muộn: <b>'+stats.late+'</b></div>'
+      + '<div class="attendance-stat">🚫 Vắng: <b>'+stats.absent+'</b></div>'
+      + '<div class="attendance-stat">📈 Tỷ lệ có mặt: <b>'+stats.rate+'%</b></div>'
+      + '</div>'
+      + '<div class="attendance-list">'
+      + (stats.rows.length
+          ? stats.rows.slice().sort((a,b)=>b.date.localeCompare(a.date)).slice(0,20).map(r=>{
+              const label = r.status==="present" ? "✅ Có mặt" : r.status==="late" ? "🕗 Đi muộn" : "🚫 Vắng";
+              return '<div class="attendance-row"><span>'+r.date+'</span><b>'+label+'</b></div>';
+            }).join("")
+          : '<div>Chưa có dữ liệu điểm danh.</div>')
+      + '</div>';
+  };
+
+  /* Móc vào openStudent() để hiển thị Chuyên cần mỗi khi mở hồ sơ */
+  function hookOpenStudent(){
+    if(typeof window.openStudent==="function" && !window.openStudent.__attendanceHooked){
+      const old=window.openStudent;
+      window.openStudent=function(id){
+        const r=old.apply(this,arguments);
+        setTimeout(()=>renderAttendanceInProfile(Number(id)),60);
+        return r;
+      };
+      window.openStudent.__attendanceHooked=true;
+    }
+  }
+  const hookTimer=setInterval(hookOpenStudent,250);
+  hookOpenStudent();
+
+  document.addEventListener("DOMContentLoaded", attachButton);
+  document.addEventListener("keydown", e=>{
+    if(e.key==="Escape"){
+      const m=document.getElementById("attendanceModal");
+      if(m && m.classList.contains("open")) closeAttendanceModal();
+    }
+  });
+
+  /* Huy hiệu trạng thái kết nối Firebase trên header */
+  function updateConnectionBadge(){
+    const badge=document.getElementById("connectionStatusBadge");
+    if(!badge) return;
+    if(typeof window.db === "undefined" || window.db === null){
+      badge.innerHTML="🔄 Đang kiểm tra kết nối...";
+      return;
+    }
+    if(window.firebaseReady){
+      badge.innerHTML="🟢 Đã kết nối Firebase";
+      badge.style.background="rgba(56,185,121,.28)";
+    }else{
+      badge.innerHTML="🟡 Chế độ ngoại tuyến (lưu trên máy này)";
+      badge.style.background="rgba(244,173,61,.32)";
+    }
+  }
+  setInterval(updateConnectionBadge, 500);
+  console.log("[Điểm danh] Script điểm danh đã tải thành công.");
+})();
+</script>
+
 </body>
 </html>
 <style id="cohesive-cosmic-theme">
@@ -5923,20 +6371,16 @@ header h1,header h2,header h3,.mainHeader h1,.mainHeader h2,.mainHeader h3{
   color:#fff !important;
   text-shadow:0 0 12px rgba(98,216,255,.25);
 }
-/* All panels/cards/sections use the same cosmic surface */
+/* Panels: background controlled by theme system (neutralized hard cosmic fill) */
 section,.group,.card,.panel,.box,.section,.student-card,.stat-card,.dashboard-card,
 .settings-panel,.popup,.modal-content,.modal-box,[class*="card"],[class*="panel"]{
-  background:linear-gradient(145deg,rgba(23,36,91,.97),rgba(10,17,53,.97)) !important;
-  color:var(--space-text) !important;
-  border:2px solid var(--space-line) !important;
   border-radius:22px !important;
-  box-shadow:var(--space-shadow) !important;
 }
 section h1,section h2,section h3,section h4,
 .group h1,.group h2,.group h3,.group h4,
 .card h1,.card h2,.card h3,.card h4,
 .panel h1,.panel h2,.panel h3,.panel h4{
-  color:#fff !important;
+  /* color from theme */
   text-shadow:0 1px 8px rgba(98,216,255,.16);
 }
 p,span,div,td,th,li{
@@ -6146,3 +6590,1148 @@ option{background:#bfe9ff !important;color:#000 !important}
   bind('Lịch sử tuần','historyModal',()=>{ if(typeof window.openHistory==='function') window.openHistory(); });
 })();
 </script>
+
+<!-- ===== THEME SWITCHER + HIGH CONTRAST BADGES ===== -->
+<div id="themePickerBackdrop" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.72);z-index:200000;backdrop-filter:blur(6px)" onclick="closeThemePicker()"></div>
+<div id="themePickerModal" style="display:none;position:fixed;left:50%;top:50%;transform:translate(-50%,-50%);z-index:200001;width:min(960px,96vw);max-height:90vh;overflow:auto;border-radius:22px;padding:22px;border:3px solid #222;background:#0b1435;color:#fff;box-shadow:0 20px 60px rgba(0,0,0,.5)">
+  <div style="display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:14px">
+    <h2 style="margin:0;color:#fff">🎨 Chọn chủ đề giao diện</h2>
+    <button class="btn-gray" type="button" onclick="closeThemePicker()">✕ Đóng</button>
+  </div>
+  <p style="color:#c8d4ff;margin:0 0 16px">10 chủ đề có sẵn · áp dụng cho mọi tài khoản trên thiết bị này. Badge xếp loại luôn rõ, chữ tương phản.</p>
+  <div id="themeGrid" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:12px"></div>
+</div>
+
+</div>
+
+<style id="theme-system-core">
+/* ===== Theme system: high-contrast badges always ===== */
+.badge{
+  display:inline-block !important;
+  padding:6px 12px !important;
+  border-radius:999px !important;
+  font-size:13px !important;
+  font-weight:900 !important;
+  letter-spacing:.02em !important;
+  border:2px solid transparent !important;
+  box-shadow:0 2px 0 rgba(0,0,0,.25) !important;
+  text-shadow:none !important;
+}
+.excellent{
+  background:#0f7a4a !important;
+  color:#ffffff !important;
+  border-color:#064d2e !important;
+}
+.good-badge{
+  background:#1a5fb4 !important;
+  color:#ffffff !important;
+  border-color:#0b3a78 !important;
+}
+.fair{
+  background:#c47a00 !important;
+  color:#ffffff !important;
+  border-color:#7a4c00 !important;
+}
+.average{
+  background:#8a5a12 !important;
+  color:#fff7e6 !important;
+  border-color:#5c3c0a !important;
+}
+.weak{
+  background:#c62828 !important;
+  color:#ffffff !important;
+  border-color:#7f1818 !important;
+}
+
+/* Ranking group cards always readable */
+.ranking-group-card,
+#rankingContent .item,
+#historyContent .item,
+#rankingContent .ranking-group-card,
+#historyContent .ranking-group-card{
+  opacity:1 !important;
+  filter:none !important;
+  backdrop-filter:none !important;
+  color:#fff !important;
+  font-weight:700 !important;
+  border:2px solid rgba(255,255,255,.35) !important;
+  border-radius:16px !important;
+  padding:14px !important;
+  margin:10px 0 !important;
+}
+.ranking-group-card b,
+.ranking-group-card strong,
+#rankingContent .item b,
+#historyContent .item b{
+  color:#fff !important;
+  font-size:1.05em !important;
+}
+
+/* Theme variables applied via html[data-theme] */
+html[data-theme="cosmic"]{
+  --th-bg:#070b24;
+  --th-card:#121c4f;
+  --th-text:#f4f7ff;
+  --th-muted:#b9c5ee;
+  --th-btn:#4567e8;
+  --th-btn-text:#ffffff;
+  --th-header:#10184b;
+  --th-accent:#62d8ff;
+  --th-group1:#8b2e2e;
+  --th-group2:#1e4f8a;
+  --th-group3:#1f6b3a;
+  --th-group4:#8a5a12;
+}
+html[data-theme="light"]{
+  --th-bg:#f4f6fb;
+  --th-card:#ffffff;
+  --th-text:#1a1f36;
+  --th-muted:#5b647a;
+  --th-btn:#3b5bdb;
+  --th-btn-text:#ffffff;
+  --th-header:#3b5bdb;
+  --th-accent:#1c7ed6;
+  --th-group1:#c92a2a;
+  --th-group2:#1c7ed6;
+  --th-group3:#2b8a3e;
+  --th-group4:#e67700;
+}
+html[data-theme="ocean"]{
+  --th-bg:#042f3a;
+  --th-card:#0b4a5a;
+  --th-text:#e8fbff;
+  --th-muted:#9ed4e0;
+  --th-btn:#0ca678;
+  --th-btn-text:#ffffff;
+  --th-header:#0b5a6e;
+  --th-accent:#66d9e8;
+  --th-group1:#c92a2a;
+  --th-group2:#1971c2;
+  --th-group3:#2f9e44;
+  --th-group4:#e67700;
+}
+html[data-theme="forest"]{
+  --th-bg:#0f1f12;
+  --th-card:#1a3320;
+  --th-text:#f1f8f2;
+  --th-muted:#a8c9b0;
+  --th-btn:#2f9e44;
+  --th-btn-text:#ffffff;
+  --th-header:#1e4d2b;
+  --th-accent:#8ce99a;
+  --th-group1:#c92a2a;
+  --th-group2:#1c7ed6;
+  --th-group3:#2b8a3e;
+  --th-group4:#e67700;
+}
+html[data-theme="sunset"]{
+  --th-bg:#2b1420;
+  --th-card:#3d1c2e;
+  --th-text:#fff5f5;
+  --th-muted:#f2c0c8;
+  --th-btn:#e03131;
+  --th-btn-text:#ffffff;
+  --th-header:#5c1a2e;
+  --th-accent:#ff922b;
+  --th-group1:#c92a2a;
+  --th-group2:#1c7ed6;
+  --th-group3:#2b8a3e;
+  --th-group4:#e67700;
+}
+
+/* Apply theme surfaces (override conflicting older styles gently) */
+html[data-theme] body{
+  background:var(--th-bg) !important;
+  color:var(--th-text) !important;
+}
+html[data-theme] header,
+html[data-theme] #mainHeader{
+  background:var(--th-header) !important;
+  color:#fff !important;
+}
+html[data-theme] .card,
+html[data-theme] .panel,
+html[data-theme] .group,
+html[data-theme] .modal-box,
+html[data-theme] .login-box{
+  background:var(--th-card) !important;
+  color:var(--th-text) !important;
+  border-color:rgba(255,255,255,.18) !important;
+}
+html[data-theme="light"] .card,
+html[data-theme="light"] .panel,
+html[data-theme="light"] .group,
+html[data-theme="light"] .modal-box,
+html[data-theme="light"] .login-box{
+  border-color:#d0d7e8 !important;
+  box-shadow:0 8px 24px rgba(30,40,80,.08) !important;
+}
+html[data-theme] .group h3,
+html[data-theme] .group p,
+html[data-theme] .card small,
+html[data-theme] .card strong,
+html[data-theme] .panel h2,
+html[data-theme] label,
+html[data-theme] p,
+html[data-theme] td,
+html[data-theme] th{
+  color:inherit !important;
+}
+html[data-theme] .group:nth-child(1){border-left-color:var(--th-group1)!important}
+html[data-theme] .group:nth-child(2){border-left-color:var(--th-group2)!important}
+html[data-theme] .group:nth-child(3){border-left-color:var(--th-group3)!important}
+html[data-theme] .group:nth-child(4){border-left-color:var(--th-group4)!important}
+
+html[data-theme] button:not(:disabled),
+html[data-theme] .btn:not(:disabled){
+  color:var(--th-btn-text) !important;
+}
+html[data-theme] .student-name{
+  color:var(--th-accent) !important;
+  font-weight:900 !important;
+}
+html[data-theme="light"] .student-name{
+  color:#1c7ed6 !important;
+}
+
+/* Theme picker cards */
+.theme-choice{
+  border:2px solid rgba(255,255,255,.25);
+  border-radius:16px;
+  padding:14px;
+  cursor:pointer;
+  transition:transform .15s, box-shadow .15s;
+  min-height:110px;
+  display:flex;
+  flex-direction:column;
+  justify-content:space-between;
+}
+.theme-choice:hover{transform:translateY(-2px);box-shadow:0 8px 22px rgba(0,0,0,.35)}
+.theme-choice.active{outline:3px solid #62d8ff;box-shadow:0 0 0 4px rgba(98,216,255,.25)}
+.theme-choice .preview-row{display:flex;gap:6px;margin-top:10px}
+.theme-choice .swatch{width:22px;height:22px;border-radius:6px;border:1px solid rgba(0,0,0,.25)}
+.theme-choice .badge-demo{display:flex;flex-wrap:wrap;gap:4px;margin-top:8px}
+.theme-choice .badge-demo span{
+  font-size:11px;font-weight:900;padding:3px 7px;border-radius:999px;color:#fff
+}
+
+/* Attendance popup already exists; keep high contrast inside */
+#attendanceModal.open{display:flex !important}
+#attendanceModal .modal-box{color:#fff !important}
+#openAttendanceBtn{/* visibility controlled by JS per role */}
+</style>
+
+<script id="theme-system-script">
+(function(){
+  const THEMES = [
+    {id:"cosmic",  name:"🌌 Cosmic",   desc:"Vũ trụ tối",        bg:"#070b24", card:"#121c4f", text:"#f4f7ff", accent:"#62d8ff", header:"#10184b", panel:"#162456", menu:"#1a2a5c"},
+    {id:"light",   name:"☀️ Light",    desc:"Sáng rõ ràng",      bg:"#f4f6fb", card:"#ffffff", text:"#1a1f36", accent:"#1c7ed6", header:"#3b5bdb", panel:"#ffffff", menu:"#e8eefc"},
+    {id:"ocean",   name:"🌊 Ocean",    desc:"Biển xanh sâu",     bg:"#042f3a", card:"#0b4a5a", text:"#e8fbff", accent:"#66d9e8", header:"#0b5a6e", panel:"#0d5568", menu:"#0e6075"},
+    {id:"forest",  name:"🌲 Forest",   desc:"Rừng xanh dịu",     bg:"#0f1f12", card:"#1a3320", text:"#f1f8f2", accent:"#8ce99a", header:"#1e4d2b", panel:"#1f3d28", menu:"#244a2f"},
+    {id:"sunset",  name:"🌅 Sunset",   desc:"Hoàng hôn ấm",      bg:"#2b1420", card:"#3d1c2e", text:"#fff5f5", accent:"#ff922b", header:"#5c1a2e", panel:"#4a1f35", menu:"#552440"},
+    {id:"lavender",name:"💜 Lavender", desc:"Tím nhẹ nhàng",     bg:"#1a1430", card:"#2a2150", text:"#f3eefc", accent:"#c9a0ff", header:"#3d2d6b", panel:"#32265c", menu:"#3a2e6a"},
+    {id:"midnight",name:"🌙 Midnight", desc:"Đêm xanh than",     bg:"#0a0e1a", card:"#141b2d", text:"#e8edf7", accent:"#7eb6ff", header:"#1a2744", panel:"#182234", menu:"#1e2a40"},
+    {id:"coral",   name:"🪸 Coral",    desc:"Cam san hô",        bg:"#2a1510", card:"#3d2218", text:"#fff4ee", accent:"#ff8a65", header:"#5c2e1f", panel:"#4a281c", menu:"#553022"},
+    {id:"mint",    name:"🍃 Mint",     desc:"Bạc hà mát",        bg:"#0d1f1c", card:"#16332e", text:"#e8faf5", accent:"#5eead4", header:"#1a4a42", panel:"#1c3f38", menu:"#214a42"},
+    {id:"rose",    name:"🌹 Rose",     desc:"Hồng đào",          bg:"#2a1218", card:"#3d1c28", text:"#fff0f3", accent:"#fb7185", header:"#5c1f32", panel:"#4a1f30", menu:"#552538"}
+  ];
+
+  const MAP_KEY = "qlhs_theme_by_user_v1";
+  const LAST_KEY = "qlhs_ui_theme_v3";
+
+  function getThemeMap(){
+    try { return JSON.parse(localStorage.getItem(MAP_KEY) || "{}"); }
+    catch(e){ return {}; }
+  }
+  function setThemeForUser(username, themeId){
+    if(!username) return;
+    const map = getThemeMap();
+    map[username] = themeId;
+    try {
+      localStorage.setItem(MAP_KEY, JSON.stringify(map));
+      localStorage.setItem(LAST_KEY, themeId);
+    } catch(e){}
+    // Lưu kèm tài khoản trên Firebase (nếu có) để giữ khi đổi máy
+    try {
+      if(window.db && db.accounts && db.accounts[username]){
+        db.accounts[username].theme = themeId;
+        if(typeof saveDB === "function") saveDB();
+      }
+    } catch(e){}
+  }
+  function getThemeForUser(username){
+    // Ưu tiên: localStorage theo acc → theme trong db.accounts → last global
+    if(username){
+      const map = getThemeMap();
+      if(map[username]) return map[username];
+      try {
+        if(window.db && db.accounts && db.accounts[username] && db.accounts[username].theme){
+          return db.accounts[username].theme;
+        }
+      } catch(e){}
+    }
+    try { return localStorage.getItem(LAST_KEY) || "cosmic"; }
+    catch(e){ return "cosmic"; }
+  }
+
+  function ensureStyle(){
+    let el = document.getElementById("live-theme-overrides");
+    if(!el){ el = document.createElement("style"); el.id = "live-theme-overrides"; document.head.appendChild(el); }
+    return el;
+  }
+
+  function applyTheme(id){
+    const t = THEMES.find(x => x.id === id) || THEMES[0];
+    document.documentElement.setAttribute("data-theme", t.id);
+    window.__currentThemeId = t.id;
+    const isLight = t.id === "light";
+    const muted = isLight ? "#5b647a" : "#b9c5ee";
+
+    ensureStyle().textContent = `
+/* ===== Theme: ${t.name} ===== */
+body {
+  background: ${t.bg} !important;
+  color: ${t.text} !important;
+}
+header, #mainHeader {
+  background: ${t.header} !important;
+  color: #fff !important;
+}
+
+/* ---- BỎ nền khối thông tin trên (Tuần / Tổng HS / Có mặt / Vắng / Điểm TB) ---- */
+.cards {
+  background: transparent !important;
+  box-shadow: none !important;
+  border: none !important;
+}
+.cards .card,
+div.cards > .card {
+  background: transparent !important;
+  background-image: none !important;
+  box-shadow: none !important;
+  border: none !important;
+  backdrop-filter: none !important;
+  padding: 10px 6px !important;
+}
+.cards .card small {
+  color: ${muted} !important;
+  background: transparent !important;
+}
+.cards .card strong {
+  color: ${t.accent} !important;
+  background: transparent !important;
+  text-shadow: none !important;
+}
+
+/* ---- Panel / danh sách ---- */
+.panel, .group, .modal-box, .login-box, .student-card, .table-wrap,
+#notificationPanel, #classLeaderFunctions {
+  background: ${t.panel} !important;
+  color: ${t.text} !important;
+  border-color: ${isLight ? "#d0d7e8" : "rgba(255,255,255,.18)"} !important;
+  box-shadow: ${isLight ? "0 4px 14px rgba(30,40,80,.08)" : "0 8px 24px rgba(0,0,0,.25)"} !important;
+}
+
+/* ---- Menu nút chức năng GV: nền theo theme ---- */
+#teacherFunctions {
+  background: ${t.panel} !important;
+  color: ${t.text} !important;
+  border-color: ${isLight ? "#d0d7e8" : "rgba(255,255,255,.2)"} !important;
+}
+#teacherFunctions h2,
+#classLeaderFunctions h2,
+.panel > h2 {
+  color: ${t.text} !important;
+  background: transparent !important;
+}
+#teacherFunctions .tabs,
+#classLeaderFunctions .tabs {
+  background: ${t.menu} !important;
+  border-radius: 16px !important;
+  padding: 12px !important;
+  border: 1px solid ${isLight ? "#c5d0ea" : "rgba(255,255,255,.12)"} !important;
+}
+
+/* ---- Sao & đổi quà: nền theo theme ---- */
+#rewardDrawer,
+#rewardDrawer.panel,
+.reward-popup {
+  background: ${t.panel} !important;
+  color: ${t.text} !important;
+  border-color: ${isLight ? "#d0d7e8" : "rgba(255,255,255,.2)"} !important;
+}
+#rewardDrawer h2,
+#rewardDrawer p,
+#rewardDrawer label,
+#rewardDrawer .notice {
+  color: ${t.text} !important;
+  background: transparent !important;
+}
+#rewardDrawer .notice {
+  background: ${t.menu} !important;
+  border-radius: 12px !important;
+}
+.reward-card,
+#rewardGrid .reward-card {
+  background: ${t.menu} !important;
+  color: ${t.text} !important;
+  border: 2px solid ${isLight ? "#c5d0ea" : "rgba(255,255,255,.2)"} !important;
+  border-radius: 16px !important;
+  box-shadow: none !important;
+}
+.reward-card b,
+.reward-card p {
+  color: ${t.text} !important;
+}
+
+.student-name { color: ${t.accent} !important; font-weight: 900 !important; }
+label, small, .muted { color: ${muted} !important; }
+
+${isLight ? `
+header, #mainHeader, header *, #mainHeader * { color: #ffffff !important; }
+tbody tr { background: #ffffff !important; color: #1a1f36 !important; }
+thead th { background: #e8eefc !important; color: #334155 !important; }
+.group { background: #ffffff !important; border: 2px solid #d0d7e8 !important; }
+` : `
+tbody tr { background: ${t.card} !important; color: ${t.text} !important; }
+thead th { background: ${t.header} !important; color: #fff !important; }
+`}
+
+/* Badge xếp loại */
+.excellent { background:#0f7a4a !important; color:#fff !important; }
+.good-badge { background:#1a5fb4 !important; color:#fff !important; }
+.fair { background:#c47a00 !important; color:#fff !important; }
+.average { background:#8a5a12 !important; color:#fff7e6 !important; }
+.weak { background:#c62828 !important; color:#fff !important; }
+.badge {
+  display:inline-block !important; padding:6px 12px !important; border-radius:999px !important;
+  font-size:13px !important; font-weight:900 !important;
+}
+.ranking-group-card, #rankingContent .ranking-group-card, #historyContent .ranking-group-card {
+  background:#0b2a4a !important; color:#fff !important; border:2px solid #4aa3ff !important;
+  opacity:1 !important; filter:none !important;
+}
+.ranking-group-card * { color:#fff !important; opacity:1 !important; }
+`;
+    // Ép màu menu/panel bằng inline style (thắng CSS !important cũ)
+    function paint(el, bg, color){
+      if(!el) return;
+      el.style.setProperty("background", bg, "important");
+      el.style.setProperty("background-image", "none", "important");
+      el.style.setProperty("color", color, "important");
+    }
+    const panelBg = t.panel, menuBg = t.menu, txt = isLight ? "#1a1f36" : t.text;
+    paint(document.getElementById("teacherFunctions"), panelBg, txt);
+    paint(document.getElementById("classLeaderFunctions"), panelBg, txt);
+    document.querySelectorAll("#teacherFunctions .tabs, #classLeaderFunctions .tabs").forEach(el => paint(el, menuBg, txt));
+    document.querySelectorAll("#teacherFunctions h2, #classLeaderFunctions h2").forEach(el => {
+      el.style.setProperty("color", txt, "important");
+      el.style.setProperty("background", "transparent", "important");
+    });
+    // Reward popup + cards
+    paint(document.getElementById("rewardDrawer"), panelBg, txt);
+    document.querySelectorAll("#rewardGrid .reward-card, .reward-card").forEach(el => paint(el, menuBg, txt));
+    // Dashboard cards: no bg
+    document.querySelectorAll(".cards .card").forEach(el => {
+      el.style.setProperty("background", "transparent", "important");
+      el.style.setProperty("background-image", "none", "important");
+      el.style.setProperty("box-shadow", "none", "important");
+      el.style.setProperty("border", "none", "important");
+    });
+    document.querySelectorAll(".cards .card strong").forEach(el => {
+      el.style.setProperty("color", t.accent, "important");
+      el.style.setProperty("background", "transparent", "important");
+    });
+    document.querySelectorAll(".cards .card small").forEach(el => {
+      el.style.setProperty("color", isLight ? "#5b647a" : "#b9c5ee", "important");
+      el.style.setProperty("background", "transparent", "important");
+    });
+
+    document.querySelectorAll(".theme-choice").forEach(el => {
+      const on = el.dataset.theme === t.id;
+      el.classList.toggle("active", on);
+      el.style.border = on ? "2px solid #62d8ff" : "2px solid rgba(255,255,255,.25)";
+      el.style.boxShadow = on ? "0 0 0 3px rgba(98,216,255,.35)" : "none";
+    });
+  }
+
+  window.loadThemeForUser = function(username){
+    applyTheme(getThemeForUser(username));
+  };
+
+  window.openThemePicker = function(){
+    const grid = document.getElementById("themeGrid");
+    if(grid){
+      const user = window.currentUser && currentUser.username;
+      const cur = getThemeForUser(user);
+      grid.innerHTML = THEMES.map(t => `
+        <div class="theme-choice ${t.id===cur?"active":""}" data-theme="${t.id}" onclick="selectTheme('${t.id}')"
+          style="background:${t.card};color:${t.id==='light'?'#1a1f36':'#fff'};border:2px solid ${t.id===cur?'#62d8ff':'rgba(255,255,255,.25)'};border-radius:16px;padding:14px;cursor:pointer;min-height:110px;box-shadow:${t.id===cur?'0 0 0 3px rgba(98,216,255,.35)':'none'}">
+          <div style="font-weight:900;font-size:1.02rem">${t.name}</div>
+          <div style="font-size:12px;opacity:.9;margin-top:4px">${t.desc}</div>
+          <div style="display:flex;gap:6px;margin-top:12px">
+            <span style="width:22px;height:22px;border-radius:6px;background:${t.bg};border:1px solid rgba(0,0,0,.3)"></span>
+            <span style="width:22px;height:22px;border-radius:6px;background:${t.menu};border:1px solid rgba(0,0,0,.3)"></span>
+            <span style="width:22px;height:22px;border-radius:6px;background:${t.panel};border:1px solid rgba(0,0,0,.3)"></span>
+            <span style="width:22px;height:22px;border-radius:6px;background:${t.accent};border:1px solid rgba(0,0,0,.3)"></span>
+          </div>
+          <div style="display:flex;flex-wrap:wrap;gap:4px;margin-top:10px">
+            <span style="font-size:10px;font-weight:900;padding:2px 7px;border-radius:999px;background:#0f7a4a;color:#fff">Xuất sắc</span>
+            <span style="font-size:10px;font-weight:900;padding:2px 7px;border-radius:999px;background:#1a5fb4;color:#fff">Tốt</span>
+            <span style="font-size:10px;font-weight:900;padding:2px 7px;border-radius:999px;background:#c47a00;color:#fff">Khá</span>
+            <span style="font-size:10px;font-weight:900;padding:2px 7px;border-radius:999px;background:#c62828;color:#fff">Yếu</span>
+          </div>
+        </div>
+      `).join("");
+    }
+    document.getElementById("themePickerBackdrop").style.display = "block";
+    document.getElementById("themePickerModal").style.display = "block";
+  };
+
+  window.closeThemePicker = function(){
+    document.getElementById("themePickerBackdrop").style.display = "none";
+    document.getElementById("themePickerModal").style.display = "none";
+  };
+
+  window.selectTheme = function(id){
+    applyTheme(id);
+    if(window.currentUser && currentUser.username) setThemeForUser(currentUser.username, id);
+    else try { localStorage.setItem(LAST_KEY, id); } catch(e){}
+    openThemePicker();
+    const btn = document.getElementById("themeSwitcherBtn");
+    if(btn){ const o = btn.innerHTML; btn.innerHTML = "✅ Đã lưu"; setTimeout(() => btn.innerHTML = o, 900); }
+  };
+
+  function syncHeaderButtons(){
+    const theme = document.getElementById("themeSwitcherBtn");
+    const att = document.getElementById("headerAttendanceBtn");
+    if(theme) theme.style.display = "inline-flex";
+    if(att){
+      const canAtt = window.currentUser && (currentUser.role === "teacher" || currentUser.role === "leader");
+      att.style.setProperty("display", canAtt ? "inline-flex" : "none", "important");
+    }
+    const attPanel = document.getElementById("openAttendanceBtn");
+    if(attPanel){
+      const isTeacher = window.currentUser && currentUser.role === "teacher";
+      attPanel.style.setProperty("display", isTeacher ? "inline-flex" : "none", "important");
+      attPanel.disabled = !isTeacher;
+    }
+    const leaderAttBtn = document.getElementById("leaderAttendanceBtn");
+    if(leaderAttBtn){
+      const isLeader = window.currentUser && currentUser.role === "leader";
+      leaderAttBtn.style.setProperty("display", isLeader ? "inline-flex" : "none", "important");
+    }
+    const leaderPanel = document.getElementById("leaderAttendancePanel");
+    if(leaderPanel){
+      const isLeader = window.currentUser && currentUser.role === "leader";
+      leaderPanel.style.display = isLeader ? "block" : "none";
+    }
+    const tsH = document.getElementById("headerTimesheetBtn");
+    const tsP = document.getElementById("openTimesheetBtn");
+    const isT = window.currentUser && currentUser.role === "teacher";
+    if(tsH){ tsH.style.setProperty("display", isT ? "inline-flex" : "none", "important"); }
+    if(tsP){ tsP.style.setProperty("display", isT ? "inline-flex" : "none", "important"); tsP.disabled = !isT; }
+  }
+  setInterval(syncHeaderButtons, 500);
+
+  document.addEventListener("keydown", function(e){
+    if(e.key === "Escape"){
+      const m = document.getElementById("themePickerModal");
+      if(m && m.style.display === "block") closeThemePicker();
+    }
+  });
+
+  window.__currentThemeId = "cosmic";
+  const _origApply = applyTheme;
+  // wrap is not needed — just store id inside applyTheme via patch below
+
+  try { applyTheme(localStorage.getItem(LAST_KEY) || "cosmic"); }
+  catch(e){ applyTheme("cosmic"); }
+
+  // Re-paint menu every 800ms so old CSS cannot keep it black
+  setInterval(function(){
+    if(typeof applyTheme === "function" && window.__currentThemeId){
+      // only re-paint DOM colors without rebuilding entire stylesheet every time if heavy
+      // full apply is fine and cheap
+      applyTheme(window.__currentThemeId);
+    }
+  }, 1200);
+})();
+</script>
+
+
+
+<style id="theme-light-contrast-fix">
+/* Light theme: force dark text on light surfaces for true contrast */
+html[data-theme="light"] body,
+html[data-theme="light"] .card,
+html[data-theme="light"] .panel,
+html[data-theme="light"] .group,
+html[data-theme="light"] .modal-box,
+html[data-theme="light"] .login-box,
+html[data-theme="light"] td,
+html[data-theme="light"] th,
+html[data-theme="light"] p,
+html[data-theme="light"] label,
+html[data-theme="light"] h1,
+html[data-theme="light"] h2,
+html[data-theme="light"] h3,
+html[data-theme="light"] h4,
+html[data-theme="light"] small,
+html[data-theme="light"] span,
+html[data-theme="light"] div{
+  color:#1a1f36 !important;
+}
+html[data-theme="light"] header,
+html[data-theme="light"] #mainHeader,
+html[data-theme="light"] header *,
+html[data-theme="light"] #mainHeader *{
+  color:#ffffff !important;
+}
+html[data-theme="light"] .student-name{
+  color:#1c7ed6 !important;
+}
+html[data-theme="light"] tbody tr{
+  background:#ffffff !important;
+  color:#1a1f36 !important;
+}
+html[data-theme="light"] thead th{
+  background:#e8eefc !important;
+  color:#334155 !important;
+}
+html[data-theme="light"] .group{
+  background:#ffffff !important;
+  border:2px solid #d0d7e8 !important;
+}
+html[data-theme="light"] .badge.excellent{background:#0f7a4a!important;color:#fff!important}
+html[data-theme="light"] .badge.good-badge{background:#1a5fb4!important;color:#fff!important}
+html[data-theme="light"] .badge.fair{background:#c47a00!important;color:#fff!important}
+html[data-theme="light"] .badge.average{background:#8a5a12!important;color:#fff7e6!important}
+html[data-theme="light"] .badge.weak{background:#c62828!important;color:#fff!important}
+
+/* Ranking banners: always solid, high contrast text regardless of theme */
+.ranking-group-card,
+#rankingContent .ranking-group-card,
+#historyContent .ranking-group-card,
+#rankingContent .item.ranking-group-card,
+#historyContent .item.ranking-group-card{
+  background:#0b2a4a !important;
+  color:#ffffff !important;
+  border:2px solid #4aa3ff !important;
+}
+.ranking-group-card *,
+#rankingContent .ranking-group-card *,
+#historyContent .ranking-group-card *{
+  color:#ffffff !important;
+  opacity:1 !important;
+  filter:none !important;
+}
+
+/* Keep badge text pure white on solid color backgrounds */
+.excellent, .good-badge, .fair, .average, .weak,
+span.badge.excellent, span.badge.good-badge, span.badge.fair, span.badge.average, span.badge.weak{
+  color:#ffffff !important;
+}
+span.badge.average{color:#fff7e6 !important}
+</style>
+
+
+
+<style id="dashboard-cards-no-bg">
+/* Luôn bỏ nền tối của 5 ô thống kê phía trên */
+.cards, .cards .card, div.cards > div.card {
+  background: transparent !important;
+  background-image: none !important;
+  box-shadow: none !important;
+  border: none !important;
+  backdrop-filter: none !important;
+}
+.cards .card small, .cards .card strong {
+  background: transparent !important;
+}
+</style>
+
+
+
+<!-- ===== CHẤM CÔNG (giống điểm danh) ===== -->
+<style id="timesheet-feature-style">
+#timesheetModal{position:fixed;inset:0;z-index:100000;display:none;background:rgba(1,8,35,.9);backdrop-filter:blur(8px);align-items:stretch;justify-content:center;padding:0}
+#timesheetModal.open{display:flex}
+#timesheetModal .modal-box{width:100vw;max-width:none;min-height:100dvh;max-height:100dvh;overflow:auto;border-radius:0;margin:0;background:linear-gradient(145deg,#06163f,#0b245d);color:#fff;padding:clamp(18px,4vw,48px)}
+#timesheetModal h2{color:#fff;margin-top:0}
+#timesheetModal .ts-topbar{display:flex;gap:12px;align-items:center;flex-wrap:wrap;margin-bottom:16px}
+#timesheetModal .ts-topbar label{color:#dfe7ff;font-weight:800;margin:0}
+#timesheetModal #timesheetDate{max-width:220px}
+.ts-summary{display:flex;gap:10px;flex-wrap:wrap;margin:14px 0 18px}
+.ts-summary-card{flex:1;min-width:140px;padding:14px 16px;border-radius:16px;background:rgba(17,28,70,.85);border:2px solid rgba(98,216,255,.35);text-align:center}
+.ts-summary-card small{display:block;color:#b9c5ee;font-weight:800;margin-bottom:6px}
+.ts-summary-card strong{font-size:26px;color:#fff}
+.ts-summary-card.in strong{color:#72ffd0}
+.ts-summary-card.out strong{color:#ffd77b}
+.ts-summary-card.off strong{color:#ff8fa3}
+.ts-student-list{display:flex;flex-direction:column;gap:8px;margin-top:10px}
+.ts-row{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;padding:12px 14px;border-radius:14px;background:rgba(17,27,70,.82);border:1px solid rgba(151,174,255,.18)}
+.ts-row .ts-name{font-weight:800;color:#fff;min-width:160px}
+.ts-row .ts-group{color:#b9c5ee;font-size:13px;margin-left:8px}
+.ts-row .ts-buttons{display:flex;gap:6px;flex-wrap:wrap}
+.ts-btn{border:2px solid #050817;border-radius:12px;padding:7px 12px;font-weight:800;cursor:pointer;color:#fff;box-shadow:0 3px 0 #050817;font-size:13px}
+.ts-btn.in{background:linear-gradient(135deg,#19b98a,#167fc7)}
+.ts-btn.out{background:linear-gradient(135deg,#ffd95c,#e99a38);color:#15102a}
+.ts-btn.off{background:linear-gradient(135deg,#ff557f,#b83bd4)}
+.ts-btn.active{outline:3px solid #fff;transform:translateY(-1px)}
+.ts-btn:hover{filter:brightness(1.1)}
+</style>
+
+<div id="timesheetModal">
+  <div class="modal-box">
+    <h2>⏰ Chấm công</h2>
+    <div class="ts-topbar">
+      <label>Ngày chấm công</label>
+      <input type="date" id="timesheetDate">
+      <button class="btn-gray" type="button" onclick="closeTimesheetModal()">✕ Đóng</button>
+    </div>
+    <div class="ts-summary">
+      <div class="ts-summary-card in"><small>✅ Đã chấm công</small><strong id="tsCountIn">0</strong></div>
+      <div class="ts-summary-card out"><small>🔚 Đã ra về</small><strong id="tsCountOut">0</strong></div>
+      <div class="ts-summary-card off"><small>🚫 Nghỉ / vắng</small><strong id="tsCountOff">0</strong></div>
+      <div class="ts-summary-card"><small>❔ Chưa chấm</small><strong id="tsCountNone">0</strong></div>
+    </div>
+    <div id="timesheetStudentList" class="ts-student-list"></div>
+  </div>
+</div>
+
+<script id="timesheet-feature-script">
+(function(){
+  function todayLocal(){
+    if(typeof todayISO === "function") return todayISO();
+    const d=new Date();
+    return d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")+"-"+String(d.getDate()).padStart(2,"0");
+  }
+  function ensureTimesheet(){
+    if(!window.db) return;
+    if(!db.timesheet || typeof db.timesheet !== "object") db.timesheet = {};
+  }
+  function tsKey(date, studentId){
+    return String(date)+"_"+String(studentId);
+  }
+
+  // status: "in" | "out" | "off"
+  window.setStudentTimesheet = async function(id, status, date){
+    if(!window.db) return;
+    ensureTimesheet();
+    date = date || document.getElementById("timesheetDate")?.value || todayLocal();
+    const now = new Date();
+    const timeStr = String(now.getHours()).padStart(2,"0")+":"+String(now.getMinutes()).padStart(2,"0");
+    const prev = db.timesheet[tsKey(date,id)] || {};
+    db.timesheet[tsKey(date,id)] = {
+      studentId: Number(id),
+      status,
+      date,
+      time: timeStr,
+      checkIn: status === "in" ? timeStr : (prev.checkIn || ""),
+      checkOut: status === "out" ? timeStr : (prev.checkOut || "")
+    };
+    if(typeof saveDB === "function") await saveDB();
+    renderTimesheetModal();
+  };
+
+  function getTimesheetForDate(date){
+    ensureTimesheet();
+    const map = {};
+    Object.values(db.timesheet || {}).forEach(row => {
+      if(row.date === date) map[Number(row.studentId)] = row;
+    });
+    return map;
+  }
+
+  window.openTimesheetModal = function(){
+    if(!window.currentUser || currentUser.role !== "teacher") return;
+    ensureTimesheet();
+    const dateInput = document.getElementById("timesheetDate");
+    if(dateInput && !dateInput.value) dateInput.value = todayLocal();
+    document.getElementById("timesheetModal").classList.add("open");
+    document.body.style.overflow = "hidden";
+    renderTimesheetModal();
+  };
+
+  window.closeTimesheetModal = function(){
+    document.getElementById("timesheetModal").classList.remove("open");
+    document.body.style.overflow = "";
+  };
+
+  function esc2(v){
+    return typeof esc === "function" ? esc(v) : String(v ?? "");
+  }
+
+  window.renderTimesheetModal = function(){
+    if(!window.db) return;
+    const date = document.getElementById("timesheetDate")?.value || todayLocal();
+    const map = getTimesheetForDate(date);
+    const students = db.students || [];
+
+    let inn = 0, out = 0, off = 0;
+    students.forEach(s => {
+      const st = map[Number(s.id)]?.status;
+      if(st === "in") inn++;
+      else if(st === "out") out++;
+      else if(st === "off") off++;
+    });
+    const none = students.length - inn - out - off;
+
+    document.getElementById("tsCountIn").innerText = inn;
+    document.getElementById("tsCountOut").innerText = out;
+    document.getElementById("tsCountOff").innerText = off;
+    document.getElementById("tsCountNone").innerText = Math.max(0, none);
+
+    const list = document.getElementById("timesheetStudentList");
+    if(!students.length){
+      list.innerHTML = '<div class="notice">Chưa có học sinh.</div>';
+      return;
+    }
+    list.innerHTML = students.map(s => {
+      const row = map[Number(s.id)];
+      const st = row?.status || "";
+      const timeInfo = row ? (row.status === "in" && row.checkIn ? " · vào "+row.checkIn : row.status === "out" && row.checkOut ? " · ra "+row.checkOut : row.time ? " · "+row.time : "") : "";
+      return `<div class="ts-row">
+        <div><span class="ts-name">${esc2(s.name)}</span><span class="ts-group">Tổ ${s.group||"?"}${timeInfo}</span></div>
+        <div class="ts-buttons">
+          <button type="button" class="ts-btn in ${st==="in"?"active":""}" onclick="setStudentTimesheet(${Number(s.id)},'in','${date}')">✅ Chấm công</button>
+          <button type="button" class="ts-btn out ${st==="out"?"active":""}" onclick="setStudentTimesheet(${Number(s.id)},'out','${date}')">🔚 Ra về</button>
+          <button type="button" class="ts-btn off ${st==="off"?"active":""}" onclick="setStudentTimesheet(${Number(s.id)},'off','${date}')">🚫 Nghỉ</button>
+        </div>
+      </div>`;
+    }).join("");
+  };
+
+  document.addEventListener("change", e => {
+    if(e.target && e.target.id === "timesheetDate") renderTimesheetModal();
+  });
+  document.addEventListener("keydown", e => {
+    if(e.key === "Escape"){
+      const m = document.getElementById("timesheetModal");
+      if(m && m.classList.contains("open")) closeTimesheetModal();
+    }
+  });
+  console.log("[Chấm công] Script đã tải.");
+})();
+</script>
+
+
+
+<style id="theme-menu-force">
+/* Biến màu do JS gán trên :root */
+:root {
+  --theme-panel: #162456;
+  --theme-menu: #1a2a5c;
+  --theme-text: #f4f7ff;
+}
+#teacherFunctions.panel,
+#teacherFunctions,
+div#teacherFunctions {
+  background: var(--theme-panel) !important;
+  background-image: none !important;
+  color: var(--theme-text) !important;
+}
+#teacherFunctions .tabs,
+#classLeaderFunctions .tabs,
+div#teacherFunctions > div.tabs {
+  background: var(--theme-menu) !important;
+  background-image: none !important;
+  color: var(--theme-text) !important;
+}
+#classLeaderFunctions.panel,
+#classLeaderFunctions {
+  background: var(--theme-panel) !important;
+  background-image: none !important;
+  color: var(--theme-text) !important;
+}
+#rewardDrawer,
+#rewardDrawer.panel {
+  background: var(--theme-panel) !important;
+  background-image: none !important;
+  color: var(--theme-text) !important;
+}
+#rewardGrid .reward-card,
+.reward-card {
+  background: var(--theme-menu) !important;
+  background-image: none !important;
+  color: var(--theme-text) !important;
+}
+</style>
+<script id="theme-css-vars-sync">
+(function(){
+  const THEME_COLORS = {
+    cosmic:  {panel:"#162456", menu:"#1a2a5c", text:"#f4f7ff"},
+    light:   {panel:"#ffffff", menu:"#e8eefc", text:"#1a1f36"},
+    ocean:   {panel:"#0d5568", menu:"#0e6075", text:"#e8fbff"},
+    forest:  {panel:"#1f3d28", menu:"#244a2f", text:"#f1f8f2"},
+    sunset:  {panel:"#4a1f35", menu:"#552440", text:"#fff5f5"},
+    lavender:{panel:"#32265c", menu:"#3a2e6a", text:"#f3eefc"},
+    midnight:{panel:"#182234", menu:"#1e2a40", text:"#e8edf7"},
+    coral:   {panel:"#4a281c", menu:"#553022", text:"#fff4ee"},
+    mint:    {panel:"#1c3f38", menu:"#214a42", text:"#e8faf5"},
+    rose:    {panel:"#4a1f30", menu:"#552538", text:"#fff0f3"}
+  };
+  function applyVars(id){
+    const c = THEME_COLORS[id] || THEME_COLORS.cosmic;
+    const r = document.documentElement;
+    r.style.setProperty("--theme-panel", c.panel);
+    r.style.setProperty("--theme-menu", c.menu);
+    r.style.setProperty("--theme-text", c.text);
+    // Direct paint as backup
+    ["teacherFunctions","classLeaderFunctions","rewardDrawer"].forEach(function(idEl){
+      const el = document.getElementById(idEl);
+      if(!el) return;
+      el.style.setProperty("background", c.panel, "important");
+      el.style.setProperty("background-image", "none", "important");
+      el.style.setProperty("color", c.text, "important");
+    });
+    document.querySelectorAll("#teacherFunctions .tabs, #classLeaderFunctions .tabs").forEach(function(el){
+      el.style.setProperty("background", c.menu, "important");
+      el.style.setProperty("background-image", "none", "important");
+      el.style.setProperty("color", c.text, "important");
+    });
+    document.querySelectorAll("#rewardGrid .reward-card, .reward-card").forEach(function(el){
+      el.style.setProperty("background", c.menu, "important");
+      el.style.setProperty("color", c.text, "important");
+    });
+  }
+  // Hook selectTheme / loadThemeForUser if present
+  const hook = setInterval(function(){
+    if(typeof window.selectTheme === "function" && !window.selectTheme.__varsHooked){
+      const old = window.selectTheme;
+      window.selectTheme = function(id){
+        const r = old.apply(this, arguments);
+        applyVars(id);
+        return r;
+      };
+      window.selectTheme.__varsHooked = true;
+    }
+    if(typeof window.loadThemeForUser === "function" && !window.loadThemeForUser.__varsHooked){
+      const old = window.loadThemeForUser;
+      window.loadThemeForUser = function(u){
+        const r = old.apply(this, arguments);
+        applyVars(window.__currentThemeId || "cosmic");
+        return r;
+      };
+      window.loadThemeForUser.__varsHooked = true;
+    }
+    applyVars(window.__currentThemeId || localStorage.getItem("qlhs_ui_theme_v3") || "cosmic");
+  }, 700);
+})();
+</script>
+
+
+
+<style id="themed-action-popups">
+/* Popup chức năng GV — màu theo chủ đề */
+#bulkImportModal,
+#moveStudentsModal,
+#deleteAllStudentsModal,
+#rankingModal,
+#historyModal,
+#approvalModal,
+#addStudentModal {
+  position: fixed !important;
+  inset: 0 !important;
+  z-index: 120000 !important;
+  display: none;
+  align-items: center !important;
+  justify-content: center !important;
+  padding: 18px !important;
+  background: rgba(0, 0, 0, 0.72) !important;
+  backdrop-filter: blur(8px) !important;
+}
+#bulkImportModal.open-themed,
+#moveStudentsModal.open-themed,
+#deleteAllStudentsModal.open-themed,
+#rankingModal.open-themed,
+#historyModal.open-themed,
+#approvalModal.open-themed,
+#addStudentModal.open-themed {
+  display: flex !important;
+}
+#bulkImportModal .modal-box,
+#moveStudentsModal .modal-box,
+#deleteAllStudentsModal .modal-box,
+#rankingModal .modal-box,
+#historyModal .modal-box,
+#approvalModal .modal-box,
+#addStudentModal .modal-box {
+  width: min(920px, 96vw) !important;
+  max-height: 90vh !important;
+  overflow: auto !important;
+  border-radius: 22px !important;
+  padding: 22px !important;
+  background: var(--theme-panel, #162456) !important;
+  color: var(--theme-text, #f4f7ff) !important;
+  border: 2px solid rgba(255,255,255,.22) !important;
+  box-shadow: 0 20px 50px rgba(0,0,0,.45) !important;
+}
+#bulkImportModal .modal-box h2,
+#moveStudentsModal .modal-box h2,
+#deleteAllStudentsModal .modal-box h2,
+#rankingModal .modal-box h2,
+#historyModal .modal-box h2,
+#approvalModal .modal-box h2,
+#addStudentModal .modal-box h2,
+#bulkImportModal .modal-box p,
+#rankingModal .modal-box p,
+#historyModal .modal-box p,
+#approvalModal .modal-box p,
+#addStudentModal .modal-box label {
+  color: var(--theme-text, #f4f7ff) !important;
+}
+#bulkImportModal .notice,
+#moveStudentsModal .notice,
+#deleteAllStudentsModal .notice,
+#rankingModal .notice,
+#historyModal .notice,
+#approvalModal .notice,
+#addStudentModal .notice {
+  background: var(--theme-menu, #1a2a5c) !important;
+  color: var(--theme-text, #f4f7ff) !important;
+  border-radius: 12px !important;
+}
+/* Bảng trong popup lịch sử / xếp loại */
+#historyModal table th,
+#rankingModal table th {
+  background: var(--theme-menu, #1a2a5c) !important;
+  color: var(--theme-text, #f4f7ff) !important;
+}
+#historyModal table td,
+#rankingModal table td {
+  background: rgba(255,255,255,.06) !important;
+  color: var(--theme-text, #f4f7ff) !important;
+}
+html[data-theme="light"] #historyModal table td,
+html[data-theme="light"] #rankingModal table td {
+  background: #f0f4ff !important;
+  color: #1a1f36 !important;
+}
+html[data-theme="light"] #historyModal table th,
+html[data-theme="light"] #rankingModal table th {
+  background: #e8eefc !important;
+  color: #1a1f36 !important;
+}
+</style>
+
+<script id="themed-action-popups-script">
+(function(){
+  const MODAL_IDS = [
+    "bulkImportModal",
+    "moveStudentsModal",
+    "deleteAllStudentsModal",
+    "rankingModal",
+    "historyModal",
+    "approvalModal",
+    "addStudentModal"
+  ];
+
+  function openThemed(id){
+    const m = document.getElementById(id);
+    if(!m) return;
+    m.classList.add("open-themed");
+    m.style.setProperty("display", "flex", "important");
+    document.body.style.overflow = "hidden";
+    // paint box with current theme vars
+    const box = m.querySelector(".modal-box");
+    if(box){
+      const panel = getComputedStyle(document.documentElement).getPropertyValue("--theme-panel").trim() || "#162456";
+      const text = getComputedStyle(document.documentElement).getPropertyValue("--theme-text").trim() || "#f4f7ff";
+      box.style.setProperty("background", panel, "important");
+      box.style.setProperty("color", text, "important");
+    }
+  }
+
+  function closeThemed(id){
+    const m = document.getElementById(id);
+    if(!m) return;
+    m.classList.remove("open-themed");
+    m.style.setProperty("display", "none", "important");
+    // if no other themed modal open, restore scroll
+    const anyOpen = MODAL_IDS.some(x => {
+      const el = document.getElementById(x);
+      return el && el.classList.contains("open-themed");
+    });
+    if(!anyOpen) document.body.style.overflow = "";
+  }
+
+  // Hook closeModal
+  const prevClose = window.closeModal;
+  window.closeModal = function(id){
+    if(MODAL_IDS.includes(id)) closeThemed(id);
+    if(typeof prevClose === "function"){
+      try { prevClose(id); } catch(e){}
+    } else {
+      const m = document.getElementById(id);
+      if(m) m.style.display = "none";
+    }
+  };
+
+  // After original open functions run, force themed popup
+  function afterOpen(fnName, modalId){
+    if(typeof window[fnName] !== "function") return;
+    if(window[fnName].__themedHooked) return;
+    const old = window[fnName];
+    window[fnName] = function(){
+      const r = old.apply(this, arguments);
+      setTimeout(function(){ openThemed(modalId); }, 0);
+      setTimeout(function(){ openThemed(modalId); }, 50);
+      return r;
+    };
+    window[fnName].__themedHooked = true;
+  }
+
+  function hookAll(){
+    afterOpen("openBulkImport", "bulkImportModal");
+    afterOpen("openWeeklyRanking", "rankingModal");
+    afterOpen("openHistory", "historyModal");
+    afterOpen("openPendingApprovals", "approvalModal");
+    afterOpen("openAddStudent", "addStudentModal");
+    afterOpen("openMoveStudents", "moveStudentsModal");
+    afterOpen("deleteAllStudents", "deleteAllStudentsModal");
+    // showApprovalList also opens approvalModal
+    if(typeof window.showApprovalList === "function" && !window.showApprovalList.__themedHooked){
+      const old = window.showApprovalList;
+      window.showApprovalList = function(){
+        const r = old.apply(this, arguments);
+        setTimeout(function(){ openThemed("approvalModal"); }, 0);
+        return r;
+      };
+      window.showApprovalList.__themedHooked = true;
+    }
+  }
+
+  // Multi-select: when clicking "Chọn tổ để chuyển" it opens moveStudentsModal
+  // deleteAllStudents already sets display flex — we hook it
+
+  setInterval(hookAll, 600);
+  document.addEventListener("DOMContentLoaded", hookAll);
+  hookAll();
+
+  // Escape closes top themed modal
+  document.addEventListener("keydown", function(e){
+    if(e.key !== "Escape") return;
+    for(let i = MODAL_IDS.length - 1; i >= 0; i--){
+      const m = document.getElementById(MODAL_IDS[i]);
+      if(m && m.classList.contains("open-themed")){
+        closeThemed(MODAL_IDS[i]);
+        break;
+      }
+    }
+  });
+
+  // Click backdrop to close
+  MODAL_IDS.forEach(function(id){
+    const m = document.getElementById(id);
+    if(!m) return;
+    m.addEventListener("click", function(e){
+      if(e.target === m) closeThemed(id);
+    });
+  });
+
+  console.log("[Popup] Themed action popups ready");
+})();
+</script>
+
